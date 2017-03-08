@@ -22,4 +22,9 @@ public class TestPostgresDBManager {
     public void testAllTablesList(){
        assertEquals("[employee, users]", Arrays.toString(dbManager.getTablesList()));
     }
+
+    @Test
+    public void testSelect(){
+       // dbManager.select("users");
+    }
 }

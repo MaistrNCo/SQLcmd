@@ -10,17 +10,17 @@ import java.util.Random;
 public class PostgresDBManager {
     private Connection connection;
 
-    public void main(String[] argv) throws SQLException{
+    public static void main(String[] argv) throws SQLException{
 
-        new PostgresDBManager();
+        PostgresDBManager ourManager = new PostgresDBManager();
 
 
         String password = "postgres";
         String user = "postgres";
         String dBase = "sqlcmd";
 
-        connect(dBase, user, password);
-
+        ourManager.connect(dBase, user, password);
+        Connection connection = ourManager.connection;
         Statement statement = connection.createStatement();
 
 
@@ -46,14 +46,9 @@ public class PostgresDBManager {
             preparedStatement .executeUpdate();
 
         //select
-            String selectTableSQL = "SELECT id, name from users";
-            ResultSet rs = statement.executeQuery(selectTableSQL);
-            while (rs.next()) {
-                String userid = rs.getString("id");
-                String username = rs.getString("name");
-                System.out.println("|"+userid+"|" +username);
-            }
-            rs.close();
+
+        ourManager.select("users");
+
             if (connection != null) {
                 System.out.println("You made it, take control your database now!");
                 connection.close();
@@ -64,6 +59,39 @@ public class PostgresDBManager {
 
 
 
+    }
+
+    public void select(String tableName )  {
+
+        Statement statement = null;
+        try {
+            int count = getRowCount(tableName);
+
+            statement = connection.createStatement();
+            String selectTableSQL = "SELECT * from " + tableName;
+            ResultSet rs = statement.executeQuery(selectTableSQL);
+            int columnCount = rs.getMetaData().getColumnCount();
+            //System.out.println("row count : "+count + " col count : " +columnCount);
+
+            RowData[] dataTable = new RowData[count];
+
+            while (rs.next()) {
+
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public int getRowCount(String tableName) throws SQLException {
+        Statement statement;
+        statement = connection.createStatement();
+        String selectRowCount = "SELECT COUNT (*) from " + tableName;
+        ResultSet resCount = statement.executeQuery(selectRowCount);
+        resCount.next();
+        return resCount.getInt("count");
     }
 
     public String[] getTablesList() {
