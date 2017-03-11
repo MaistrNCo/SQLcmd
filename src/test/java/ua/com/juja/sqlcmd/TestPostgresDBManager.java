@@ -25,6 +25,20 @@ public class TestPostgresDBManager {
 
     @Test
     public void testSelect(){
-       // dbManager.select("users");
+       dbManager.clear("users");
+       RowData rd = new RowData(3);
+       rd.addColumnValue("name","Jimmi");
+       rd.addColumnValue("password","111111");
+       rd.addColumnValue("id","48");
+
+       dbManager.insert("users",rd);
+       RowData[] data = dbManager.select("users");
+       assertEquals(1,data.length);
+       for (RowData row:data ){
+           assertEquals("[id, name, password]",Arrays.toString(data[0].getNames()));
+           assertEquals("[48, Jimmi, 111111]",Arrays.toString(data[0].getValues()));
+           System.out.println(row.toString());
+       }
+
     }
 }

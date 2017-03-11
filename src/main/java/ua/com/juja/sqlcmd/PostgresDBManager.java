@@ -42,7 +42,7 @@ public class PostgresDBManager {
             PreparedStatement preparedStatement = connection.prepareStatement(updateTableSQL);
             preparedStatement.setString(1, "helen ");
             preparedStatement.setInt(2, 3);
-        // execute insert SQL stetement
+        // execute insert SQL statement
             preparedStatement .executeUpdate();
 
         //select
@@ -61,7 +61,7 @@ public class PostgresDBManager {
 
     }
 
-    public void select(String tableName )  {
+    public RowData[] select(String tableName )  {
 
         Statement statement = null;
         try {
@@ -74,13 +74,21 @@ public class PostgresDBManager {
             //System.out.println("row count : "+count + " col count : " +columnCount);
 
             RowData[] dataTable = new RowData[count];
-
+            int ind = 0;
             while (rs.next()) {
-
+                RowData currRow = new RowData(columnCount);
+                for (int i = 1; i <= columnCount; i++) {
+                //    currRow.addColumnValue(rs.getMetaData().getColumnName(i),rs.getNString(i));
+                    currRow.addColumnValue(rs.getMetaData().getColumnName(i),rs.getString(i));
+                }
+                dataTable[ind++] = currRow;
             }
             rs.close();
+            connection.close();
+            return dataTable;
         } catch (SQLException e) {
             e.printStackTrace();
+            return new RowData[0];
         }
 
     }
@@ -134,6 +142,41 @@ public class PostgresDBManager {
                     "jdbc:postgresql://192.168.1.11:5432/"+dBase, user,password);
         } catch (SQLException e) {
             System.out.println("Connection Failed! Check output console");
+            e.printStackTrace();
+        }
+    }
+
+    public void clear(String tableName) {
+        String deleteRowsSQL = "delete from " +tableName ;
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate(deleteRowsSQL);
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insert(String tableName,RowData rd) {
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+            String columnNames = "";
+            String values = "";
+            for (String colName:rd.getNames()) {
+                columnNames = columnNames.concat(((columnNames.length()>0)?",":"")+colName);
+            }
+            for (Object colValue:rd.getValues()) {
+                values = values.concat(((values.length()>0)?",":"")+"'"+colValue+"'");
+            }
+
+            String insertRowSQL = "insert into " + tableName
+                    + " (" + columnNames + ")   values ("
+                    + values + ")";
+            statement.executeUpdate(insertRowSQL);
+            statement.close();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
