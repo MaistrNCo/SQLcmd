@@ -37,8 +37,53 @@ public class TestPostgresDBManager {
        for (RowData row:data ){
            assertEquals("[id, name, password]",Arrays.toString(data[0].getNames()));
            assertEquals("[48, Jimmi, 111111]",Arrays.toString(data[0].getValues()));
-           System.out.println(row.toString());
+           //System.out.println(row.toString());
        }
+    }
 
+    @Test
+    public void testUpdate() {
+        dbManager.clear("users");
+        RowData rd = new RowData(3);
+        rd.addColumnValue("name", "Jimmi");
+        rd.addColumnValue("password", "111111");
+        rd.addColumnValue("id", "48");
+        dbManager.insert("users",rd);
+
+        RowData newValue = new RowData(1);
+        newValue.addColumnValue("password", "222");
+
+        dbManager.update("users", "id", "48", newValue);
+
+        RowData[] data = dbManager.select("users");
+
+        assertEquals(1, data.length);
+        for (RowData row : data) {
+            assertEquals("[id, name, password]", Arrays.toString(data[0].getNames()));
+            assertEquals("[48, Jimmi, 222]", Arrays.toString(data[0].getValues()));
+            //System.out.println(row.toString());
+        }
+    }@Test
+    public void testUpdatePrepared() {
+        dbManager.clear("users");
+        RowData rd = new RowData(3);
+        rd.addColumnValue("name", "Jimmi");
+        rd.addColumnValue("password", "111111");
+        rd.addColumnValue("id", "48");
+        dbManager.insert("users",rd);
+
+        RowData newValue = new RowData(1);
+        newValue.addColumnValue("password", "222");
+
+        dbManager.updatePrepared("users", "id", "48", newValue);
+
+        RowData[] data = dbManager.select("users");
+
+        assertEquals(1, data.length);
+        for (RowData row : data) {
+            assertEquals("[id, name, password]", Arrays.toString(data[0].getNames()));
+            assertEquals("[48, Jimmi, 222]", Arrays.toString(data[0].getValues()));
+            //System.out.println(row.toString());
+        }
     }
 }
