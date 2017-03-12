@@ -1,4 +1,4 @@
-package ua.com.juja.sqlcmd;
+package ua.com.juja.sqlcmd.Model;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,16 +8,14 @@ import java.util.Arrays;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Created by maistrenko on 07.03.17.
+ * Created by maistrenko on 12.03.17.
  */
-public class TestPostgresDBManager {
-    private PostgresDBManager dbManager;
-    @Before
-    public void setup(){
-        dbManager = new PostgresDBManager();
-        dbManager.connect("sqlcmd","postgres","postgres");
+public abstract  class TestDBManager {
+    protected DBManager dbManager;
 
-    }
+    @Before
+    public abstract void setup();
+
     @Test
     public void testAllTablesList(){
        assertEquals("[employee, users]", Arrays.toString(dbManager.getTablesList()));
@@ -32,7 +30,7 @@ public class TestPostgresDBManager {
        rd.addColumnValue("id","48");
 
        dbManager.insert("users",rd);
-       RowData[] data = dbManager.select("users");
+       RowData[] data = dbManager.selectAllFromTable("users");
        assertEquals(1,data.length);
        for (RowData row:data ){
            assertEquals("[id, name, password]",Arrays.toString(data[0].getNames()));
@@ -55,7 +53,7 @@ public class TestPostgresDBManager {
 
         dbManager.update("users", "id", "48", newValue);
 
-        RowData[] data = dbManager.select("users");
+        RowData[] data = dbManager.selectAllFromTable("users");
 
         assertEquals(1, data.length);
         for (RowData row : data) {
@@ -63,7 +61,9 @@ public class TestPostgresDBManager {
             assertEquals("[48, Jimmi, 222]", Arrays.toString(data[0].getValues()));
             //System.out.println(row.toString());
         }
-    }@Test
+    }
+
+    @Test
     public void testUpdatePrepared() {
         dbManager.clear("users");
         RowData rd = new RowData(3);
@@ -77,13 +77,17 @@ public class TestPostgresDBManager {
 
         dbManager.updatePrepared("users", "id", "48", newValue);
 
-        RowData[] data = dbManager.select("users");
+        RowData[] data = dbManager.selectAllFromTable("users");
 
         assertEquals(1, data.length);
         for (RowData row : data) {
             assertEquals("[id, name, password]", Arrays.toString(data[0].getNames()));
             assertEquals("[48, Jimmi, 222]", Arrays.toString(data[0].getValues()));
-            //System.out.println(row.toString());
         }
+    }
+
+    @Test
+    public void testGetColumnsNames(){
+        assertEquals("[id, name, password]", Arrays.toString(dbManager.getColumnsNames("users")));
     }
 }

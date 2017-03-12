@@ -1,107 +1,36 @@
-package ua.com.juja.sqlcmd;
+package ua.com.juja.sqlcmd.Model;
+
+import org.postgresql.util.PSQLException;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
+
 
 /**
  * Created by maistrenko on 02.03.17.
  */
-public class PostgresDBManager {
+public class PostgresDBManager implements DBManager {
     private Connection connection;
 
-    public static void main(String[] argv) throws SQLException{
-
-        PostgresDBManager ourManager = new PostgresDBManager();
-
-
-        String password = "postgres";
-        String user = "postgres";
-        String dBase = "sqlcmd";
-
-        ourManager.connect(dBase, user, password);
-        Connection connection = ourManager.connection;
-        Statement statement = connection.createStatement();
-
-
-        //delete
-            String deleteRowSQL = "delete from users where name like 'baba%' ";
-            int numRow = statement.executeUpdate(deleteRowSQL);
-            System.out.println(" was deleted " + numRow + " rows");
-        //insert
-            String insertRowSQL = "insert into users (name,password) values ('baba galamaga','157')";
-            statement.executeUpdate(insertRowSQL);
-        //update
-
-            String newName = "pass"+ new Random().nextInt();
-            String updateSQL = "update users set password = '"+ newName +"' where id = 3";
-            statement.executeUpdate(updateSQL);
-
-        //update prepared
-            String updateTableSQL = "UPDATE USERS SET NAME = ? WHERE ID = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(updateTableSQL);
-            preparedStatement.setString(1, "helen ");
-            preparedStatement.setInt(2, 3);
-        // execute insert SQL statement
-            preparedStatement .executeUpdate();
-
-        //select
-
-        ourManager.select("users");
-
-            if (connection != null) {
-                System.out.println("You made it, take control your database now!");
-                connection.close();
-            } else {
-                System.out.println("Failed to make connection!");
-            }
-            statement.close();
-
-
-
-    }
-
-    public RowData[] select(String tableName )  {
-
-        Statement statement = null;
+    @Override
+    public void connect(String dBase, String user, String password) {
         try {
-            int count = getRowCount(tableName);
-
-            statement = connection.createStatement();
-            String selectTableSQL = "SELECT * from " + tableName;
-            ResultSet rs = statement.executeQuery(selectTableSQL);
-            int columnCount = rs.getMetaData().getColumnCount();
-            //System.out.println("row count : "+count + " col count : " +columnCount);
-
-            RowData[] dataTable = new RowData[count];
-            int ind = 0;
-            while (rs.next()) {
-                RowData currRow = new RowData(columnCount);
-                for (int i = 1; i <= columnCount; i++) {
-                //    currRow.addColumnValue(rs.getMetaData().getColumnName(i),rs.getNString(i));
-                    currRow.addColumnValue(rs.getMetaData().getColumnName(i),rs.getString(i));
-                }
-                dataTable[ind++] = currRow;
-            }
-            rs.close();
-            connection.close();
-            return dataTable;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return new RowData[0];
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Where is your PostgreSQL JDBC Driver? ",e);
         }
-
+        connection = null;
+        try {
+            //connect
+            connection = DriverManager.getConnection(
+                    "jdbc:postgresql://192.168.1.11:5432/"+dBase, user,password);
+        } catch (SQLException e) {
+            throw new RuntimeException(String.format("Connection to database %s for user %s failed!",dBase,user),e);
+        }
     }
 
-    public int getRowCount(String tableName) throws SQLException {
-        Statement statement;
-        statement = connection.createStatement();
-        String selectRowCount = "SELECT COUNT (*) from " + tableName;
-        ResultSet resCount = statement.executeQuery(selectRowCount);
-        resCount.next();
-        return resCount.getInt("count");
-    }
-
+    @Override
     public String[] getTablesList() {
         String [] result = new String[100];
         int index=0;
@@ -124,28 +53,74 @@ public class PostgresDBManager {
             System.out.println("Statement is not created");
             result = new String[0];
         }
-       return result;
+        return result;
     }
 
-    public void connect(String dBase, String user, String password) {
+    @Override
+    public RowData[] selectAllFromTable(String tableName)  {
+
+        Statement statement = null;
         try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Where is your PostgreSQL JDBC Driver? "
-                    + "Include in your library path!");
-            e.printStackTrace();
-        }
-        connection = null;
-        try {
-            //connect
-            connection = DriverManager.getConnection(
-                    "jdbc:postgresql://192.168.1.11:5432/"+dBase, user,password);
+            int count = getRowCount(tableName);
+
+            statement = connection.createStatement();
+            String selectTableSQL = "SELECT * from " + tableName;
+            ResultSet rs = statement.executeQuery(selectTableSQL);
+            int columnCount = rs.getMetaData().getColumnCount();
+            //System.out.println("row count : "+count + " col count : " +columnCount);
+
+            RowData[] dataTable = new RowData[count];
+            int ind = 0;
+            while (rs.next()) {
+                RowData currRow = new RowData(columnCount);
+                for (int i = 1; i <= columnCount; i++) {
+                //    currRow.addColumnValue(rs.getMetaData().getColumnName(i),rs.getNString(i));
+                    currRow.addColumnValue(rs.getMetaData().getColumnName(i),rs.getString(i));
+                }
+                dataTable[ind++] = currRow;
+            }
+            rs.close();
+            return dataTable;
         } catch (SQLException e) {
-            System.out.println("Connection Failed! Check output console");
             e.printStackTrace();
+            return new RowData[0];
+        }
+
+    }
+
+    @Override
+    public int getRowCount(String tableName) throws SQLException {
+        Statement statement;
+        statement = connection.createStatement();
+        String selectRowCount = "SELECT COUNT (*) from " + tableName;
+        ResultSet resCount = statement.executeQuery(selectRowCount);
+        resCount.next();
+        return resCount.getInt("count");
+    }
+
+    @Override
+    public String[] getColumnsNames(String tableName){
+        try {
+            DatabaseMetaData metadata = connection.getMetaData();
+            ResultSet resultSet = metadata.getColumns(null, null, tableName, null);
+            ArrayList<String> result = new ArrayList<>();
+
+            int index = 0 ;
+            while (resultSet.next()) {
+                String name = resultSet.getString("COLUMN_NAME");
+             //   String type = resultSet.getString("TYPE_NAME");
+             //   int size = resultSet.getInt("COLUMN_SIZE");
+                result.add(name);
+             //   System.out.println("Column name: [" + name + "]; type: [" + type + "]; size: [" + size + "]");
+            }
+            return result.toArray( new String[result.size()]);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new String[0];
         }
     }
 
+    @Override
     public void clear(String tableName) {
         String deleteRowsSQL = "delete from " +tableName ;
         Statement statement;
@@ -158,7 +133,8 @@ public class PostgresDBManager {
         }
     }
 
-    public void insert(String tableName,RowData rd) {
+    @Override
+    public void insert(String tableName, RowData rd) {
         Statement statement;
         try {
             statement = connection.createStatement();
@@ -181,7 +157,8 @@ public class PostgresDBManager {
         }
     }
 
-    public void update(String tableName, String conditionName,String conditionValue, RowData newValue) {
+    @Override
+    public void update(String tableName, String conditionName, String conditionValue, RowData newValue) {
         Statement statement;
         try {
             statement = connection.createStatement();
@@ -200,7 +177,10 @@ public class PostgresDBManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }public void updatePrepared(String tableName, String conditionName,String conditionValue, RowData newValue) {
+    }
+
+    @Override
+    public void updatePrepared(String tableName, String conditionName, String conditionValue, RowData newValue) {
         Statement statement;
         try {
             String[] colNames = newValue.getNames();

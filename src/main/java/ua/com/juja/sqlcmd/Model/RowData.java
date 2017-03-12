@@ -1,4 +1,4 @@
-package ua.com.juja.sqlcmd;
+package ua.com.juja.sqlcmd.Model;
 
 import java.util.Arrays;
 
@@ -11,12 +11,12 @@ public class RowData {
 
     public RowData(int columnsCount) {
         this.columns = new Column[columnsCount];
-
     }
 
     public void addColumnValue(String name, String value){
         columns[index++] = new Column(name,value);
     }
+
     public String[] getNames(){
         String[] result = new String[columns.length];
         int i = 0;
@@ -25,6 +25,7 @@ public class RowData {
         }
         return result;
     }
+
     public Object[] getValues(){
         Object[] result = new Object[columns.length];
         int i = 0;
@@ -33,11 +34,12 @@ public class RowData {
         }
         return result;
     }
+
     @Override
     public String toString() {
         String result = "RowData ";
         for (Column col:columns) {
-            result = result.concat(" " + col.getName() + "  " + col.getValue());
+            result = result.concat("\\t " + col.getName() + "\\t  " + col.getValue());
         }
 
         return  result;
