@@ -67,6 +67,16 @@ public class MainController {
                 getTablesList();
             } else if (command.startsWith("find")) {
                 getTableContent(command);
+            } else if (command.startsWith("clear")) {
+                // TODO implement method clear
+            } else if (command.startsWith("drop")) {
+                // TODO implement method drop
+            } else if (command.startsWith("create")) {
+                // TODO implement method create
+            } else if (command.startsWith("insert")) {
+                // TODO implement method insert
+            } else if (command.startsWith("update")) {
+                // TODO implement method update
             } else if (command.equals("exit")) {
                 console.showData("Goodbye");
                 break;
