@@ -150,11 +150,11 @@ public class PostgresDBManager implements DBManager {
     public void create(String tableName, String[] columnNames) {
         String createTableSQL = "CREATE TABLE " + tableName +
                 "(ID INT PRIMARY KEY     NOT NULL";
-        for (int ind = 0; ind < columnNames.length; ind++) {
-            createTableSQL += ", " + columnNames[ind];
+
+        for (String column:columnNames) {
+            createTableSQL+=", " + column + " text";
         }
         createTableSQL+=")";
-
 //                " NAME           TEXT    NOT NULL, " +
 //                " AGE            INT     NOT NULL, " +
 //                " ADDRESS        CHAR(50), " +
@@ -172,7 +172,7 @@ public class PostgresDBManager implements DBManager {
 
     @Override
     public void delete(String tableName, String conditionName, String conditionValue) {
-        String deleteRowsSQL = "delete from " +tableName +" where "+ conditionName +" = "+conditionValue ;
+        String deleteRowsSQL = "delete from " +tableName +" where "+ conditionName +" = '"+conditionValue +"'";
         Statement statement;
         try {
             statement = connection.createStatement();
@@ -219,10 +219,10 @@ public class PostgresDBManager implements DBManager {
 
 
             for (int ind=0;ind<colNames.length;ind++) {
-                if(colNames[ind]==conditionName) continue;
+            //    if(colNames[ind]==conditionName) continue;
                 values = values +((ind!=0)?",":"")+ colNames[ind]+" = '" + colValues[ind]+"'";
             }
-            String updateSQL = "update " + tableName +" set " + values +" where "+ conditionName +" = "+conditionValue;
+            String updateSQL = "update " + tableName +" set " + values +" where "+ conditionName +" = '"+conditionValue+"'";
             statement.executeUpdate(updateSQL);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -240,7 +240,7 @@ public class PostgresDBManager implements DBManager {
                     columns = columns + ((ind != 0) ? "," : "") + colNames[ind] + " = ?";
                 }
             }
-            String updateTableSQL = "UPDATE USERS SET " + columns + " WHERE " + conditionName + "= ?";
+            String updateTableSQL = "UPDATE USERS SET " + columns + " WHERE " + conditionName + "= '?'";
             PreparedStatement preparedStatement = connection.prepareStatement(updateTableSQL);
             Object[] colValues = newValue.getValues();
             int ind;

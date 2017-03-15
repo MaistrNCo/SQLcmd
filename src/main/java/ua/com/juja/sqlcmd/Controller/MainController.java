@@ -59,7 +59,7 @@ public class MainController {
                 doInsert(command);
             } else if (command.startsWith("update")) {
                 doUpdate(command);
-            } else if (command.startsWith("update")) {
+            } else if (command.startsWith("delete")) {
                 doDelete(command);
             } else if (command.equals("exit")) {
                 console.showData("Goodbye");
@@ -95,13 +95,14 @@ public class MainController {
     }
 
     private void doCreate(String command) {
-        String[] createParams = prepareParams(command,3);
-        //TODO implement table creation
+        String[] crtParams = prepareParams(command,3);
+        String[] columnNames = Arrays.copyOfRange(crtParams,2,crtParams.length);
+        dbManager.create(crtParams[1],columnNames);
     }
 
     private void doDrop(String command) {
         String tableName = prepareParams(command,2)[1];
-        //TODO implement drop
+        dbManager.drop(tableName);
     }
 
     private void doClear(String command) {
