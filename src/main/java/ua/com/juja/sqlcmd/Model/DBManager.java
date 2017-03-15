@@ -18,6 +18,12 @@ public interface DBManager {
 
     void clear(String tableName);
 
+    void drop(String tableName);
+
+    void create(String tableName, String[] columnNames );
+
+    void delete(String tableName, String conditionName, String conditionValue);
+
     void insert(String tableName, RowData rd);
 
     void update(String tableName, String conditionName, String conditionValue, RowData newValue);

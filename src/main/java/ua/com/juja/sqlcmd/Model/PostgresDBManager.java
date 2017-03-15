@@ -134,6 +134,56 @@ public class PostgresDBManager implements DBManager {
     }
 
     @Override
+    public void drop(String tableName) {
+        String dropTableSQL = "drop table " +tableName ;
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate(dropTableSQL);
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void create(String tableName, String[] columnNames) {
+        String createTableSQL = "CREATE TABLE " + tableName +
+                "(ID INT PRIMARY KEY     NOT NULL";
+        for (int ind = 0; ind < columnNames.length; ind++) {
+            createTableSQL += ", " + columnNames[ind];
+        }
+        createTableSQL+=")";
+
+//                " NAME           TEXT    NOT NULL, " +
+//                " AGE            INT     NOT NULL, " +
+//                " ADDRESS        CHAR(50), " +
+//                " SALARY         REAL)";
+
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate(createTableSQL);
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void delete(String tableName, String conditionName, String conditionValue) {
+        String deleteRowsSQL = "delete from " +tableName +" where "+ conditionName +" = "+conditionValue ;
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate(deleteRowsSQL);
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void insert(String tableName, RowData rd) {
         Statement statement;
         try {
