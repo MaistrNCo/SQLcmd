@@ -1,7 +1,5 @@
 package ua.com.juja.sqlcmd.Model;
 
-import org.postgresql.util.PSQLException;
-
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,7 +13,7 @@ public class PostgresDBManager implements DBManager {
     private Connection connection;
 
     @Override
-    public String[] loadFromIni(String fileName){
+    public String[] loadFromIni(String fileName) throws FileNotFoundException{
         String[] result = new String[5];
         int caught  = 0;
         try{
@@ -70,25 +68,20 @@ public class PostgresDBManager implements DBManager {
     }
 
     @Override
-    public void connect(String dataBase, String userName, String pass) {
-        String[] connParam = {"192.168.1.11","5432",dataBase,userName,pass};
+    public void connect(ConnectionSettings conSettings) {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Where is your PostgreSQL JDBC Driver? ",e);
         }
 
-        String[] connParamIni = loadFromIni("Postgres.ini");
-        if (connParamIni.length==5){
-            connParam = connParamIni;
-        }
-
         try {
             this.connection = DriverManager.getConnection(
-                    "jdbc:postgresql://"+ connParam[0]+":"+connParam[1]+"/"+connParam[2],
-                    connParam[3],connParam[4]);
+                    "jdbc:postgresql://"+ conSettings.getAddress(),
+                    conSettings.getUsername(),conSettings.getPassword());
         } catch (SQLException e) {
-            throw new RuntimeException(String.format("Connection to database %s for user %s failed!",connParam[2],connParam[3]),e);
+            throw new RuntimeException(String.format("Connection to database %s for user %s failed!",
+                    conSettings.getUsername(),conSettings.getPassword()),e);
         }
     }
 

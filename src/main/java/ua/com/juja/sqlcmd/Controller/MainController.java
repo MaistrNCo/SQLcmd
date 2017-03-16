@@ -1,10 +1,12 @@
 package ua.com.juja.sqlcmd.Controller;
 
+import ua.com.juja.sqlcmd.Model.ConnectionSettings;
 import ua.com.juja.sqlcmd.Model.DBManager;
 import ua.com.juja.sqlcmd.Model.PostgresDBManager;
 import ua.com.juja.sqlcmd.Model.RowData;
 import ua.com.juja.sqlcmd.View.View;
 
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 
 /**
@@ -12,30 +14,13 @@ import java.util.Arrays;
  */
 public class MainController {
 
+    public static final int CONNECTION_PARAMS_NUMBER = 5;
     private DBManager dbManager;
     private View console;
 
     public MainController(DBManager dbManager, View console) {
         this.dbManager = dbManager;
         this.console = console;
-    }
-
-    private void ConnectDB() {
-        dbManager = new PostgresDBManager();
-        console.showData("Hello !");
-        console.showData("Input data please in format 'database|username|password' :");
-        while (true) {
-
-            try {
-                String data = console.getData();
-                String[] params = prepareParams(data, 3);
-                dbManager.connect(params[0], params[1], params[2]);
-                console.showData("Successful connection!!");
-                break;
-            } catch (Exception e) {
-                showErrorMesage(e);
-            }
-        }
     }
 
     public void run() {
@@ -66,6 +51,39 @@ public class MainController {
                 break;
             } else {
                 console.showData("unknown instruction, try more");
+            }
+        }
+    }
+
+    private void ConnectDB() {
+        dbManager = new PostgresDBManager();
+        console.showData("Hello !");
+        boolean fileNotFound = false;
+        while (true) {
+            ConnectionSettings conSet = new ConnectionSettings();
+            if(!fileNotFound){
+                try {
+                    String[] fromFile = dbManager.loadFromIni("Postgres.ini");
+                    if (fromFile.length== CONNECTION_PARAMS_NUMBER){
+                        conSet.setSettings(fromFile);
+                    }
+                }catch (FileNotFoundException e){
+                    fileNotFound = true;
+                }
+            }else{
+                console.showData("Input data please in format 'database|username|password' :");
+                String data = console.getData();
+                String[] params = prepareParams(data, 3);
+                String[] defParams = {"192.168.1.11","5423",params[1],params[2],params[3]};
+                conSet.setSettings(defParams);
+            }
+
+            try {
+                dbManager.connect(conSet);
+                console.showData("Successful connection!!");
+                break;
+            } catch (Exception e) {
+                showErrorMesage(e);
             }
         }
     }
