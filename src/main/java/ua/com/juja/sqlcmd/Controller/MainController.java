@@ -84,6 +84,7 @@ public class MainController {
                 break;
             } catch (Exception e) {
                 showErrorMesage(e);
+                fileNotFound = true;
             }
         }
     }
