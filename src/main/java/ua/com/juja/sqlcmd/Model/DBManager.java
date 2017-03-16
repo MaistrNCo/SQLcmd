@@ -14,6 +14,8 @@ public interface DBManager {
 
     String[] getColumnsNames(String tableName);
 
+    String[] loadFromIni(String fileName);
+
     void connect(String dBase, String user, String password);
 
     void clear(String tableName);

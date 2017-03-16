@@ -2,6 +2,7 @@ package ua.com.juja.sqlcmd.Model;
 
 import org.postgresql.util.PSQLException;
 
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,19 +15,80 @@ public class PostgresDBManager implements DBManager {
     private Connection connection;
 
     @Override
-    public void connect(String dBase, String user, String password) {
+    public String[] loadFromIni(String fileName){
+        String[] result = new String[5];
+        int caught  = 0;
+        try{
+
+            FileReader file = new FileReader(fileName);
+            BufferedReader br = new BufferedReader(file);
+            String curStr;
+            System.out.println("found file " + fileName);
+            while((curStr = br.readLine())!=null){
+                String[] splited  = curStr.split(":");
+                System.out.println(Arrays.toString(splited));
+                switch(splited[0]){
+                    case "server":{
+                        result[0] = splited[1];
+                        caught++;
+                        break;
+                    }
+                    case "port":{
+                        result[1] = splited[1];
+                        caught++;
+                        break;
+                    }
+                    case "base":{
+                        result[2] = splited[1];
+                        caught++;
+                        break;
+                    }
+                    case "username":{
+                        result[3] = splited[1];
+                        caught++;
+                        break;
+                    }
+                    case "password":{
+                        result[4] = splited[1];
+                        caught++;
+                        break;
+                    }
+                }
+            }
+
+
+        }catch(FileNotFoundException e){
+
+            throw new RuntimeException("file Postgres.ini not found ",e);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (caught==5) return result;
+        else return new String[0];
+    }
+
+    @Override
+    public void connect(String dataBase, String userName, String pass) {
+        String[] connParam = {"192.168.1.11","5432",dataBase,userName,pass};
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Where is your PostgreSQL JDBC Driver? ",e);
         }
-        connection = null;
+
+        String[] connParamIni = loadFromIni("Postgres.ini");
+        if (connParamIni.length==5){
+            connParam = connParamIni;
+        }
+
         try {
-            //connect
-            connection = DriverManager.getConnection(
-                    "jdbc:postgresql://192.168.1.11:5432/"+dBase, user,password);
+            this.connection = DriverManager.getConnection(
+                    "jdbc:postgresql://"+ connParam[0]+":"+connParam[1]+"/"+connParam[2],
+                    connParam[3],connParam[4]);
         } catch (SQLException e) {
-            throw new RuntimeException(String.format("Connection to database %s for user %s failed!",dBase,user),e);
+            throw new RuntimeException(String.format("Connection to database %s for user %s failed!",connParam[2],connParam[3]),e);
         }
     }
 
