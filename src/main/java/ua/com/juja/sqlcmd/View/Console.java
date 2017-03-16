@@ -7,12 +7,12 @@ import java.util.Scanner;
  */
 public class Console implements View{
     @Override
-    public void showData(String message) {
+    public void printOut(String message) {
         System.out.println(message);
     }
 
     @Override
-    public String getData() {
+    public String getInput() {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
     }
