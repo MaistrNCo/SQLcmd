@@ -203,18 +203,13 @@ public class PostgresDBManager implements DBManager {
 
     @Override
     public void create(String tableName, String[] columnNames) {
-        String createTableSQL = "CREATE TABLE " + tableName +
-                "(ID integer NOT NULL ";
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS " + tableName +
+                "(ID SERIAL NOT NULL PRIMARY KEY ";
 
         for (String column:columnNames) {
             createTableSQL+=", " + column + " text";
         }
-        createTableSQL+=", PRIMARY KEY (id))";  //TODO fix tables creation (Primary Key)
-//                " NAME           TEXT    NOT NULL, " +
-//                " AGE            INT     NOT NULL, " +
-//                " ADDRESS        CHAR(50), " +
-//                " SALARY         REAL)";
-
+        createTableSQL+=")";
         Statement statement;
         try {
             statement = connection.createStatement();
