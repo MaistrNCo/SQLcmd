@@ -27,7 +27,9 @@ public class MainController {
                     new Exit(view),
                     new WrongInput(view),
                     new Help(view),
-                    new List(dbManager,view)
+                    new List(dbManager,view),
+                    new Find(dbManager,view),
+                    new Clear(dbManager,view)
                     };
     }
 
@@ -42,11 +44,10 @@ public class MainController {
                 commands[2].process(input);
             } else if (commands[3].canProcess(input)) {
                 commands[3].process(input);
-                getTablesList();
-            } else if (input.startsWith("find")) {
-                getTableContent(input);
-            } else if (input.startsWith("clear")) {
-                doClear(input);
+            } else if (commands[4].canProcess(input)) {
+                commands[4].process(input); //"find")) {
+            } else if (commands[5].canProcess(input)) {
+                commands[5].process(input);//"clear")) {
             } else if (input.startsWith("drop")) {
                 doDrop(input);
             } else if (input.startsWith("create")) {
@@ -132,34 +133,6 @@ public class MainController {
     private void doDrop(String command) {
         String tableName = prepareParams(command,2)[1];
         dbManager.drop(tableName);
-    }
-
-    private void doClear(String command) {
-        String tableName = prepareParams(command,2)[1];
-        dbManager.clear(tableName);
-    }
-
-    private void getTableContent(String command) {
-        String[] params = prepareParams(command, 2);
-        String tableName = params[1];
-        String[] columnsNames = dbManager.getColumnsNames(tableName);
-        RowData[] rowDatas = dbManager.selectAllFromTable(tableName);
-        String header = "|";
-        for (String colName : columnsNames) {
-            header += colName + "\t|";
-        }
-        view.printOut(header);
-        for (RowData row : rowDatas) {
-            String str ="|";
-            for (Object val:row.getValues()) {
-                str += val + "\t|";
-            }
-            view.printOut(str);
-        }
-    }
-
-    private void getTablesList() {
-
     }
 
     private String[] prepareParams(String data, int expected) {
