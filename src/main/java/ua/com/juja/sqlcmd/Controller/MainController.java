@@ -24,46 +24,33 @@ public class MainController {
         this.dbManager = dbManager;
         this.view = view;
         this.commands = new Command[] {
-                    new Exit(view),
-                    new WrongInput(view),
                     new Help(view),
+                    new Exit(view),
                     new List(dbManager,view),
                     new Find(dbManager,view),
                     new Clear(dbManager,view),
                     new Drop(dbManager,view),
-                    new Create(dbManager,view)
+                    new Create(dbManager,view),
+                    new Insert(dbManager,view),
+                    new Update(dbManager,view),
+                    new Delete(dbManager,view),
+                    new WrongInput(view)
                     };
     }
 
     public void run() {
 
 
-        ConnectDB();
-        view.printOut("input command please or 'help' to see commands list");
+        ConnectDB();   //TODO move connection to commands list
         while (true) {
+            view.printOut("input command please or 'help' to see commands list");
             String input = view.getInput();
-            if (commands[2].canProcess(input)) {
-                commands[2].process(input);
-            } else if (commands[3].canProcess(input)) {
-                commands[3].process(input);
-            } else if (commands[4].canProcess(input)) {
-                commands[4].process(input); //"find")) {
-            } else if (commands[5].canProcess(input)) {
-                commands[5].process(input);//"clear")) {
-            } else if (commands[6].canProcess(input)) {
-                commands[6].process(input);//"drop")) {
-            } else if (commands[7].canProcess(input)) {
-                commands[7].process(input);//"create")) {
-            } else if (input.startsWith("insert")) {
-                doInsert(input);
-            } else if (input.startsWith("update")) {
-                doUpdate(input);
-            } else if (input.startsWith("delete")) {
-                doDelete(input);
-            } else if (commands[0].canProcess(input)) {
-                commands[0].process(input);
-            } else if(commands[1].canProcess(input)) {
-                commands[1].process(input);
+
+            for(Command command:commands) {
+                if(command.canProcess(input)) {
+                    command.process(input);
+                    break;
+                }
             }
         }
     }
@@ -100,30 +87,6 @@ public class MainController {
                 fileNotFound = true;
             }
         }
-    }
-
-    private void doDelete(String command) {
-        String[] delParams = prepareParams(command,4);
-        dbManager.delete(delParams[1],delParams[2],delParams[3]);
-    }
-
-
-    private void doUpdate(String command) {
-        String[] updParams = prepareParams(command,6);
-        RowData insData = new RowData((updParams.length-4)/2);
-        for (int ind = 0; ind < (updParams.length-4)/2; ind+=2) {
-            insData.addColumnValue(updParams[ind+4],updParams[ind+5]);
-        }
-        dbManager.update(updParams[1],updParams[2],updParams[3],insData);
-    }
-
-    private void doInsert(String command) {
-        String[] insertParams = prepareParams(command,4);
-        RowData insertData = new RowData((insertParams.length-2)/2);
-        for (int ind = 0; ind < (insertParams.length-2)/2; ind+=2) {
-            insertData.addColumnValue(insertParams[ind+2],insertParams[ind+3]);
-        }
-        dbManager.insert(insertParams[1],insertData);
     }
 
 
