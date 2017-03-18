@@ -5,10 +5,10 @@ import ua.com.juja.sqlcmd.View.View;
 /**
  * Created by maistrenko on 18.03.17.
  */
-public class WrongInp implements Command {
+public class WrongInput implements Command {
     private final View view;
 
-    public WrongInp(View view) {
+    public WrongInput(View view) {
         this.view =view;
     }
 

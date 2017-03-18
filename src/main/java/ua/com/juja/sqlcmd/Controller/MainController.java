@@ -1,15 +1,11 @@
 package ua.com.juja.sqlcmd.Controller;
 
-import ua.com.juja.sqlcmd.Controller.command.Command;
-import ua.com.juja.sqlcmd.Controller.command.Exit;
-import ua.com.juja.sqlcmd.Controller.command.Help;
-import ua.com.juja.sqlcmd.Controller.command.WrongInp;
+import ua.com.juja.sqlcmd.Controller.command.*;
 import ua.com.juja.sqlcmd.Model.ConnectionSettings;
 import ua.com.juja.sqlcmd.Model.DBManager;
 import ua.com.juja.sqlcmd.Model.PostgresDBManager;
 import ua.com.juja.sqlcmd.Model.RowData;
 import ua.com.juja.sqlcmd.View.Console;
-import ua.com.juja.sqlcmd.View.View;
 
 import java.io.FileNotFoundException;
 import java.util.Arrays;
@@ -27,9 +23,12 @@ public class MainController {
     public MainController(DBManager dbManager, Console view) {
         this.dbManager = dbManager;
         this.view = view;
-        this.commands = new Command[] {new Exit(view),
-                    new WrongInp(view),
-                    new Help(view)};
+        this.commands = new Command[] {
+                    new Exit(view),
+                    new WrongInput(view),
+                    new Help(view),
+                    new List(dbManager,view)
+                    };
     }
 
     public void run() {
@@ -41,7 +40,8 @@ public class MainController {
             String input = view.getInput();
             if (commands[2].canProcess(input)) {
                 commands[2].process(input);
-            } else if (input.equals("list")) {
+            } else if (commands[3].canProcess(input)) {
+                commands[3].process(input);
                 getTablesList();
             } else if (input.startsWith("find")) {
                 getTableContent(input);
@@ -66,7 +66,7 @@ public class MainController {
     }
 
     private void ConnectDB() {
-        dbManager = new PostgresDBManager();
+        //dbManager = new PostgresDBManager();
         view.printOut("Hello !");
         boolean fileNotFound = false;
         while (true) {
@@ -159,7 +159,7 @@ public class MainController {
     }
 
     private void getTablesList() {
-        view.printOut(Arrays.toString(dbManager.getTablesList()));
+
     }
 
     private String[] prepareParams(String data, int expected) {
