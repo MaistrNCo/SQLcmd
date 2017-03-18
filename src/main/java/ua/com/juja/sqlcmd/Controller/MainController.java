@@ -29,7 +29,9 @@ public class MainController {
                     new Help(view),
                     new List(dbManager,view),
                     new Find(dbManager,view),
-                    new Clear(dbManager,view)
+                    new Clear(dbManager,view),
+                    new Drop(dbManager,view),
+                    new Create(dbManager,view)
                     };
     }
 
@@ -48,10 +50,10 @@ public class MainController {
                 commands[4].process(input); //"find")) {
             } else if (commands[5].canProcess(input)) {
                 commands[5].process(input);//"clear")) {
-            } else if (input.startsWith("drop")) {
-                doDrop(input);
-            } else if (input.startsWith("create")) {
-                doCreate(input);
+            } else if (commands[6].canProcess(input)) {
+                commands[6].process(input);//"drop")) {
+            } else if (commands[7].canProcess(input)) {
+                commands[7].process(input);//"create")) {
             } else if (input.startsWith("insert")) {
                 doInsert(input);
             } else if (input.startsWith("update")) {
@@ -124,16 +126,7 @@ public class MainController {
         dbManager.insert(insertParams[1],insertData);
     }
 
-    private void doCreate(String command) {
-        String[] crtParams = prepareParams(command,3);
-        String[] columnNames = Arrays.copyOfRange(crtParams,2,crtParams.length);
-        dbManager.create(crtParams[1],columnNames);
-    }
 
-    private void doDrop(String command) {
-        String tableName = prepareParams(command,2)[1];
-        dbManager.drop(tableName);
-    }
 
     private String[] prepareParams(String data, int expected) {
         String[] params = data.split("\\|");
