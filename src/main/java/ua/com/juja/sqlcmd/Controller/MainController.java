@@ -2,10 +2,13 @@ package ua.com.juja.sqlcmd.Controller;
 
 import ua.com.juja.sqlcmd.Controller.command.Command;
 import ua.com.juja.sqlcmd.Controller.command.Exit;
+import ua.com.juja.sqlcmd.Controller.command.Help;
+import ua.com.juja.sqlcmd.Controller.command.WrongInp;
 import ua.com.juja.sqlcmd.Model.ConnectionSettings;
 import ua.com.juja.sqlcmd.Model.DBManager;
 import ua.com.juja.sqlcmd.Model.PostgresDBManager;
 import ua.com.juja.sqlcmd.Model.RowData;
+import ua.com.juja.sqlcmd.View.Console;
 import ua.com.juja.sqlcmd.View.View;
 
 import java.io.FileNotFoundException;
@@ -18,24 +21,26 @@ public class MainController {
 
     public static final int CONNECTION_PARAMS_NUMBER = 5;
     private DBManager dbManager;
-    private View console;
+    private Console view;
     private Command[] commands;
 
-    public MainController(DBManager dbManager, View console) {
+    public MainController(DBManager dbManager, Console view) {
         this.dbManager = dbManager;
-        this.console = console;
-        this.commands = new Command[] {new Exit(console)};
+        this.view = view;
+        this.commands = new Command[] {new Exit(view),
+                    new WrongInp(view),
+                    new Help(view)};
     }
 
     public void run() {
 
 
         ConnectDB();
-        console.printOut("input command please or 'help' to see commands list");
+        view.printOut("input command please or 'help' to see commands list");
         while (true) {
-            String input = console.getInput();
-            if (input.equals("help")) {
-                showCommandList();
+            String input = view.getInput();
+            if (commands[2].canProcess(input)) {
+                commands[2].process(input);
             } else if (input.equals("list")) {
                 getTablesList();
             } else if (input.startsWith("find")) {
@@ -54,15 +59,15 @@ public class MainController {
                 doDelete(input);
             } else if (commands[0].canProcess(input)) {
                 commands[0].process(input);
-            } else {
-                console.printOut("unknown instruction, try more");
+            } else if(commands[1].canProcess(input)) {
+                commands[1].process(input);
             }
         }
     }
 
     private void ConnectDB() {
         dbManager = new PostgresDBManager();
-        console.printOut("Hello !");
+        view.printOut("Hello !");
         boolean fileNotFound = false;
         while (true) {
             ConnectionSettings conSet = new ConnectionSettings();
@@ -76,8 +81,8 @@ public class MainController {
                     fileNotFound = true;
                 }
             }else{
-                console.printOut("Input data please in format 'database|username|password' :");
-                String data = console.getInput();
+                view.printOut("Input data please in format 'database|username|password' :");
+                String data = view.getInput();
                 String[] params = prepareParams(data, 3);
                 String[] defParams = {"192.168.1.11","5423",params[1],params[2],params[3]};
                 conSet.setSettings(defParams);
@@ -85,7 +90,7 @@ public class MainController {
 
             try {
                 dbManager.connect(conSet);
-                console.printOut("Successful connection!!");
+                view.printOut("Successful connection!!");
                 break;
             } catch (Exception e) {
                 showErrorMesage(e);
@@ -143,52 +148,18 @@ public class MainController {
         for (String colName : columnsNames) {
             header += colName + "\t|";
         }
-        console.printOut(header);
+        view.printOut(header);
         for (RowData row : rowDatas) {
             String str ="|";
             for (Object val:row.getValues()) {
                 str += val + "\t|";
             }
-            console.printOut(str);
+            view.printOut(str);
         }
     }
 
     private void getTablesList() {
-        console.printOut(Arrays.toString(dbManager.getTablesList()));
-    }
-
-    private void showCommandList() {
-        console.printOut("Commands full list :");
-        String message = "\t help\n" +
-                "\t\t to display commands list \n" +
-
-                "\t list \n" +
-                "\t\t to display tables list in DB\n" +
-
-                "\t find|tableName \n" +
-                "\t\t to display data from table 'tableName' \n" +
-
-                "\t clear|tableName \n" +
-                "\t\t to delete all data from table 'tableName' \n" +
-
-                "\t drop|tableName \n" +
-                "\t\t to delete table 'tableName' \n" +
-
-                "\t create|tableName|column1|column2|...|columnN \n" +
-                "\t\t to create table 'tableName' with defined columns\n" +
-
-                "\t insert|tableName|column1|value1|column2|value2|...|columnN|valueN \n" +
-                "\t\t to insert data to table 'tableName' \n" +
-
-                "\t update|tableName|column1|value1|column2|value2|...|columnN|valueN \n" +
-                "\t\t to update records in table 'tableName' which value in 'column1' equal 'value1'\n" +
-
-                "\t delete|tableName|column|value \n" +
-                "\t\t to delete records in table 'tableName' which value in 'column' equal 'value'\n" +
-
-                "\t exit\n" +
-                "\t\t to leave console\n";
-        console.printOut(message);
+        view.printOut(Arrays.toString(dbManager.getTablesList()));
     }
 
     private String[] prepareParams(String data, int expected) {
@@ -205,7 +176,7 @@ public class MainController {
     public void showErrorMesage(Exception e) {
         String errorReason = e.getMessage();
         if (e.getCause() != null) errorReason += "  " + e.getCause().getMessage();
-        console.printOut("Unsuccessful operation by reason: " + errorReason);
-        console.printOut("try again please");
+        view.printOut("Unsuccessful operation by reason: " + errorReason);
+        view.printOut("try again please");
     }
 }
