@@ -6,4 +6,5 @@ package ua.com.juja.sqlcmd.View;
 public interface View {
     void printOut(String message);
     String getInput();
+    void showErrorMessage(Exception e);
 }

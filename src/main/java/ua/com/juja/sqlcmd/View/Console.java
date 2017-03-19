@@ -16,4 +16,11 @@ public class Console implements View{
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
     }
+
+    public void showErrorMessage(Exception e) {
+        String errorReason = e.getMessage();
+        if (e.getCause() != null) errorReason += "  " + e.getCause().getMessage();
+        printOut("Unsuccessful operation by reason: " + errorReason);
+        printOut("try again please");
+    }
 }

@@ -15,9 +15,9 @@ public interface DBManager {
 
     String[] getColumnsNames(String tableName);
 
-    String[] loadFromIni(String fileName) throws FileNotFoundException;
-
     void connect(ConnectionSettings conSettings);
+
+    boolean isConnected();
 
     void clear(String tableName);
 

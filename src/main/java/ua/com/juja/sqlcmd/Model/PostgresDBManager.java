@@ -13,61 +13,6 @@ public class PostgresDBManager implements DBManager {
     private Connection connection;
 
     @Override
-    public String[] loadFromIni(String fileName) throws FileNotFoundException{
-        String[] result = new String[5];
-        int caught  = 0;
-        try{
-
-            FileReader file = new FileReader(fileName);
-            BufferedReader br = new BufferedReader(file);
-            String curStr;
-            System.out.println("found file " + fileName);
-            while((curStr = br.readLine())!=null){
-                String[] splited  = curStr.split(":");
-                System.out.println(Arrays.toString(splited));
-                switch(splited[0]){
-                    case "server":{
-                        result[0] = splited[1];
-                        caught++;
-                        break;
-                    }
-                    case "port":{
-                        result[1] = splited[1];
-                        caught++;
-                        break;
-                    }
-                    case "base":{
-                        result[2] = splited[1];
-                        caught++;
-                        break;
-                    }
-                    case "username":{
-                        result[3] = splited[1];
-                        caught++;
-                        break;
-                    }
-                    case "password":{
-                        result[4] = splited[1];
-                        caught++;
-                        break;
-                    }
-                }
-            }
-
-
-        }catch(FileNotFoundException e){
-
-            throw new RuntimeException("file Postgres.ini not found ",e);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if (caught==5) return result;
-        else return new String[0];
-    }
-
-    @Override
     public void connect(ConnectionSettings conSettings) {
         try {
             Class.forName("org.postgresql.Driver");
@@ -83,6 +28,11 @@ public class PostgresDBManager implements DBManager {
             throw new RuntimeException(String.format("Connection to database %s for user %s failed!",
                     conSettings.getUsername(),conSettings.getPassword()),e);
         }
+    }
+
+    @Override
+    public boolean isConnected() {
+        return connection!=null;
     }
 
     @Override
