@@ -84,9 +84,10 @@ public class ConnectDef implements  Command {
                 }
             }
         }catch(FileNotFoundException e){
-            throw new RuntimeException("file Postgres.ini not found ",e);
+            //throw new RuntimeException("file Postgres.ini not found ",e);
+            view.showErrorMessage(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            view.showErrorMessage(e);
         }
         if (caught==5) return result;
         else return new String[0];

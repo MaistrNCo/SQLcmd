@@ -23,6 +23,12 @@ public class Help implements Command {
         String message = "\t help\n" +
                 "\t\t to display commands list \n" +
 
+                "\t connect \n" +
+                "\t\t to connect DB with saved parameters (Postgres.ini)\n" +
+
+                "\t connect|dbName|userName|password \n" +
+                "\t\t to connect DB with your parameters\n" +
+
                 "\t list \n" +
                 "\t\t to display tables list in DB\n" +
 

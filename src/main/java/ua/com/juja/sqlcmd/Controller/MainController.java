@@ -36,7 +36,6 @@ public class MainController {
         while (true) {
             view.printOut("input command please or 'help' to see commands list");
             String input = view.getInput();
-
             for(Command command:commands) {
                 if(command.canProcess(input)) {
                     command.process(input);
