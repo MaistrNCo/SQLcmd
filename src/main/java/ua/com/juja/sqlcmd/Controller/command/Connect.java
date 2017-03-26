@@ -31,7 +31,8 @@ public class Connect implements  Command {
             dbManager.connect(conSet);
             view.printOut("Successful connection!!");
         } catch (Exception e) {
-            view.showErrorMessage(e);
+            throw new RuntimeException("Couldn`t connect to server 192.168.1.11:5432 to DB: "
+                    + params[1] + " user: " + params[2] + " password: " + params[3],e);
         }
     }
 }

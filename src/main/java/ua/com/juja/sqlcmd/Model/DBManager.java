@@ -1,6 +1,5 @@
 package ua.com.juja.sqlcmd.Model;
 
-import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
 /**
@@ -14,6 +13,8 @@ public interface DBManager {
     String[] getTablesList();
 
     String[] getColumnsNames(String tableName);
+
+    void connectDefault(String settingsFileName);
 
     void connect(ConnectionSettings conSettings);
 

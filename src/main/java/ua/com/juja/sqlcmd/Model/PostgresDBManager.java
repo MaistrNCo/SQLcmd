@@ -1,5 +1,9 @@
 package ua.com.juja.sqlcmd.Model;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +30,59 @@ public class PostgresDBManager implements DBManager {
         } catch (SQLException e) {
             throw new RuntimeException(String.format("Connection to database %s for user %s failed!",
                     conSettings.getUsername(),conSettings.getPassword()),e);
+        }
+    }
+
+    @Override
+    public void connectDefault(String settingsFileName) {
+        ConnectionSettings conSet = new ConnectionSettings();
+        String[] result = new String[5];
+        int caught  = 0;
+        try(FileReader file = new FileReader(settingsFileName);
+            BufferedReader br = new BufferedReader(file)){
+
+            String curStr;
+            System.out.println("found file " + settingsFileName);
+            while((curStr = br.readLine())!=null){
+                String[] splitted  = curStr.split(":");
+                System.out.println(Arrays.toString(splitted));
+                switch(splitted[0]){
+                    case "server":{
+                        result[0] = splitted[1];
+                        caught++;
+                        break;
+                    }
+                    case "port":{
+                        result[1] = splitted[1];
+                        caught++;
+                        break;
+                    }
+                    case "base":{
+                        result[2] = splitted[1];
+                        caught++;
+                        break;
+                    }
+                    case "username":{
+                        result[3] = splitted[1];
+                        caught++;
+                        break;
+                    }
+                    case "password":{
+                        result[4] = splitted[1];
+                        caught++;
+                        break;
+                    }
+                }
+            }
+            if (caught==5) {
+                conSet.setSettings(result);
+                connect(conSet);
+            }else{
+                throw new IOException("wrong parameters number");
+            }
+
+        }catch(IOException e){
+            e.printStackTrace();
         }
     }
 
@@ -123,6 +180,7 @@ public class PostgresDBManager implements DBManager {
             return new String[0];
         }
     }
+
 
     @Override
     public void clear(String tableName) {
@@ -249,7 +307,7 @@ public class PostgresDBManager implements DBManager {
                 }
             }
 
-            preparedStatement.setInt(ind+1, Integer.parseInt(conditionValue)  );
+        //    preparedStatement.setInt(ind+1, Integer.parseInt(conditionValue)  );
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
