@@ -34,6 +34,15 @@ public class PostgresDBManager implements DBManager {
     }
 
     @Override
+    public void disconnect() {
+        try {
+            connection.close();
+        }catch(SQLException e){
+            throw new RuntimeException("SQL disconnection problem ",e);
+        }
+    }
+
+    @Override
     public void connectDefault(String settingsFileName) {
         ConnectionSettings conSet = new ConnectionSettings();
         String[] result = new String[5];
@@ -42,10 +51,10 @@ public class PostgresDBManager implements DBManager {
             BufferedReader br = new BufferedReader(file)){
 
             String curStr;
-            System.out.println("found file " + settingsFileName);
+         //   System.out.println("found file " + settingsFileName);
             while((curStr = br.readLine())!=null){
                 String[] splitted  = curStr.split(":");
-                System.out.println(Arrays.toString(splitted));
+         //       System.out.println(Arrays.toString(splitted));
                 switch(splitted[0]){
                     case "server":{
                         result[0] = splitted[1];
@@ -84,6 +93,7 @@ public class PostgresDBManager implements DBManager {
         }catch(IOException e){
             throw new RuntimeException("Couldn't read file "+ settingsFileName,e);
         }
+
     }
 
     @Override

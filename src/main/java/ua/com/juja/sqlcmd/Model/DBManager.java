@@ -18,6 +18,7 @@ public interface DBManager {
 
     void connect(ConnectionSettings conSettings);
 
+    void disconnect();
     boolean isConnected();
 
     void clear(String tableName);
