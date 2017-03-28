@@ -21,6 +21,6 @@ public class Exit implements Command{
     @Override
     public void process(String userInput) {
         view.printOut("Goodbye, to see soon. ");
-        System.exit(0);
+        throw new NormalExitException();
     }
 }

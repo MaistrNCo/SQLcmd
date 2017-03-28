@@ -31,7 +31,15 @@ public class MainController {
                     };
     }
 
-    public void run() {
+    public void run(){
+        try{
+            runCommands();
+        }catch(NormalExitException e){
+
+        }
+    }
+
+    private void runCommands() {
         view.printOut(" Hi, program started  ");
         while (true) {
             view.printOut("input command please or 'help' to see commands list");
@@ -42,8 +50,12 @@ public class MainController {
                      command.process(input);
                         break;
                     }
+                }catch (NormalExitException e){
+                    throw e;
+                    //System.exit(0);
                 }catch (Exception e){
                     showErrorMessage(e);
+                    break;
                 }
             }
         }

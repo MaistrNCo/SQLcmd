@@ -82,7 +82,7 @@ public class PostgresDBManager implements DBManager {
             }
 
         }catch(IOException e){
-            e.printStackTrace();
+            throw new RuntimeException("Couldn't read file "+ settingsFileName,e);
         }
     }
 
@@ -110,7 +110,6 @@ public class PostgresDBManager implements DBManager {
             rSet.close();
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Statement is not created");
             result = new String[0];
         }
@@ -143,8 +142,7 @@ public class PostgresDBManager implements DBManager {
             rs.close();
             return dataTable;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return new RowData[0];
+            throw new RuntimeException("Couldn't print table "+ tableName,e);
         }
 
     }
@@ -176,7 +174,6 @@ public class PostgresDBManager implements DBManager {
             }
             return result.toArray( new String[result.size()]);
         } catch (SQLException e) {
-            e.printStackTrace();
             return new String[0];
         }
     }
@@ -191,7 +188,7 @@ public class PostgresDBManager implements DBManager {
             statement.executeUpdate(deleteRowsSQL);
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Couldn't clear table "+ tableName,e);
         }
     }
 
@@ -204,7 +201,7 @@ public class PostgresDBManager implements DBManager {
             statement.executeUpdate(dropTableSQL);
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Couldn't drop table "+ tableName,e);
         }
     }
 
@@ -223,7 +220,7 @@ public class PostgresDBManager implements DBManager {
             statement.executeUpdate(createTableSQL);
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Couldn't create table "+ tableName,e);
         }
     }
 
@@ -236,7 +233,7 @@ public class PostgresDBManager implements DBManager {
             statement.executeUpdate(deleteRowsSQL);
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Couldn't delete records from  table "+ tableName,e);
         }
     }
 
@@ -260,7 +257,7 @@ public class PostgresDBManager implements DBManager {
             statement.executeUpdate(insertRowSQL);
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Couldn't make insert to table "+ tableName,e);
         }
     }
 
@@ -282,13 +279,13 @@ public class PostgresDBManager implements DBManager {
             String updateSQL = "update " + tableName +" set " + values +" where "+ conditionName +" = '"+conditionValue+"'";
             statement.executeUpdate(updateSQL);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Couldn't update table "+ tableName,e);
         }
     }
 
     @Override
     public void updatePrepared(String tableName, String conditionName, String conditionValue, RowData newValue) {
-        Statement statement;
+     //   Statement statement;
         try {
             String[] colNames = newValue.getNames();
             String columns ="";
@@ -297,7 +294,7 @@ public class PostgresDBManager implements DBManager {
                     columns = columns + ((ind != 0) ? "," : "") + colNames[ind] + " = ?";
                 }
             }
-            String updateTableSQL = "UPDATE USERS SET " + columns + " WHERE " + conditionName + "= '?'";
+            String updateTableSQL = "UPDATE " + tableName + " SET " + columns + " WHERE " + conditionName + " = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(updateTableSQL);
             Object[] colValues = newValue.getValues();
             int ind;
@@ -307,11 +304,11 @@ public class PostgresDBManager implements DBManager {
                 }
             }
 
-        //    preparedStatement.setInt(ind+1, Integer.parseInt(conditionValue)  );
+            preparedStatement.setInt(ind+1, Integer.parseInt(conditionValue)  );
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Couldn't update table "+ tableName,e);
         }
     }
 }
