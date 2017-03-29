@@ -34,4 +34,9 @@ public interface DBManager {
     void update(String tableName, String conditionName, String conditionValue, RowData newValue);
 
     void updatePrepared(String tableName, String conditionName, String conditionValue, RowData newValue);
+
+    void createDB(String name);
+
+    void dropDB(String name);
+
 }
