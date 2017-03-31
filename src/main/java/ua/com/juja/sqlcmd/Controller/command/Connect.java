@@ -26,13 +26,8 @@ public class Connect implements  Command {
         String[] params = prepareParams(userInput, 3);
         String[] defParams = {"192.168.1.11","5432",params[1],params[2],params[3]};
         conSet.setSettings(defParams);
+        dbManager.connect(conSet);
+        view.printOut("Successful connection!!");
 
-        try {
-            dbManager.connect(conSet);
-            view.printOut("Successful connection!!");
-        } catch (Exception e) {
-            throw new RuntimeException("Couldn`t connect to server 192.168.1.11:5432 to DB: "
-                    + params[1] + " user: " + params[2] + " password: " + params[3],e);
-        }
     }
 }

@@ -114,6 +114,22 @@ public class IntegrationTest {
     }
 
     @Test
+    public void testWrongInput(){
+        in.add("connect");
+        in.add("con");
+        in.add("exit");
+        Main.main(new String[0]);
+
+        assertEquals(" Hi, program started  \n" +
+                "input command please or 'help' to see commands list\n" +
+                "Successful connection!!\n" +
+                "input command please or 'help' to see commands list\n" +
+                "unknown instruction, try more\n" +
+                "input command please or 'help' to see commands list\n" +
+                "Goodbye, to see soon. \n",getData());
+    }
+
+    @Test
     public void testCreate(){
         in.add("connect");
         //String[] tableList = dbManager.getTablesList();
