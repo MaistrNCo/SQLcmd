@@ -27,7 +27,7 @@ public class ConnectDef implements  Command {
     }
 
     @Override
-    public void process(String userInput) throws IOException {
+    public void process(String userInput) {
         try{
             dbManager.connectDefault("Postgres.ini");
             view.printOut("Successful connection!!");

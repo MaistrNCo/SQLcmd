@@ -7,7 +7,7 @@ import java.io.IOException;
  */
 public interface Command {
     boolean canProcess(String userInput);
-    void process(String userInput) throws IOException;
+    void process(String userInput);
 
     default String[] prepareParams(String data, int expected) {
         String[] params = data.split("\\|");
