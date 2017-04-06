@@ -11,22 +11,21 @@ import static org.junit.Assert.assertTrue;
  */
 public class ExitTest {
 
+    private View view = Mockito.mock(View.class);
+
     @Test
     public void testExitCanProcessTrue(){
-        View view = Mockito.mock(View.class);
         Command command = new Exit(view);
         assertTrue(command.canProcess("exit"));
     }
 
     @Test
     public void testExitCanProcessFalse(){
-        View view = Mockito.mock(View.class);
         Command command = new Exit(view);
         assertTrue(!command.canProcess("Exit"));
     }
     @Test
     public void testExitProcess(){
-        View view = Mockito.mock(View.class);
         Command command = new Exit(view);
         try {
             command.process("exit");
