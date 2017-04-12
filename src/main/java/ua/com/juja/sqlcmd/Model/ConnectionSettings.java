@@ -18,15 +18,16 @@ public class ConnectionSettings {
         this.password = set[4];
 
     }
-    public String getAddress(){
-        return this.server+":"+this.port+"/"+this.dataBase;
+
+    public String getAddress() {
+        return this.server + ":" + this.port + "/" + this.dataBase;
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return this.username;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return this.password;
     }
 }

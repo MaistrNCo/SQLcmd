@@ -9,7 +9,7 @@ public class WrongInput implements Command {
     private final View view;
 
     public WrongInput(View view) {
-        this.view =view;
+        this.view = view;
     }
 
     @Override

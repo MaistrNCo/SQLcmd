@@ -6,30 +6,30 @@ import java.util.Arrays;
  * Created by maistrenko on 08.03.17.
  */
 public class RowData {
-    private Column[] columns ;
+    private Column[] columns;
     private int index;
 
     public RowData(int columnsCount) {
         this.columns = new Column[columnsCount];
     }
 
-    public void addColumnValue(String name, String value){
-        columns[index++] = new Column(name,value);
+    public void addColumnValue(String name, String value) {
+        columns[index++] = new Column(name, value);
     }
 
-    public String[] getNames(){
+    public String[] getNames() {
         String[] result = new String[columns.length];
         int i = 0;
-        for (Column col:columns) {
+        for (Column col : columns) {
             result[i++] = col.getName();
         }
         return result;
     }
 
-    public Object[] getValues(){
+    public Object[] getValues() {
         Object[] result = new Object[columns.length];
         int i = 0;
-        for (Column col:columns) {
+        for (Column col : columns) {
             result[i++] = col.getValue();
         }
         return result;
@@ -38,11 +38,11 @@ public class RowData {
     @Override
     public String toString() {
         String result = "RowData ";
-        for (Column col:columns) {
+        for (Column col : columns) {
             result = result.concat("\\t " + col.getName() + "\\t  " + col.getValue());
         }
 
-        return  result;
+        return result;
     }
 
     private class Column {
@@ -53,6 +53,7 @@ public class RowData {
             this.name = name;
             this.value = value;
         }
+
         public String getName() {
             return name;
         }

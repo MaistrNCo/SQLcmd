@@ -8,7 +8,7 @@ import ua.com.juja.sqlcmd.View.Console;
  */
 public class Main {
     public static void main(String[] args) {
-        MainController controller = new MainController(new PostgresDBManager(),new Console());
+        MainController controller = new MainController(new PostgresDBManager(), new Console());
         controller.run();
     }
 }

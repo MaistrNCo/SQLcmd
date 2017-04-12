@@ -24,7 +24,7 @@ public class Clear implements Command {
 
     @Override
     public void process(String userInput) {
-        String tableName = prepareParams(userInput,2)[1];
+        String tableName = prepareParams(userInput, 2)[1];
         dbManager.clear(tableName);
         view.printOut("table " + tableName + " cleared successfully");
     }

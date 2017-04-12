@@ -34,8 +34,8 @@ public class Find implements Command {
         }
         view.printOut(header);
         for (RowData row : rowDatas) {
-            String str ="|";
-            for (Object val:row.getValues()) {
+            String str = "|";
+            for (Object val : row.getValues()) {
                 str += val + "\t|";
             }
             view.printOut(str);

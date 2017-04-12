@@ -1,9 +1,5 @@
 package ua.com.juja.sqlcmd.Model;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,16 +16,16 @@ public class PostgresDBManager implements DBManager {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Where is your PostgreSQL JDBC Driver? ",e);
+            throw new RuntimeException("Where is your PostgreSQL JDBC Driver? ", e);
         }
 
         try {
             this.connection = DriverManager.getConnection(
-                    "jdbc:postgresql://"+ conSettings.getAddress(),
-                    conSettings.getUsername(),conSettings.getPassword());
+                    "jdbc:postgresql://" + conSettings.getAddress(),
+                    conSettings.getUsername(), conSettings.getPassword());
         } catch (SQLException e) {
             throw new RuntimeException(String.format("Connection to database %s for user %s failed!",
-                    conSettings.getUsername(),conSettings.getPassword()),e);
+                    conSettings.getUsername(), conSettings.getPassword()), e);
         }
     }
 
@@ -37,86 +33,32 @@ public class PostgresDBManager implements DBManager {
     public void disconnect() {
         try {
             connection.close();
-        }catch(SQLException e){
-            throw new RuntimeException("SQL disconnection problem ",e);
+        } catch (SQLException e) {
+            throw new RuntimeException("SQL disconnection problem ", e);
         }
     }
 
-    @Override
-    public void connectDefault(String settingsFileName) {
-        ConnectionSettings conSet = new ConnectionSettings();
-        String[] result = new String[5];
-        int caught  = 0;
-        try(FileReader file = new FileReader(settingsFileName);
-            BufferedReader br = new BufferedReader(file)){
-
-            String curStr;
-         //   System.out.println("found file " + settingsFileName);
-            while((curStr = br.readLine())!=null){
-                String[] splitted  = curStr.split(":");
-         //       System.out.println(Arrays.toString(splitted));
-                switch(splitted[0]){
-                    case "server":{
-                        result[0] = splitted[1];
-                        caught++;
-                        break;
-                    }
-                    case "port":{
-                        result[1] = splitted[1];
-                        caught++;
-                        break;
-                    }
-                    case "base":{
-                        result[2] = splitted[1];
-                        caught++;
-                        break;
-                    }
-                    case "username":{
-                        result[3] = splitted[1];
-                        caught++;
-                        break;
-                    }
-                    case "password":{
-                        result[4] = splitted[1];
-                        caught++;
-                        break;
-                    }
-                }
-            }
-            if (caught==5) {
-                conSet.setSettings(result);
-                connect(conSet);
-            }else{
-                throw new IOException("wrong parameters number");
-            }
-
-        }catch(IOException e){
-            throw new RuntimeException("Couldn't read file "+ settingsFileName,e);
-        }
-
-    }
 
     @Override
     public boolean isConnected() {
-        return connection!=null;
+        return connection != null;
     }
 
     @Override
     public String[] getTablesList() {
-        String [] result = new String[100];
-        int index=0;
+        String[] result = new String[100];
+        int index = 0;
         String selectTableList = "SELECT table_name " +
-                "FROM information_schema.tables "+
-                "WHERE table_schema='public' "+
+                "FROM information_schema.tables " +
+                "WHERE table_schema='public' " +
                 "AND table_type='BASE TABLE'";
 
-        try( Statement statement = connection.createStatement();
-            ResultSet rSet = statement.executeQuery(selectTableList))
-        {
+        try (Statement statement = connection.createStatement();
+             ResultSet rSet = statement.executeQuery(selectTableList)) {
             while (rSet.next()) {
-                result[index++]=rSet.getString("table_name");
+                result[index++] = rSet.getString("table_name");
             }
-            result = Arrays.copyOf(result,index,String[].class);
+            result = Arrays.copyOf(result, index, String[].class);
         } catch (SQLException e) {
             System.out.println("Statement is not created");
             result = new String[0];
@@ -125,11 +67,10 @@ public class PostgresDBManager implements DBManager {
     }
 
     @Override
-    public RowData[] selectAllFromTable(String tableName)  {
+    public RowData[] selectAllFromTable(String tableName) {
         String selectTableSQL = "SELECT * from " + tableName;
         try (Statement statement = connection.createStatement();
-             ResultSet rs = statement.executeQuery(selectTableSQL))
-        {
+             ResultSet rs = statement.executeQuery(selectTableSQL)) {
             int count = getRowCount(tableName);
             int columnCount = rs.getMetaData().getColumnCount();
             //System.out.println("row count : "+count + " col count : " +columnCount);
@@ -139,44 +80,43 @@ public class PostgresDBManager implements DBManager {
             while (rs.next()) {
                 RowData currRow = new RowData(columnCount);
                 for (int i = 1; i <= columnCount; i++) {
-                    currRow.addColumnValue(rs.getMetaData().getColumnName(i),rs.getString(i));
+                    currRow.addColumnValue(rs.getMetaData().getColumnName(i), rs.getString(i));
                 }
                 dataTable[ind++] = currRow;
             }
             return dataTable;
         } catch (SQLException e) {
-            throw new RuntimeException("Couldn't print table "+ tableName,e);
+            throw new RuntimeException("Couldn't print table " + tableName, e);
         }
 
     }
 
     @Override
-    public int getRowCount(String tableName){
+    public int getRowCount(String tableName) {
         String selectRowCount = "SELECT COUNT (*) from " + tableName;
         try (Statement statement = connection.createStatement();
-            ResultSet resCount = statement.executeQuery(selectRowCount))
-        {
+             ResultSet resCount = statement.executeQuery(selectRowCount)) {
             resCount.next();
             return resCount.getInt("count");
-        }catch (SQLException e){
-            throw new RuntimeException("Couldn't get row count for  table "+ tableName,e);
+        } catch (SQLException e) {
+            throw new RuntimeException("Couldn't get row count for  table " + tableName, e);
         }
     }
 
     @Override
-    public String[] getColumnsNames(String tableName){
+    public String[] getColumnsNames(String tableName) {
         try {
             DatabaseMetaData metadata = connection.getMetaData();
             ResultSet resultSet = metadata.getColumns(null, null, tableName, null);
             ArrayList<String> result = new ArrayList<>();
             while (resultSet.next()) {
                 String name = resultSet.getString("COLUMN_NAME");
-             //   String type = resultSet.getString("TYPE_NAME");
-             //   int size = resultSet.getInt("COLUMN_SIZE");
+                //   String type = resultSet.getString("TYPE_NAME");
+                //   int size = resultSet.getInt("COLUMN_SIZE");
                 result.add(name);
-             //   System.out.println("Column name: [" + name + "]; type: [" + type + "]; size: [" + size + "]");
+                //   System.out.println("Column name: [" + name + "]; type: [" + type + "]; size: [" + size + "]");
             }
-            return result.toArray( new String[result.size()]);
+            return result.toArray(new String[result.size()]);
         } catch (SQLException e) {
             return new String[0];
         }
@@ -185,21 +125,21 @@ public class PostgresDBManager implements DBManager {
 
     @Override
     public void clear(String tableName) {
-        String deleteRowsSQL = "delete from " +tableName ;
-        try(Statement statement = connection.createStatement()) {
+        String deleteRowsSQL = "delete from " + tableName;
+        try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(deleteRowsSQL);
         } catch (SQLException e) {
-            throw new RuntimeException("Couldn't clear table "+ tableName,e);
+            throw new RuntimeException("Couldn't clear table " + tableName, e);
         }
     }
 
     @Override
     public void drop(String tableName) {
-        String dropTableSQL = "drop table " +tableName ;
-        try(Statement statement = connection.createStatement()) {
+        String dropTableSQL = "drop table " + tableName;
+        try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(dropTableSQL);
         } catch (SQLException e) {
-            throw new RuntimeException("Couldn't drop table "+ tableName,e);
+            throw new RuntimeException("Couldn't drop table " + tableName, e);
         }
     }
 
@@ -208,38 +148,38 @@ public class PostgresDBManager implements DBManager {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS " + tableName +
                 "(ID SERIAL NOT NULL PRIMARY KEY ";
 
-        for (String column:columnNames) {
-            createTableSQL+=", " + column + " text";
+        for (String column : columnNames) {
+            createTableSQL += ", " + column + " text";
         }
-        createTableSQL+=")";
-        try(Statement statement = connection.createStatement();) {
+        createTableSQL += ")";
+        try (Statement statement = connection.createStatement();) {
             statement.executeUpdate(createTableSQL);
             statement.close();
         } catch (SQLException e) {
-            throw new RuntimeException("Couldn't create table "+ tableName,e);
+            throw new RuntimeException("Couldn't create table " + tableName, e);
         }
     }
 
     @Override
     public void delete(String tableName, String conditionName, String conditionValue) {
-        String deleteRowsSQL = "delete from " +tableName +" where "+ conditionName +" = '"+conditionValue +"'";
-        try(Statement statement = connection.createStatement();) {
+        String deleteRowsSQL = "delete from " + tableName + " where " + conditionName + " = '" + conditionValue + "'";
+        try (Statement statement = connection.createStatement();) {
             statement.executeUpdate(deleteRowsSQL);
         } catch (SQLException e) {
-            throw new RuntimeException("Couldn't delete records from  table "+ tableName,e);
+            throw new RuntimeException("Couldn't delete records from  table " + tableName, e);
         }
     }
 
     @Override
     public void insert(String tableName, RowData rd) {
-        try(Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             String columnNames = "";
             String values = "";
-            for (String colName:rd.getNames()) {
-                columnNames = columnNames.concat(((columnNames.length()>0)?",":"")+colName);
+            for (String colName : rd.getNames()) {
+                columnNames = columnNames.concat(((columnNames.length() > 0) ? "," : "") + colName);
             }
-            for (Object colValue:rd.getValues()) {
-                values = values.concat(((values.length()>0)?",":"")+"'"+colValue.toString()+"'");
+            for (Object colValue : rd.getValues()) {
+                values = values.concat(((values.length() > 0) ? "," : "") + "'" + colValue.toString() + "'");
             }
 
             String insertRowSQL = "insert into " + tableName
@@ -247,79 +187,79 @@ public class PostgresDBManager implements DBManager {
                     + values + ")";
             statement.executeUpdate(insertRowSQL);
         } catch (SQLException e) {
-            throw new RuntimeException("Couldn't make insert to table "+ tableName,e);
+            throw new RuntimeException("Couldn't make insert to table " + tableName, e);
         }
     }
 
     @Override
     public void update(String tableName, String conditionName, String conditionValue, RowData newValue) {
-        try (Statement statement = connection.createStatement()){
-            String values ="";
+        try (Statement statement = connection.createStatement()) {
+            String values = "";
             String[] colNames = newValue.getNames();
             Object[] colValues = newValue.getValues();
-            for (int ind=0;ind<colNames.length;ind++) {
-                values = values +((ind!=0)?",":"")+ colNames[ind]+" = '" + colValues[ind]+"'";
+            for (int ind = 0; ind < colNames.length; ind++) {
+                values = values + ((ind != 0) ? "," : "") + colNames[ind] + " = '" + colValues[ind] + "'";
             }
-            String updateSQL = "update " + tableName +" set " + values +" where "+ conditionName +" = '"+conditionValue+"'";
+            String updateSQL = "update " + tableName + " set " + values + " where " + conditionName + " = '" + conditionValue + "'";
             statement.executeUpdate(updateSQL);
         } catch (SQLException e) {
-            throw new RuntimeException("Couldn't update table "+ tableName,e);
+            throw new RuntimeException("Couldn't update table " + tableName, e);
         }
     }
 
     @Override
     public void updatePrepared(String tableName, String conditionName, String conditionValue, RowData newValue) {
-     //   Statement statement;
+        //   Statement statement;
         String[] colNames = newValue.getNames();
-        String columns ="";
-        for (int ind=0;ind<colNames.length;ind++) {
-            if(colNames[ind]!=conditionName) {
+        String columns = "";
+        for (int ind = 0; ind < colNames.length; ind++) {
+            if (colNames[ind] != conditionName) {
                 columns = columns + ((ind != 0) ? "," : "") + colNames[ind] + " = ?";
             }
         }
         String updateTableSQL = "UPDATE " + tableName + " SET " + columns + " WHERE " + conditionName + " = ?";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(updateTableSQL)){
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateTableSQL)) {
 
             Object[] colValues = newValue.getValues();
             int ind;
-            for (ind=0;ind<colNames.length;ind++) {
-                if(colNames[ind]!=conditionName) {
-                    preparedStatement.setString(ind+1, colValues[ind].toString());
+            for (ind = 0; ind < colNames.length; ind++) {
+                if (colNames[ind] != conditionName) {
+                    preparedStatement.setString(ind + 1, colValues[ind].toString());
                 }
             }
 
-            preparedStatement.setInt(ind+1, Integer.parseInt(conditionValue)  );
+            preparedStatement.setInt(ind + 1, Integer.parseInt(conditionValue));
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Couldn't update table "+ tableName,e);
+            throw new RuntimeException("Couldn't update table " + tableName, e);
         }
     }
 
     @Override
     public void createDB(String name) {
-        try (Statement st = connection.createStatement()){
+        try (Statement st = connection.createStatement()) {
 
             String sql = "CREATE DATABASE " + name;
             st.executeUpdate(sql);
             System.out.println("Database created successfully...");
 
-        }catch(SQLException e){
-            throw new RuntimeException(" Couldn't create new database",e);
+        } catch (SQLException e) {
+            throw new RuntimeException(" Couldn't create new database", e);
         }
     }
 
     @Override
     public void dropDB(String name) {
-        try (Statement st = connection.createStatement()){
+        try (Statement st = connection.createStatement()) {
 
             String sql = "DROP DATABASE " + name;
             st.executeUpdate(sql);
-            System.out.println("Database "+name+" dropped successfully...");
+            System.out.println("Database " + name + " dropped successfully...");
 
-        }catch(SQLException e){
-            throw new RuntimeException(" Couldn't drop database "+name,e);
+        } catch (SQLException e) {
+            throw new RuntimeException(" Couldn't drop database " + name, e);
         }
     }
 

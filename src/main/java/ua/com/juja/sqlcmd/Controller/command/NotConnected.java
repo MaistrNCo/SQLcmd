@@ -9,6 +9,7 @@ import ua.com.juja.sqlcmd.View.View;
 public class NotConnected implements Command {
     private final View view;
     private final DBManager dbManager;
+
     public NotConnected(DBManager dbManager, View view) {
         this.view = view;
         this.dbManager = dbManager;

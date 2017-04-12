@@ -5,7 +5,7 @@ import ua.com.juja.sqlcmd.View.View;
 /**
  * Created by maistrenko on 16.03.17.
  */
-public class Exit implements Command{
+public class Exit implements Command {
 
     private View view;
 

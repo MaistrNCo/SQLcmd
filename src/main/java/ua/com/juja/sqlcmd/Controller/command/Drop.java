@@ -9,6 +9,7 @@ import ua.com.juja.sqlcmd.View.View;
 public class Drop implements Command {
     private final View view;
     private final DBManager dbManager;
+
     public Drop(DBManager dbManager, View view) {
         this.view = view;
         this.dbManager = dbManager;
@@ -21,7 +22,7 @@ public class Drop implements Command {
 
     @Override
     public void process(String userInput) {
-        String tableName = prepareParams(userInput,2)[1];
+        String tableName = prepareParams(userInput, 2)[1];
         dbManager.drop(tableName);
         view.printOut("Table " + tableName + " deleted from database successfully");
     }

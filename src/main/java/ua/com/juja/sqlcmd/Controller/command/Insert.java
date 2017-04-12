@@ -32,6 +32,6 @@ public class Insert implements Command {
         }
         dbManager.insert(insertParams[1], insertData);
         view.printOut(" added new row to table " + insertParams[1]
-                + "  which has values: "+ Arrays.toString(insertData.getValues()));
+                + "  which has values: " + Arrays.toString(insertData.getValues()));
     }
 }

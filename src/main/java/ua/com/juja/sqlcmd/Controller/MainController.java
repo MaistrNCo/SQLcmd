@@ -13,28 +13,28 @@ public class MainController {
 
     public MainController(DBManager dbManager, Console view) {
         this.view = view;
-        this.commands = new Command[] {
-                    new Help(view),
-                    new Exit(view),
-                    new ConnectDef(dbManager,view),
-                    new Connect(dbManager,view),
-                    new NotConnected(dbManager,view),
-                    new List(dbManager,view),
-                    new Find(dbManager,view),
-                    new Clear(dbManager,view),
-                    new Drop(dbManager,view),
-                    new Create(dbManager,view),
-                    new Insert(dbManager,view),
-                    new Update(dbManager,view),
-                    new Delete(dbManager,view),
-                    new WrongInput(view)
-                    };
+        this.commands = new Command[]{
+                new Help(view),
+                new Exit(view),
+                new ConnectDef(dbManager, view),
+                new Connect(dbManager, view),
+                new NotConnected(dbManager, view),
+                new List(dbManager, view),
+                new Find(dbManager, view),
+                new Clear(dbManager, view),
+                new Drop(dbManager, view),
+                new Create(dbManager, view),
+                new Insert(dbManager, view),
+                new Update(dbManager, view),
+                new Delete(dbManager, view),
+                new WrongInput(view)
+        };
     }
 
-    public void run(){
-        try{
+    public void run() {
+        try {
             runCommands();
-        }catch(NormalExitException e){
+        } catch (NormalExitException e) {
 
         }
     }
@@ -44,16 +44,16 @@ public class MainController {
         while (true) {
             view.printOut("input command please or 'help' to see commands list");
             String input = view.getInput();
-            for(Command command:commands) {
-                try{
-                    if(command.canProcess(input)) {
-                     command.process(input);
+            for (Command command : commands) {
+                try {
+                    if (command.canProcess(input)) {
+                        command.process(input);
                         break;
                     }
-                }catch (NormalExitException e){
+                } catch (NormalExitException e) {
                     throw e;
                     //System.exit(0);
-                }catch (Exception e){
+                } catch (Exception e) {
                     showErrorMessage(e);
                     break;
                 }
@@ -67,8 +67,6 @@ public class MainController {
         view.printOut("Unsuccessful operation by reason: " + errorReason);
         view.printOut("try again please");
     }
-
-
 
 
 }
