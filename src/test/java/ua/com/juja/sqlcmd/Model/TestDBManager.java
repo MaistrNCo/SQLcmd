@@ -1,5 +1,6 @@
 package ua.com.juja.sqlcmd.Model;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,6 +16,13 @@ public abstract  class TestDBManager {
 
     @Before
     public abstract void setup();
+
+    @After
+    public void closeConnecton(){
+        if (dbManager.isConnected()){
+            dbManager.disconnect();
+        }
+    }
 
     @Test
     public void testAllTablesList(){
