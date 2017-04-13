@@ -102,21 +102,13 @@ public abstract  class TestDBManager {
     @Test
     public void testCreateDB(){
 
-        dbManager.createDB("testDB");
+        dbManager.createDB("testdb");
 
-        ConnectionSettings conSet = new ConnectionSettings();
-//        String[] defParams = {"192.168.77.11", "5432", "testDB", "postgres", "postgres"};
-//        conSet.setSettings(defParams);
-//        dbManager.connect(conSet);
         dbManager.create("Test",new String[] {"name","age"});
-        dbManager.getTablesList();
+        System.out.println(Arrays.toString(dbManager.getTablesList()));
         dbManager.drop("Test");
 
-        String[] defParams2 = {"192.168.77.11", "5432", "postgres", "postgres", "postgres"};
-        conSet.setSettings(defParams2);
-        dbManager.connect(conSet);
-
-        dbManager.dropDB("testDB");
+        dbManager.dropDB("testdb");
         dbManager.disconnect();
     }
 }

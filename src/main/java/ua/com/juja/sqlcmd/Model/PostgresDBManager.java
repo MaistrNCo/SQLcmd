@@ -239,12 +239,14 @@ public class PostgresDBManager implements DBManager {
 
     @Override
     public void createDB(String name) {
-        try (Statement st = connection.createStatement()) {
-
-            String sql = "CREATE DATABASE " + name;
-            st.executeUpdate(sql);
-            System.out.println("Database created successfully...");
-
+        String getDBlist = "SELECT * from pg_catalog.pg_database where datname = '" + name + "'";
+        try (Statement statement = connection.createStatement();
+             ResultSet resCount = statement.executeQuery(getDBlist)) {
+            if (!resCount.next()) {
+                String sql = "CREATE DATABASE " + name;
+                statement.executeUpdate(sql);
+                System.out.println("Database created successfully...");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(" Couldn't create new database", e);
         }

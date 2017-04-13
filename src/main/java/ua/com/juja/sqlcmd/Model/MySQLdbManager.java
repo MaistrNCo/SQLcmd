@@ -96,8 +96,8 @@ public class MySQLdbManager implements DBManager {
     public int getRowCount(String tableName) {
         int result = 0;
         String selectRowCount = "SELECT COUNT(*) from " + tableName;
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(selectRowCount);
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(selectRowCount)) {
             while (resultSet.next()) {
                 result = resultSet.getInt(1);
             }
@@ -179,9 +179,11 @@ public class MySQLdbManager implements DBManager {
         try (Statement statement = connection.createStatement()) {
             String columnNames = "";
             String values = "";
+
             for (String colName : rd.getNames()) {
                 columnNames = columnNames.concat(((columnNames.length() > 0) ? "," : "") + colName);
             }
+
             for (Object colValue : rd.getValues()) {
                 values = values.concat(((values.length() > 0) ? "," : "") + "'" + colValue.toString() + "'");
             }
@@ -207,7 +209,7 @@ public class MySQLdbManager implements DBManager {
             String updateSQL = "update " + tableName + " set " + values + " where " + conditionName + " = '" + conditionValue + "'";
             statement.executeUpdate(updateSQL);
         } catch (SQLException e) {
-            throw new RuntimeException("Couldn't update table " + tableName, e);
+            throw new RuntimeException("Can't update table " + tableName, e);
         }
     }
 
@@ -245,7 +247,7 @@ public class MySQLdbManager implements DBManager {
     public void createDB(String name) {
         try (Statement st = connection.createStatement()) {
 
-            String sql = "CREATE DATABASE " + name;
+            String sql = "CREATE DATABASE IF NOT EXISTS " + name;
             st.executeUpdate(sql);
             System.out.println("Database created successfully...");
 

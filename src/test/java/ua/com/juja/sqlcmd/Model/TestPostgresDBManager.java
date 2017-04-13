@@ -1,9 +1,5 @@
 package ua.com.juja.sqlcmd.Model;
 
-import ua.com.juja.sqlcmd.Controller.command.Command;
-
-import java.io.FileNotFoundException;
-
 /**
  * Created by maistrenko on 07.03.17.
  */
@@ -22,5 +18,8 @@ public class TestPostgresDBManager extends TestDBManager {
             dbManager.connect(conSet);
         }
 
+        if(!dbManager.isConnected()) {
+            System.out.println("Connection to PostgreSQL DB unsuccessful");
+        }
     }
 }
