@@ -94,7 +94,7 @@ public class MySQLdbManager implements DBManager {
 
     @Override
     public int getRowCount(String tableName) {
-        int result =0;
+        int result = 0;
         String selectRowCount = "SELECT COUNT(*) from " + tableName;
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(selectRowCount);
