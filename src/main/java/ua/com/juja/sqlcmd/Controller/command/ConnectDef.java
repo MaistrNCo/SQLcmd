@@ -1,5 +1,6 @@
 package ua.com.juja.sqlcmd.Controller.command;
 
+import ua.com.juja.sqlcmd.Model.ConnectionSettings;
 import ua.com.juja.sqlcmd.Model.DBManager;
 import ua.com.juja.sqlcmd.View.View;
 
@@ -24,7 +25,9 @@ public class ConnectDef implements Command {
     @Override
     public void process(String userInput) {
         try {
-            dbManager.connectDefault("Postgres.ini");
+            ConnectionSettings connSet = new ConnectionSettings();
+            connSet.getConfFileSettings("Postgres.ini");
+            dbManager.connect(connSet);
             view.printOut("Successful connection!!");
         } catch (Exception e) {
             throw new RuntimeException("Can`t connect, check your Postgres.ini ", e);

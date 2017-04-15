@@ -14,18 +14,19 @@ public class ExitTest {
     private View view = Mockito.mock(View.class);
 
     @Test
-    public void testExitCanProcessTrue(){
+    public void testExitCanProcessTrue() {
         Command command = new Exit(view);
         assertTrue(command.canProcess("exit"));
     }
 
     @Test
-    public void testExitCanProcessFalse(){
+    public void testExitCanProcessFalse() {
         Command command = new Exit(view);
         assertTrue(!command.canProcess("Exit"));
     }
+
     @Test
-    public void testExitProcess(){
+    public void testExitProcess() {
         Command command = new Exit(view);
         try {
             command.process("exit");
@@ -35,7 +36,6 @@ public class ExitTest {
         Mockito.verify(view).printOut("Goodbye, to see soon. ");
 
     }
-
 
 
 }

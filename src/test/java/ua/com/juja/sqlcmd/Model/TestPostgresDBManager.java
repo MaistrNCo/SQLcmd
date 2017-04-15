@@ -8,17 +8,17 @@ public class TestPostgresDBManager extends TestDBManager {
     @Override
     public void setup() {
         dbManager = new PostgresDBManager();
+        ConnectionSettings connSet = new ConnectionSettings();
+        connSet.getConfFileSettings("Postgres.ini");
+        dbManager.connect(connSet);
 
-        dbManager.connectDefault("Postgres.ini");
-
-        if(!dbManager.isConnected()) {
-            ConnectionSettings conSet = new ConnectionSettings();
-            String[] defParams = {"192.168.1.11", "5432", "sqlcmd", "postgres", "postgres"};
-            conSet.setSettings(defParams);
-            dbManager.connect(conSet);
+        if (!dbManager.isConnected()) {
+            String[] defParams = {"127.0.0.1", "5432", "sqlcmd", "postgres", "postgres"};
+            connSet.setSettings(defParams);
+            dbManager.connect(connSet);
         }
 
-        if(!dbManager.isConnected()) {
+        if (!dbManager.isConnected()) {
             System.out.println("Connection to PostgreSQL DB unsuccessful");
         }
     }

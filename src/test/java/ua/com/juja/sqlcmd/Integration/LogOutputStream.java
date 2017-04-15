@@ -6,16 +6,16 @@ import java.io.OutputStream;
 /**
  * Created by maistrenko on 28.03.2017.
  */
-public class LogOutputStream  extends OutputStream{
+public class LogOutputStream extends OutputStream {
     private String log;
 
     @Override
     public void write(int b) throws IOException {
-        byte [] bytes = new byte[] {(byte)(b&0xFF00),(byte)(b&0x00FF)};
-        log += new String(bytes,"UTF-8");
+        byte[] bytes = new byte[]{(byte) (b & 0xFF00), (byte) (b & 0x00FF)};
+        log += new String(bytes, "UTF-8");
     }
 
-    public String getData(){
+    public String getData() {
         return log;
     }
 }

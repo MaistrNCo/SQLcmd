@@ -11,40 +11,40 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by maistrenko on 12.03.17.
  */
-public abstract  class TestDBManager {
+public abstract class TestDBManager {
     protected DBManager dbManager;
 
     @Before
     public abstract void setup();
 
     @After
-    public void closeConnecton(){
-        if (dbManager.isConnected()){
+    public void closeConnecton() {
+        if (dbManager.isConnected()) {
             dbManager.disconnect();
         }
     }
 
     @Test
-    public void testAllTablesList(){
-       assertEquals("[employee, users]", Arrays.toString(dbManager.getTablesList()));
+    public void testAllTablesList() {
+        assertEquals("[employee, users]", Arrays.toString(dbManager.getTablesList()));
     }
 
     @Test
-    public void testSelect(){
-       dbManager.clear("users");
-       RowData rd = new RowData(3);
-       rd.addColumnValue("name","Jimmi");
-       rd.addColumnValue("password","111111");
-       rd.addColumnValue("id","48");
+    public void testSelect() {
+        dbManager.clear("users");
+        RowData rd = new RowData(3);
+        rd.addColumnValue("name", "Jimmi");
+        rd.addColumnValue("password", "111111");
+        rd.addColumnValue("id", "48");
 
-       dbManager.insert("users",rd);
-       RowData[] data = dbManager.selectAllFromTable("users");
-       assertEquals(1,data.length);
-       for (RowData row:data ){
-           assertEquals("[id, name, password]",Arrays.toString(data[0].getNames()));
-           assertEquals("[48, Jimmi, 111111]",Arrays.toString(data[0].getValues()));
-           //System.out.println(row.toString());
-       }
+        dbManager.insert("users", rd);
+        RowData[] data = dbManager.selectAllFromTable("users");
+        assertEquals(1, data.length);
+        for (RowData row : data) {
+            assertEquals("[id, name, password]", Arrays.toString(data[0].getNames()));
+            assertEquals("[48, Jimmi, 111111]", Arrays.toString(data[0].getValues()));
+            //System.out.println(row.toString());
+        }
     }
 
     @Test
@@ -54,7 +54,7 @@ public abstract  class TestDBManager {
         rd.addColumnValue("name", "Jimmi");
         rd.addColumnValue("password", "111111");
         rd.addColumnValue("id", "48");
-        dbManager.insert("users",rd);
+        dbManager.insert("users", rd);
 
         RowData newValue = new RowData(1);
         newValue.addColumnValue("password", "222");
@@ -78,12 +78,12 @@ public abstract  class TestDBManager {
         rd.addColumnValue("name", "Jimmi");
         rd.addColumnValue("password", "111111");
         rd.addColumnValue("id", "48");
-        dbManager.insert("users",rd);
+        dbManager.insert("users", rd);
 
         RowData newValue = new RowData(1);
         newValue.addColumnValue("password", "222");
 
-        dbManager.updatePrepared("users", "id", "48", newValue);
+        dbManager.update("users", "id", "48", newValue);
 
         RowData[] data = dbManager.selectAllFromTable("users");
 
@@ -95,18 +95,18 @@ public abstract  class TestDBManager {
     }
 
     @Test
-    public void testGetColumnsNames(){
+    public void testGetColumnsNames() {
         assertEquals("[id, name, password]", Arrays.toString(dbManager.getColumnsNames("users")));
     }
 
     @Test
-    public void testCreateDB(){
+    public void testCreateDB() {
 
         dbManager.createDB("testdb");
 
-        dbManager.create("Test",new String[] {"name","age"});
+        dbManager.create("test", new String[]{"name", "age"});
         System.out.println(Arrays.toString(dbManager.getTablesList()));
-        dbManager.drop("Test");
+        //    dbManager.drop("Test");
 
         dbManager.dropDB("testdb");
         dbManager.disconnect();

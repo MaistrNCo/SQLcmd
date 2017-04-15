@@ -21,64 +21,64 @@ public class FindTest {
     private Command command;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         view = Mockito.mock(View.class);
         dbManager = Mockito.mock(DBManager.class);
-        command = new Find(dbManager,view);
+        command = new Find(dbManager, view);
     }
 
     @Test
-    public void testFindCanProcessTrue(){
+    public void testFindCanProcessTrue() {
         assertTrue(command.canProcess("find|users"));
     }
 
     @Test
-    public void testFindCanProcessFalse(){
+    public void testFindCanProcessFalse() {
 
         assertTrue(!command.canProcess("find"));
     }
 
 
     @Test
-    public void testSelectFromTable(){
+    public void testSelectFromTable() {
         RowData user1 = new RowData(3);
-        user1.addColumnValue("id","2");
-        user1.addColumnValue("name","Jimm");
-        user1.addColumnValue("password","123");
+        user1.addColumnValue("id", "2");
+        user1.addColumnValue("name", "Jimm");
+        user1.addColumnValue("password", "123");
         RowData user2 = new RowData(3);
-        user2.addColumnValue("id","3");
-        user2.addColumnValue("name","Bimm");
-        user2.addColumnValue("password","321");
+        user2.addColumnValue("id", "3");
+        user2.addColumnValue("name", "Bimm");
+        user2.addColumnValue("password", "321");
 
-        RowData[] data = new RowData[] {user1,user2};
+        RowData[] data = new RowData[]{user1, user2};
 
-        Mockito.when(dbManager.getColumnsNames("users")).thenReturn(new String[]{"id","name","password"});
+        Mockito.when(dbManager.getColumnsNames("users")).thenReturn(new String[]{"id", "name", "password"});
         Mockito.when(dbManager.selectAllFromTable("users")).thenReturn(data);
 
         //when
         command.process("find|users");
         //then
-        ArgumentCaptor <String> captor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(view,Mockito.atLeastOnce()).printOut(captor.capture());
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(view, Mockito.atLeastOnce()).printOut(captor.capture());
         assertEquals("[|id\t|name\t|password\t|," +
-                            " |2\t|Jimm\t|123\t|," +
-                            " |3\t|Bimm\t|321\t|]",
-                            captor.getAllValues().toString());
+                        " |2\t|Jimm\t|123\t|," +
+                        " |3\t|Bimm\t|321\t|]",
+                captor.getAllValues().toString());
     }
 
     @Test
-    public void testSelectFromEmptyTable(){
+    public void testSelectFromEmptyTable() {
 
         RowData[] data = new RowData[0];
 
-        Mockito.when(dbManager.getColumnsNames("users")).thenReturn(new String[]{"id","name","password"});
+        Mockito.when(dbManager.getColumnsNames("users")).thenReturn(new String[]{"id", "name", "password"});
         Mockito.when(dbManager.selectAllFromTable("users")).thenReturn(data);
 
         //when
         command.process("find|users");
         //then
-        ArgumentCaptor <String> captor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(view,Mockito.atLeastOnce()).printOut(captor.capture());
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(view, Mockito.atLeastOnce()).printOut(captor.capture());
         assertEquals("[|id\t|name\t|password\t|]",
                 captor.getAllValues().toString());
     }

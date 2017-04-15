@@ -5,11 +5,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
-import static  org.mockito.Mockito.*;
+import static org.mockito.Mockito.*;
 
 import org.mockito.stubbing.OngoingStubbing;
 import ua.com.juja.sqlcmd.Model.DBManager;
 import ua.com.juja.sqlcmd.View.View;
+
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -22,23 +23,24 @@ public class ClearTest {
     private Command command;
 
     @Before
-    public void init(){
+    public void init() {
         view = mock(View.class);
         dbManager = mock(DBManager.class);
-        command = new Clear(dbManager,view);
+        command = new Clear(dbManager, view);
     }
 
     @Test
-    public void testClearCanProcessTrue(){
+    public void testClearCanProcessTrue() {
         assertTrue(command.canProcess("clear|werwert"));
     }
 
     @Test
-    public void testClearCanProcessFalse(){
+    public void testClearCanProcessFalse() {
         assertFalse(command.canProcess("clear"));
     }
+
     @Test
-    public void testClearProcessSuccessful(){
+    public void testClearProcessSuccessful() {
         try {
             command.process("clear|users");
         } catch (NormalExitException e) {
@@ -49,17 +51,16 @@ public class ClearTest {
     }
 
     @Test
-    public void testClearProcessNonSuccessfulParamsLess(){
+    public void testClearProcessNonSuccessfulParamsLess() {
 
         try {
             command.process("clear");
         } catch (RuntimeException e) {
-            Assert.assertEquals("Wrong number of parameters, expected minimum is : 2, actual is 1",e.getMessage());
+            Assert.assertEquals("Wrong number of parameters, expected minimum is : 2, actual is 1", e.getMessage());
         }
 
 
     }
-
 
 
 }

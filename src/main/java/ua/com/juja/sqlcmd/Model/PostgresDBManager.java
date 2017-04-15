@@ -9,10 +9,16 @@ import java.util.Arrays;
  * Created by maistrenko on 02.03.17.
  */
 public class PostgresDBManager implements DBManager {
+
     private Connection connection;
+    private ConnectionSettings instanceConnSettings;
+
+    public PostgresDBManager() {
+        instanceConnSettings = new ConnectionSettings();
+    }
 
     @Override
-    public void connect(ConnectionSettings conSettings) {
+    public void connect(ConnectionSettings connSettings) {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
@@ -21,11 +27,12 @@ public class PostgresDBManager implements DBManager {
 
         try {
             this.connection = DriverManager.getConnection(
-                    "jdbc:postgresql://" + conSettings.getAddress(),
-                    conSettings.getUsername(), conSettings.getPassword());
+                    "jdbc:postgresql://" + connSettings.getAddress(),
+                    connSettings.getUsername(), connSettings.getPassword());
+            instanceConnSettings.copySettings(connSettings);
         } catch (SQLException e) {
             throw new RuntimeException(String.format("Connection to database %s for user %s failed!",
-                    conSettings.getUsername(), conSettings.getPassword()), e);
+                    connSettings.getUsername(), connSettings.getPassword()), e);
         }
     }
 
@@ -202,36 +209,6 @@ public class PostgresDBManager implements DBManager {
             }
             String updateSQL = "update " + tableName + " set " + values + " where " + conditionName + " = '" + conditionValue + "'";
             statement.executeUpdate(updateSQL);
-        } catch (SQLException e) {
-            throw new RuntimeException("Couldn't update table " + tableName, e);
-        }
-    }
-
-    @Override
-    public void updatePrepared(String tableName, String conditionName, String conditionValue, RowData newValue) {
-        //   Statement statement;
-        String[] colNames = newValue.getNames();
-        String columns = "";
-        for (int ind = 0; ind < colNames.length; ind++) {
-            if (colNames[ind] != conditionName) {
-                columns = columns + ((ind != 0) ? "," : "") + colNames[ind] + " = ?";
-            }
-        }
-        String updateTableSQL = "UPDATE " + tableName + " SET " + columns + " WHERE " + conditionName + " = ?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(updateTableSQL)) {
-
-            Object[] colValues = newValue.getValues();
-            int ind;
-            for (ind = 0; ind < colNames.length; ind++) {
-                if (colNames[ind] != conditionName) {
-                    preparedStatement.setString(ind + 1, colValues[ind].toString());
-                }
-            }
-
-            preparedStatement.setInt(ind + 1, Integer.parseInt(conditionValue));
-            preparedStatement.executeUpdate();
-
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't update table " + tableName, e);
         }
