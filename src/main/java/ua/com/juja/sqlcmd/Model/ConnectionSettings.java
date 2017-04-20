@@ -27,16 +27,8 @@ public class ConnectionSettings {
         this.password = set[4];
     }
 
-    public void copySettings(ConnectionSettings settings) {
-        this.server = settings.getServer();
-        this.port = settings.getPort();
-        this.dataBase = settings.getDataBase();
-        this.username = settings.getUsername();
-        this.password = settings.getPassword();
-    }
-
     public String getAddress() {
-        return this.server + ":" + this.port + "/" /*+ this.dataBase*/;
+        return this.server + ":" + this.port + "/" + this.dataBase;
     }
 
     public String getPort() {

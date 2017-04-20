@@ -6,15 +6,14 @@ package ua.com.juja.sqlcmd.Model;
 public class TestMySQLdbManager extends TestDBManager {
 
     @Override
-    public void setup() {
+    public void initConnection() {
         dbManager = new MySQLdbManager();
-        ConnectionSettings connSet = new ConnectionSettings();
+        connSet = new ConnectionSettings();
         connSet.getConfFileSettings("mySQL.ini");
-        connSet.setDataBase("testdb");
         dbManager.connect(connSet);
 
         if (!dbManager.isConnected()) {
-            String[] defParams = {"127.0.0.1", "3306", "sqlcmd", "root", ""};
+            String[] defParams = {"127.0.0.1", "3306", "", "root", ""};
             connSet.setSettings(defParams);
             dbManager.connect(connSet);
         }
@@ -23,4 +22,5 @@ public class TestMySQLdbManager extends TestDBManager {
             System.out.println("Connection to MySQL DB unsuccessful");
         }
     }
+
 }

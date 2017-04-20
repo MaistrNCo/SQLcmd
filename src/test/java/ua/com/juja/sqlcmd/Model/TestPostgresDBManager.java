@@ -6,14 +6,14 @@ package ua.com.juja.sqlcmd.Model;
 public class TestPostgresDBManager extends TestDBManager {
 
     @Override
-    public void setup() {
+    public void initConnection() {
         dbManager = new PostgresDBManager();
-        ConnectionSettings connSet = new ConnectionSettings();
+        connSet = new ConnectionSettings();
         connSet.getConfFileSettings("Postgres.ini");
         dbManager.connect(connSet);
 
         if (!dbManager.isConnected()) {
-            String[] defParams = {"127.0.0.1", "5432", "sqlcmd", "postgres", "postgres"};
+            String[] defParams = {"127.0.0.1", "5432", "", "postgres", "postgres"};
             connSet.setSettings(defParams);
             dbManager.connect(connSet);
         }
@@ -22,4 +22,5 @@ public class TestPostgresDBManager extends TestDBManager {
             System.out.println("Connection to PostgreSQL DB unsuccessful");
         }
     }
+
 }

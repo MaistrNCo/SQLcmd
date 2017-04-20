@@ -7,7 +7,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.*;
 
-import org.mockito.stubbing.OngoingStubbing;
 import ua.com.juja.sqlcmd.Model.DBManager;
 import ua.com.juja.sqlcmd.View.View;
 

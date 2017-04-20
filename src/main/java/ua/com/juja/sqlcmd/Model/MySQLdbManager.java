@@ -11,12 +11,7 @@ import java.util.Arrays;
 public class MySQLdbManager implements DBManager {
     private final String CONF_FILE_NAME = "mySQL.ini";
     private Connection connection;
-    private ConnectionSettings instanceConnSettings;
 
-
-    public MySQLdbManager() {
-        instanceConnSettings = new ConnectionSettings();
-    }
 
     @Override
     public void connect(ConnectionSettings conSettings) {
@@ -31,7 +26,6 @@ public class MySQLdbManager implements DBManager {
             this.connection = DriverManager.getConnection(
                     "jdbc:mysql://" + conSettings.getAddress(),
                     conSettings.getUsername(), conSettings.getPassword());
-            instanceConnSettings.copySettings(conSettings);
         } catch (SQLException e) {
             throw new RuntimeException(String.format("Connection to database %s for user %s failed!",
                     conSettings.getUsername(), conSettings.getPassword()), e);
@@ -63,7 +57,7 @@ public class MySQLdbManager implements DBManager {
 
         try {
             DatabaseMetaData md = connection.getMetaData();
-            ResultSet rs = md.getTables(instanceConnSettings.getDataBase(),
+            ResultSet rs = md.getTables(null,
                     null, "%", null);
             while (rs.next()) {
                 result[index++] = rs.getString(3);
@@ -78,7 +72,7 @@ public class MySQLdbManager implements DBManager {
 
     @Override
     public RowData[] selectAllFromTable(String tableName) {
-        String selectTableSQL = "SELECT * from " + instanceConnSettings.getDataBase() + "." + tableName;
+        String selectTableSQL = "SELECT * from " + tableName;
         try (Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(selectTableSQL)) {
             int count = getRowCount(tableName);
@@ -104,7 +98,7 @@ public class MySQLdbManager implements DBManager {
     @Override
     public int getRowCount(String tableName) {
         int result = 0;
-        String selectRowCount = "SELECT COUNT(*) from " + instanceConnSettings.getDataBase() + "." + tableName;
+        String selectRowCount = "SELECT COUNT(*) from " + tableName;
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(selectRowCount)) {
             while (resultSet.next()) {
@@ -120,7 +114,7 @@ public class MySQLdbManager implements DBManager {
     public String[] getColumnsNames(String tableName) {
         try {
             DatabaseMetaData metadata = connection.getMetaData();
-            ResultSet resultSet = metadata.getColumns(instanceConnSettings.getDataBase(),
+            ResultSet resultSet = metadata.getColumns(null,
                     null, tableName, null);
             ArrayList<String> result = new ArrayList<>();
             while (resultSet.next()) {
@@ -139,7 +133,7 @@ public class MySQLdbManager implements DBManager {
 
     @Override
     public void clear(String tableName) {
-        String deleteRowsSQL = "delete from " + instanceConnSettings.getDataBase() + "." + tableName;
+        String deleteRowsSQL = "delete from " + tableName;
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(deleteRowsSQL);
         } catch (SQLException e) {
@@ -149,7 +143,7 @@ public class MySQLdbManager implements DBManager {
 
     @Override
     public void drop(String tableName) {
-        String dropTableSQL = "drop table " + instanceConnSettings.getDataBase() + "." + tableName;
+        String dropTableSQL = "drop table " + tableName;
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(dropTableSQL);
         } catch (SQLException e) {
@@ -160,8 +154,7 @@ public class MySQLdbManager implements DBManager {
     @Override
     public void create(String tableName, String[] columnNames) {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS " +
-                instanceConnSettings.getDataBase() + "." + tableName +
-                "(ID SERIAL NOT NULL PRIMARY KEY ";
+                tableName + "(ID SERIAL NOT NULL PRIMARY KEY ";
 
         for (String column : columnNames) {
             createTableSQL += ", " + column + " text";
@@ -177,7 +170,7 @@ public class MySQLdbManager implements DBManager {
 
     @Override
     public void delete(String tableName, String conditionName, String conditionValue) {
-        String deleteRowsSQL = "delete from " + instanceConnSettings.getDataBase() + "." + tableName +
+        String deleteRowsSQL = "delete from " + tableName +
                 " where " + conditionName + " = '" + conditionValue + "'";
         try (Statement statement = connection.createStatement();) {
             statement.executeUpdate(deleteRowsSQL);
@@ -200,7 +193,7 @@ public class MySQLdbManager implements DBManager {
                 values = values.concat(((values.length() > 0) ? "," : "") + "'" + colValue.toString() + "'");
             }
 
-            String insertRowSQL = "insert into " + instanceConnSettings.getDataBase() + "." + tableName
+            String insertRowSQL = "insert into " + tableName
                     + " (" + columnNames + ")   values ("
                     + values + ")";
             statement.executeUpdate(insertRowSQL);
@@ -218,7 +211,7 @@ public class MySQLdbManager implements DBManager {
             for (int ind = 0; ind < colNames.length; ind++) {
                 values = values + ((ind != 0) ? "," : "") + colNames[ind] + " = '" + colValues[ind] + "'";
             }
-            String updateSQL = "update " + instanceConnSettings.getDataBase() + "." + tableName +
+            String updateSQL = "update " + tableName +
                     " set " + values + " where " + conditionName + " = '" + conditionValue + "'";
             statement.executeUpdate(updateSQL);
         } catch (SQLException e) {

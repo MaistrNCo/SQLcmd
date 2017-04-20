@@ -11,11 +11,6 @@ import java.util.Arrays;
 public class PostgresDBManager implements DBManager {
 
     private Connection connection;
-    private ConnectionSettings instanceConnSettings;
-
-    public PostgresDBManager() {
-        instanceConnSettings = new ConnectionSettings();
-    }
 
     @Override
     public void connect(ConnectionSettings connSettings) {
@@ -29,7 +24,6 @@ public class PostgresDBManager implements DBManager {
             this.connection = DriverManager.getConnection(
                     "jdbc:postgresql://" + connSettings.getAddress(),
                     connSettings.getUsername(), connSettings.getPassword());
-            instanceConnSettings.copySettings(connSettings);
         } catch (SQLException e) {
             throw new RuntimeException(String.format("Connection to database %s for user %s failed!",
                     connSettings.getUsername(), connSettings.getPassword()), e);
@@ -53,25 +47,28 @@ public class PostgresDBManager implements DBManager {
 
     @Override
     public String[] getTablesList() {
+
+
         String[] result = new String[100];
         int index = 0;
-        String selectTableList = "SELECT table_name " +
-                "FROM information_schema.tables " +
-                "WHERE table_schema='public' " +
-                "AND table_type='BASE TABLE'";
 
-        try (Statement statement = connection.createStatement();
-             ResultSet rSet = statement.executeQuery(selectTableList)) {
-            while (rSet.next()) {
-                result[index++] = rSet.getString("table_name");
+        String[] types = {"TABLE"};
+
+        try {
+            DatabaseMetaData md = connection.getMetaData();
+            ResultSet rs = md.getTables(null,
+                    null, "%", types);
+            while (rs.next()) {
+                result[index++] = rs.getString(3);
             }
             result = Arrays.copyOf(result, index, String[].class);
         } catch (SQLException e) {
-            System.out.println("Statement is not created");
+            System.out.println("Tables list is not available");
             result = new String[0];
         }
         return result;
     }
+
 
     @Override
     public RowData[] selectAllFromTable(String tableName) {
