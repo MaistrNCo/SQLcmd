@@ -24,7 +24,7 @@ public class MySQLdbManager implements DBManager {
 
         try {
             this.connection = DriverManager.getConnection(
-                    "jdbc:mysql://" + conSettings.getAddress(),
+                    "jdbc:mysql://" + conSettings.getAddress()+"?useSSL=false",
                     conSettings.getUsername(), conSettings.getPassword());
         } catch (SQLException e) {
             throw new RuntimeException(String.format("Connection to database %s for user %s failed!",
@@ -154,7 +154,7 @@ public class MySQLdbManager implements DBManager {
     @Override
     public void create(String tableName, String[] columnNames) {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS " +
-                tableName + "(ID SERIAL NOT NULL PRIMARY KEY ";
+                tableName + "(id SERIAL NOT NULL PRIMARY KEY ";
 
         for (String column : columnNames) {
             createTableSQL += ", " + column + " text";
