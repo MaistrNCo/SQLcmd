@@ -12,7 +12,7 @@ public interface Command {
 
     default String[] prepareParams(String data, int expected) {
         String[] params = data.split("\\|");
-        if (params.length != expected) {
+        if (params.length < expected) {
             throw new IllegalArgumentException("Wrong number of parameters, expected minimum is : "
                     + expected
                     + ", actual is "

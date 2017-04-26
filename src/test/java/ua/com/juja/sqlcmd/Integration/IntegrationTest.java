@@ -24,6 +24,7 @@ public class IntegrationTest {
     private static ConfigurableInputStream in;
     private static ByteArrayOutputStream out;
     private DBManager dbManager;
+    private String lineBreaker = System.lineSeparator();
 
     @Before
     public void setup() {
@@ -40,9 +41,9 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  \n" +
-                "input command please or 'help' to see commands list\n" +
-                "Goodbye, to see soon. \n", getData());
+        assertEquals(" Hi, program started  " + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
     }
 
     @Test
@@ -51,11 +52,11 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  \n" +
-                "input command please or 'help' to see commands list\n" +
-                "Successful connection!!\n" +
-                "input command please or 'help' to see commands list\n" +
-                "Goodbye, to see soon. \n", getData());
+        assertEquals(" Hi, program started  " + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Successful connection!!" + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
     }
 
     @Test
@@ -65,13 +66,13 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  \n" +
-                "input command please or 'help' to see commands list\n" +
-                "Successful connection!!\n" +
-                "input command please or 'help' to see commands list\n" +
-                "[employee, users, test, test2]\n" +
-                "input command please or 'help' to see commands list\n" +
-                "Goodbye, to see soon. \n", getData());
+        assertEquals(" Hi, program started  " + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Successful connection!!" + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "[employee, users, test, test2]" + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
     }
 
     @Test
@@ -80,11 +81,11 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  \n" +
-                "input command please or 'help' to see commands list\n" +
-                "Successful connection!!\n" +
-                "input command please or 'help' to see commands list\n" +
-                "Goodbye, to see soon. \n", getData());
+        assertEquals(" Hi, program started  " + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Successful connection!!" + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
     }
 
     @Test
@@ -93,12 +94,12 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  \n" +
-                "input command please or 'help' to see commands list\n" +
-                "Unsuccessful operation by reason: Couldn`t connect to server 192.168.1.11:5432 to DB: sqlcmd user: unknown password: xxxx  Connection to database unknown for user xxxx failed!\n" +
-                "try again please\n" +
-                "input command please or 'help' to see commands list\n" +
-                "Goodbye, to see soon. \n", getData());
+        assertEquals(" Hi, program started  " + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Unsuccessful operation by reason: Couldn`t connect to server 192.168.1.11:5432 to DB: sqlcmd user: unknown password: xxxx  Connection to database unknown for user xxxx failed!" + lineBreaker +
+                "try again please" + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
     }
 
     @Test
@@ -107,11 +108,11 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  \n" +
-                "input command please or 'help' to see commands list\n" +
-                "You can`t use this command until no DB connection present\n" +
-                "input command please or 'help' to see commands list\n" +
-                "Goodbye, to see soon. \n", getData());
+        assertEquals(" Hi, program started  " + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "You can`t use this command until no DB connection present" + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
     }
 
     @Test
@@ -121,13 +122,13 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  \n" +
-                "input command please or 'help' to see commands list\n" +
-                "Successful connection!!\n" +
-                "input command please or 'help' to see commands list\n" +
-                "unknown instruction, try more\n" +
-                "input command please or 'help' to see commands list\n" +
-                "Goodbye, to see soon. \n", getData());
+        assertEquals(" Hi, program started  " + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Successful connection!!" + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "unknown instruction, try more" + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
     }
 
     @Test
@@ -139,15 +140,15 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  \n" +
-                "input command please or 'help' to see commands list\n" +
-                "Successful connection!!\n" +
-                "input command please or 'help' to see commands list\n" +
-                " created table testtable with columns [id, col1, col2, col3]\n" +
-                "input command please or 'help' to see commands list\n" +
-                "Table testtable deleted from database successfully\n" +
-                "input command please or 'help' to see commands list\n" +
-                "Goodbye, to see soon. \n", getData());
+        assertEquals(" Hi, program started  " + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Successful connection!!" + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                " created table testtable with columns [id, col1, col2, col3]" + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Table testtable deleted from database successfully" + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
     }
 
     @Test
@@ -169,21 +170,21 @@ public class IntegrationTest {
 
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  \n" +
-                "input command please or 'help' to see commands list\n" +
-                "Successful connection!!\n" +
-                "input command please or 'help' to see commands list\n" +
-                Arrays.toString(tableList) + "\n" +
-                "input command please or 'help' to see commands list\n" +
-                " created table testtable with columns [id, col1, col2, col3]\n" +
-                "input command please or 'help' to see commands list\n" +
-                Arrays.toString(tableList2) + "\n" +
-                "input command please or 'help' to see commands list\n" +
-                "Table testtable deleted from database successfully\n" +
-                "input command please or 'help' to see commands list\n" +
-                Arrays.toString(tableList) + "\n" +
-                "input command please or 'help' to see commands list\n" +
-                "Goodbye, to see soon. \n", getData());
+        assertEquals(" Hi, program started  " + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Successful connection!!" + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                Arrays.toString(tableList) + "" + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                " created table testtable with columns [id, col1, col2, col3]" + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                Arrays.toString(tableList2) + "" + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Table testtable deleted from database successfully" + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                Arrays.toString(tableList) + "" + lineBreaker +
+                "input command please or 'help' to see commands list" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
     }
 
     public String getData() {
