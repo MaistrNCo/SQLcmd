@@ -2,10 +2,10 @@ package ua.com.juja.sqlcmd.Integration;
 
 import org.junit.Before;
 import org.junit.Test;
-import ua.com.juja.sqlcmd.Controller.Main;
-import ua.com.juja.sqlcmd.Model.ConnectionSettings;
-import ua.com.juja.sqlcmd.Model.DBManager;
-import ua.com.juja.sqlcmd.Model.PostgresDBManager;
+import ua.com.juja.sqlcmd.controller.Main;
+import ua.com.juja.sqlcmd.model.ConnectionSettings;
+import ua.com.juja.sqlcmd.model.DBManager;
+import ua.com.juja.sqlcmd.model.PostgresDBManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
