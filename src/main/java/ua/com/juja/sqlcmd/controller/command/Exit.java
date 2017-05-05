@@ -1,16 +1,16 @@
 package ua.com.juja.sqlcmd.controller.command;
 
+import ua.com.juja.sqlcmd.model.DBManager;
 import ua.com.juja.sqlcmd.view.View;
 
-/**
- * Created by maistrenko on 16.03.17.
- */
 public class Exit implements Command {
 
+    private DBManager dbManager;
     private View view;
 
-    public Exit(View console) {
-        this.view = console;
+    public Exit(DBManager dbManager, View view) {
+        this.dbManager = dbManager;
+        this.view = view;
     }
 
     @Override
@@ -20,6 +20,7 @@ public class Exit implements Command {
 
     @Override
     public void process(String userInput) {
+        dbManager.disconnect();
         view.printOut("Goodbye, to see soon. ");
         throw new NormalExitException();
     }
