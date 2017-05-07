@@ -57,16 +57,16 @@ public class TestParser {
     public void testParserCheckAmount(){
         Parser parser = new ExactAmountParamsParser();
         List<String> list = parser.parseInputString("connect|  help ");
-        assertTrue(parser.checkParamsAmount(list,2));
-        assertFalse(parser.checkParamsAmount(list,3));
+        assertTrue(parser.checkParamsAmount(list,"connect| param1"));
+        assertFalse(parser.checkParamsAmount(list,"connect|param1|param2 "));
     }
 
     @Test
     public void testParserCheckMinAmount(){
         Parser parser = new MinAmountParamsParser();
         List<String> list = parser.parseInputString("connect|  localhost|sqlcmd|postgres | postgres ");
-        assertTrue(parser.checkParamsAmount(list,4));
-        assertTrue(parser.checkParamsAmount(list,5));
-        assertFalse(parser.checkParamsAmount(list,7));
+        assertTrue(parser.checkParamsAmount(list,"connect|param1|param2|param3 "));
+        assertTrue(parser.checkParamsAmount(list,"connect|param1|param2|param3| param4 "));
+        assertFalse(parser.checkParamsAmount(list,"connect|  param1|param2|param3 |param4| param5 "));
     }
 }

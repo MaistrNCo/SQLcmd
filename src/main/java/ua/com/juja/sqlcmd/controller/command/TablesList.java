@@ -3,28 +3,27 @@ package ua.com.juja.sqlcmd.controller.command;
 import ua.com.juja.sqlcmd.model.DBManager;
 import ua.com.juja.sqlcmd.view.View;
 
+import java.util.Arrays;
+
 /**
  * Created by maistrenko on 18.03.17.
  */
-public class Clear implements Command {
-
+public class TablesList implements Command {
     private final DBManager dbManager;
     private final View view;
 
-    public Clear(DBManager dbManager, View view) {
-        this.view = view;
+    public TablesList(DBManager dbManager, View view) {
         this.dbManager = dbManager;
+        this.view = view;
     }
 
     @Override
     public boolean canProcess(String userInput) {
-        return userInput.startsWith("clear|");
+        return userInput.equals("list");
     }
 
     @Override
     public void process(String userInput) {
-        String tableName = prepareParams(userInput, 2)[1];
-        dbManager.clear(tableName);
-        view.write("table " + tableName + " cleared successfully");
+        view.write(Arrays.toString(dbManager.getTablesList()));
     }
 }

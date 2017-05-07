@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by maistrenko on 05.04.17.
  */
-public class ClearTest {
+public class ClearTableTest {
 
     private View view;
     private DBManager dbManager;
@@ -25,7 +25,7 @@ public class ClearTest {
     public void init() {
         view = mock(View.class);
         dbManager = mock(DBManager.class);
-        command = new Clear(dbManager, view);
+        command = new ClearTable(dbManager, view);
     }
 
     @Test

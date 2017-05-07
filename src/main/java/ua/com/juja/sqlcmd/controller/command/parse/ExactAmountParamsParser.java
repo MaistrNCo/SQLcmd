@@ -26,7 +26,8 @@ public class ExactAmountParamsParser implements Parser{
     }
 
     @Override
-    public boolean checkParamsAmount(List<String> paramsList, int waitedAmount) {
-        return paramsList.size() == waitedAmount;
+    public boolean checkParamsAmount(List<String> paramsList, String pattern) {
+
+        return paramsList.size() == parseInputString(pattern).size();
     }
 }
