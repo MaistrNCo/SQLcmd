@@ -25,6 +25,6 @@ public class Clear implements Command {
     public void process(String userInput) {
         String tableName = prepareParams(userInput, 2)[1];
         dbManager.clear(tableName);
-        view.printOut("table " + tableName + " cleared successfully");
+        view.write("table " + tableName + " cleared successfully");
     }
 }

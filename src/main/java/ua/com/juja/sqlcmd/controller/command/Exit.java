@@ -21,7 +21,7 @@ public class Exit implements Command {
     @Override
     public void process(String userInput) {
         dbManager.disconnect();
-        view.printOut("Goodbye, to see soon. ");
+        view.write("Goodbye, to see soon. ");
         throw new NormalExitException();
     }
 }

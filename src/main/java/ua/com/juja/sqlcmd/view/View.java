@@ -4,7 +4,7 @@ package ua.com.juja.sqlcmd.view;
  * Created by maistrenko on 12.03.17.
  */
 public interface View {
-    void printOut(String message);
+    void write(String message);
 
-    String getInput();
+    String read();
 }

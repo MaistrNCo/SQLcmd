@@ -59,7 +59,7 @@ public class FindTest {
         command.process("find|users");
         //then
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(view, Mockito.atLeastOnce()).printOut(captor.capture());
+        Mockito.verify(view, Mockito.atLeastOnce()).write(captor.capture());
         assertEquals("[|id\t|name\t|password\t|," +
                         " |2\t|Jimm\t|123\t|," +
                         " |3\t|Bimm\t|321\t|]",
@@ -78,7 +78,7 @@ public class FindTest {
         command.process("find|users");
         //then
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(view, Mockito.atLeastOnce()).printOut(captor.capture());
+        Mockito.verify(view, Mockito.atLeastOnce()).write(captor.capture());
         assertEquals("[|id\t|name\t|password\t|]",
                 captor.getAllValues().toString());
     }

@@ -35,7 +35,7 @@ public class ExitTest {
         } catch (NormalExitException e) {
             //
         }
-        Mockito.verify(view).printOut("Goodbye, to see soon. ");
+        Mockito.verify(view).write("Goodbye, to see soon. ");
 
     }
 

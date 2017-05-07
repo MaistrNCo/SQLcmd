@@ -28,7 +28,7 @@ public class ConnectDef implements Command {
             ConnectionSettings connSet = new ConnectionSettings();
             connSet.getConfFileSettings("Postgres.ini");
             dbManager.connect(connSet);
-            view.printOut("Successful connection!!");
+            view.write("Successful connection!!");
         } catch (Exception e) {
             throw new RuntimeException("Can`t connect, check your Postgres.ini ", e);
         }

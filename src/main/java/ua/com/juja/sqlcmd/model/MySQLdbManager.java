@@ -4,14 +4,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
-/**
- * Created by maistrenko on 02.03.17.
- */
 public class MySQLdbManager implements DBManager {
-    private final String CONF_FILE_NAME = "mySQL.ini";
-    private Connection connection;
+    public final String DEFAULT_SERVER_ADDRESS = "localhost";
+    public final String DEFAULT_SERVER_PORT = "3306";
+    public final String DEFAULT_SERVER_DB = "sqlcmd";
+    public final String DEFAULT_SERVER_USER = "root";
+    public final String DEFAULT_SERVER_PASSWORD = "root";
 
+    private Connection connection;
 
     @Override
     public void connect(ConnectionSettings conSettings) {

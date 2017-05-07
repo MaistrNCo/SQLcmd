@@ -22,6 +22,6 @@ public class NotConnected implements Command {
 
     @Override
     public void process(String userInput) {
-        view.printOut("You can`t use this command until no DB connection present");
+        view.write("You can`t use this command until no DB connection present");
     }
 }

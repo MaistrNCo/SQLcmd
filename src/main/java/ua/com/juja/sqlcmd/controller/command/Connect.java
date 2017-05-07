@@ -28,7 +28,7 @@ public class Connect implements Command {
         String[] defParams = {"192.168.1.11", "5432", params[1], params[2], params[3]};
         conSet.setSettings(defParams);
         dbManager.connect(conSet);
-        view.printOut("Successful connection!!");
+        view.write("Successful connection!!");
 
     }
 }

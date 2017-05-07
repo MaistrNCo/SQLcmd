@@ -29,6 +29,6 @@ public class Update implements Command {
             insData.addColumnValue(updParams[ind + 4], updParams[ind + 5]);
         }
         dbManager.update(updParams[1], updParams[2], updParams[3], insData);
-        view.printOut(" data in table " + updParams[1] + " updated");
+        view.write(" data in table " + updParams[1] + " updated");
     }
 }

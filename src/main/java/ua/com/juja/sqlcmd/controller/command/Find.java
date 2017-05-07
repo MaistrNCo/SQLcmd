@@ -31,13 +31,13 @@ public class Find implements Command {
         for (String colName : columnsNames) {
             header += colName + "\t|";
         }
-        view.printOut(header);
+        view.write(header);
         for (RowData row : rowDatas) {
             String str = "|";
             for (Object val : row.getValues()) {
                 str += val + "\t|";
             }
-            view.printOut(str);
+            view.write(str);
         }
     }
 }

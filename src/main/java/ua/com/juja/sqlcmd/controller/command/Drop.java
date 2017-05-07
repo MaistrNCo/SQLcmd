@@ -24,6 +24,6 @@ public class Drop implements Command {
     public void process(String userInput) {
         String tableName = prepareParams(userInput, 2)[1];
         dbManager.drop(tableName);
-        view.printOut("Table " + tableName + " deleted from database successfully");
+        view.write("Table " + tableName + " deleted from database successfully");
     }
 }

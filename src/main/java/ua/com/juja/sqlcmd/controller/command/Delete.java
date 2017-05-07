@@ -24,7 +24,7 @@ public class Delete implements Command {
     public void process(String userInput) {
         String[] delParams = prepareParams(userInput, 4);
         dbManager.delete(delParams[1], delParams[2], delParams[3]);
-        view.printOut("deleted data from table " + delParams[1]);
+        view.write("deleted data from table " + delParams[1]);
 
     }
 }

@@ -24,6 +24,6 @@ public class List implements Command {
 
     @Override
     public void process(String userInput) {
-        view.printOut(Arrays.toString(dbManager.getTablesList()));
+        view.write(Arrays.toString(dbManager.getTablesList()));
     }
 }

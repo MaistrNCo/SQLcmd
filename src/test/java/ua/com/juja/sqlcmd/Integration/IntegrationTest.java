@@ -2,6 +2,7 @@ package ua.com.juja.sqlcmd.Integration;
 
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 import ua.com.juja.sqlcmd.controller.Main;
 import ua.com.juja.sqlcmd.model.ConnectionSettings;
 import ua.com.juja.sqlcmd.model.DBManager;
@@ -12,7 +13,6 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -29,6 +29,8 @@ public class IntegrationTest {
     @Before
     public void setup() {
         dbManager = new PostgresDBManager();
+
+
         in = new ConfigurableInputStream();
         out = new ByteArrayOutputStream();
         System.setIn(in);
@@ -41,7 +43,7 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  " + lineBreaker +
+        assertEquals("Hi, program started  " + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }
@@ -52,7 +54,7 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  " + lineBreaker +
+        assertEquals("Hi, program started  " + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
@@ -66,7 +68,7 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  " + lineBreaker +
+        assertEquals("Hi, program started  " + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
@@ -81,7 +83,7 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  " + lineBreaker +
+        assertEquals("Hi, program started  " + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
@@ -94,7 +96,7 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  " + lineBreaker +
+        assertEquals("Hi, program started  " + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Unsuccessful operation by reason: Couldn`t connect to server 192.168.1.11:5432 to DB: sqlcmd user: unknown password: xxxx  Connection to database unknown for user xxxx failed!" + lineBreaker +
                 "try again please" + lineBreaker +
@@ -108,7 +110,7 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  " + lineBreaker +
+        assertEquals("Hi, program started  " + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "You can`t use this command until no DB connection present" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
@@ -122,7 +124,7 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  " + lineBreaker +
+        assertEquals("Hi, program started  " + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
@@ -140,7 +142,7 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  " + lineBreaker +
+        assertEquals("Hi, program started  " + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
@@ -170,7 +172,7 @@ public class IntegrationTest {
 
         Main.main(new String[0]);
 
-        assertEquals(" Hi, program started  " + lineBreaker +
+        assertEquals("Hi, program started  " + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +

@@ -45,7 +45,7 @@ public class ClearTest {
         } catch (NormalExitException e) {
             //
         }
-        verify(view).printOut("table users cleared successfully");
+        verify(view).write("table users cleared successfully");
 
     }
 

@@ -27,7 +27,7 @@ public class Create implements Command {
         String[] crtParams = prepareParams(userInput, 3);
         String[] columnNames = Arrays.copyOfRange(crtParams, 2, crtParams.length);
         dbManager.create(crtParams[1], columnNames);
-        view.printOut(" created table " + crtParams[1] +
+        view.write(" created table " + crtParams[1] +
                 " with columns " + Arrays.toString(dbManager.getColumnsNames(crtParams[1])));
 
     }

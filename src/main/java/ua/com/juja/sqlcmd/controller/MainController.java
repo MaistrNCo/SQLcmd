@@ -37,10 +37,10 @@ public class MainController {
     }
 
     private void runCommands() {
-        view.printOut("Hi, program started  ");
+        view.write("Hi, program started  ");
         while (true) {
-            view.printOut("input command please or 'help' to see commands list");
-            String input = view.getInput();
+            view.write("input command please or 'help' to see commands list");
+            String input = view.read();
             for (Command command : commands) {
                 try {
                     if (command.canProcess(input)) {
@@ -61,8 +61,8 @@ public class MainController {
     public void showErrorMessage(Exception e) {
         String errorReason = e.getMessage();
         if (e.getCause() != null) errorReason += "  " + e.getCause().getMessage();
-        view.printOut("Unsuccessful operation by reason: " + errorReason);
-        view.printOut("try again please");
+        view.write("Unsuccessful operation by reason: " + errorReason);
+        view.write("try again please");
     }
 
 

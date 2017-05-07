@@ -19,7 +19,7 @@ public class Help implements Command {
 
     @Override
     public void process(String userInput) {
-        view.printOut("Commands full list :");
+        view.write("Commands full list :");
         String message = "\t help\n" +
                 "\t\t to display commands list \n" +
 
@@ -55,6 +55,6 @@ public class Help implements Command {
 
                 "\t exit\n" +
                 "\t\t to leave console\n";
-        view.printOut(message);
+        view.write(message);
     }
 }

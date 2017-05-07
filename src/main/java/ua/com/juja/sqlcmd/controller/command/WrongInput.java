@@ -19,6 +19,6 @@ public class WrongInput implements Command {
 
     @Override
     public void process(String userInput) {
-        view.printOut("unknown instruction, try more");
+        view.write("unknown instruction, try more");
     }
 }
