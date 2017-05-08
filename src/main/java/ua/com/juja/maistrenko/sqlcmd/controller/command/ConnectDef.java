@@ -4,10 +4,6 @@ import ua.com.juja.maistrenko.sqlcmd.model.ConnectionSettings;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
-
-/**
- * Created by maistrenko on 19.03.17.
- */
 public class ConnectDef implements Command {
     private final View view;
     private final DBManager dbManager;
@@ -26,7 +22,7 @@ public class ConnectDef implements Command {
     public void process(String userInput) {
         try {
             ConnectionSettings connSet = new ConnectionSettings();
-            connSet.getConfFileSettings("Postgres.ini");
+            connSet.getProperties("config/Postgres.ini");
             dbManager.connect(connSet);
             view.write("Successful connection!!");
         } catch (Exception e) {

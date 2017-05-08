@@ -1,15 +1,13 @@
 package ua.com.juja.maistrenko.sqlcmd.model;
 
-/**
- * Created by maistrenko on 07.03.17.
- */
 public class TestPostgresDBManager extends TestDBManager {
 
     @Override
     public void initConnection() {
         dbManager = new PostgresDBManager();
         connSet = new ConnectionSettings();
-        connSet.getConfFileSettings("Postgres.ini");
+    //    connSet.getConfFileSettings("Postgres.ini");
+        connSet.getProperties("config/postgres.properties");
         dbManager.connect(connSet);
 
         if (!dbManager.isConnected()) {

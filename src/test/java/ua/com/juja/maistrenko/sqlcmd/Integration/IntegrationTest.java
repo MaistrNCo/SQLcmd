@@ -14,12 +14,6 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
-
-
-/**
- * Created by maistrenko on 28.03.2017.
- */
-
 public class IntegrationTest {
 
     private static ConfigurableInputStream in;
@@ -159,7 +153,8 @@ public class IntegrationTest {
         in.add("connect");
         in.add("list");
         ConnectionSettings connSet = new ConnectionSettings();
-        connSet.getConfFileSettings("Postgres.ini");
+        //connSet.getConfFileSettings("Postgres.ini");
+        connSet.getProperties("config/Postgres.ini");
         dbManager.connect(connSet);
         String[] tableList = dbManager.getTablesList();
         dbManager.disconnect();

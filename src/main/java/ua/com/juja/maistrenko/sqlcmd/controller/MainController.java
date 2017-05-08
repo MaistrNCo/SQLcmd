@@ -3,7 +3,7 @@ package ua.com.juja.maistrenko.sqlcmd.controller;
 import ua.com.juja.maistrenko.sqlcmd.controller.command.*;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
-import ua.com.juja.sqlcmd.controller.command.*;
+
 
 public class MainController {
     private View view;

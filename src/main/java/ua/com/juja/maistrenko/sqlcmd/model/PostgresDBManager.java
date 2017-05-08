@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class PostgresDBManager implements DBManager {
+
     public final String DEFAULT_SERVER_ADDRESS = "localhost";
     public final String DEFAULT_SERVER_PORT = "3306";
     public final String DEFAULT_SERVER_DB = "sqlcmd";
     public final String DEFAULT_SERVER_USER = "root";
     public final String DEFAULT_SERVER_PASSWORD = "root";
+
     private Connection connection;
 
     @Override

@@ -1,12 +1,8 @@
 package ua.com.juja.maistrenko.sqlcmd.model;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.Properties;
 
-/**
- * Created by maistrenko on 16.03.2017.
- */
 public class ConnectionSettings {
     private String server;
     private String port;
@@ -52,55 +48,34 @@ public class ConnectionSettings {
     }
 
 
-    public void getConfFileSettings(String settingsFileName) {
-        String[] result = new String[5];
-        ClassLoader classLoader = getClass().getClassLoader();
-        int caught = 0;
+    public void getProperties(String settingsFileName){
+        FileInputStream fileInput = null;
+        Properties properties = new Properties();
 
-        try (FileReader file = new FileReader(classLoader.getResource("config/" + settingsFileName).getFile());
-             BufferedReader br = new BufferedReader(file)) {
-            String curStr;
-            while ((curStr = br.readLine()) != null) {
-                String[] splitted = curStr.split(":");
-                switch (splitted[0].trim()) {
-                    case "server": {
-                        result[0] = splitted[1].trim();
-                        caught++;
-                        break;
-                    }
-                    case "port": {
-                        result[1] = splitted[1].trim();
-                        caught++;
-                        break;
-                    }
-                    case "base": {
-                        result[2] = splitted[1].trim();
-                        caught++;
-                        break;
-                    }
-                    case "username": {
-                        result[3] = splitted[1].trim();
-                        caught++;
-                        break;
-                    }
-                    case "password": {
-                        result[4] = splitted[1].trim();
-                        caught++;
-                        break;
-                    }
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource(settingsFileName).getFile());
+
+        try {
+            fileInput = new FileInputStream(file);
+            properties.load(fileInput);
+            server   =  properties.getProperty("server.name");
+            port     =  properties.getProperty("server.port");
+            dataBase =  properties.getProperty("server.dataBase");
+            username =  properties.getProperty("server.user.name");
+            password =  properties.getProperty("server.user.password");
+
+        } catch (Exception e) {
+            System.out.println("Error loading config " + file.getAbsolutePath());
+            e.printStackTrace();
+        } finally {
+            if (fileInput != null) {
+                try {
+                    fileInput.close();
+                } catch (IOException e) {
+                    // do nothing;
                 }
             }
-            if (caught == 5) {
-                this.setSettings(result);
-            } else {
-                throw new IOException("Wrong parameters number");
-            }
-
-        } catch (IOException e) {
-            throw new RuntimeException("Couldn't read file " + settingsFileName, e);
         }
-
     }
-
 
 }
