@@ -20,7 +20,9 @@ public class Exit implements Command {
 
     @Override
     public void process(String userInput) {
-        dbManager.disconnect();
+        if (dbManager.isConnected()) {
+            dbManager.disconnect();
+        }
         view.write("Goodbye, to see soon. ");
         throw new NormalExitException();
     }

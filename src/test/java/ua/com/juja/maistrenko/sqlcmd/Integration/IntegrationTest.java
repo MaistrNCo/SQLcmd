@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.model.PostgresDBManager;
-import ua.com.juja.maistrenko.sqlcmd.controller.Main;
+import ua.com.juja.maistrenko.sqlcmd.Main;
 import ua.com.juja.maistrenko.sqlcmd.model.ConnectionSettings;
 
 import java.io.ByteArrayOutputStream;
@@ -154,7 +154,7 @@ public class IntegrationTest {
         in.add("list");
         ConnectionSettings connSet = new ConnectionSettings();
         //connSet.getConfFileSettings("Postgres.ini");
-        connSet.getProperties("config/Postgres.ini");
+        connSet.getProperties("src/main/config/Postgres.ini");
         dbManager.connect(connSet);
         String[] tableList = dbManager.getTablesList();
         dbManager.disconnect();

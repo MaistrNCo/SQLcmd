@@ -1,5 +1,6 @@
-package ua.com.juja.maistrenko.sqlcmd.controller;
+package ua.com.juja.maistrenko.sqlcmd;
 
+import ua.com.juja.maistrenko.sqlcmd.controller.MainController;
 import ua.com.juja.maistrenko.sqlcmd.model.PostgresDBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.Console;
 

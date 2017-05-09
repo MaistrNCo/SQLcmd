@@ -49,12 +49,12 @@ public class ConnectionSettings {
 
 
     public void getProperties(String settingsFileName){
+
         FileInputStream fileInput = null;
         Properties properties = new Properties();
-
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource(settingsFileName).getFile());
-
+     //   File file = new File(classLoader.getResource(settingsFileName).getFile());
+        File file = new File(settingsFileName);
         try {
             fileInput = new FileInputStream(file);
             properties.load(fileInput);

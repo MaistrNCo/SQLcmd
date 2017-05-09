@@ -21,9 +21,9 @@ public class ConnectDef implements Command {
     @Override
     public void process(String userInput) {
         try {
-            ConnectionSettings connSet = new ConnectionSettings();
-            connSet.getProperties("config/Postgres.ini");
-            dbManager.connect(connSet);
+            ConnectionSettings connectionSettings = new ConnectionSettings();
+            connectionSettings.getProperties("config/postgres.properties");
+            dbManager.connect(connectionSettings);
             view.write("Successful connection!!");
         } catch (Exception e) {
             throw new RuntimeException("Can`t connect, check your Postgres.ini ", e);
