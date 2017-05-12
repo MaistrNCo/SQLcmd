@@ -7,7 +7,7 @@ public class TestPostgresDBManager extends TestDBManager {
         dbManager = new PostgresDBManager();
         connSet = new ConnectionSettings();
     //    connSet.getConfFileSettings("Postgres.ini");
-        connSet.getProperties("/config/postgres.properties");
+        connSet.getSettingsFromFile("config/postgres.properties");
         dbManager.connect(connSet);
 
         if (!dbManager.isConnected()) {

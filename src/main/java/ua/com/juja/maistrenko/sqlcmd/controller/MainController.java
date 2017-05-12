@@ -4,7 +4,6 @@ import ua.com.juja.maistrenko.sqlcmd.controller.command.*;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
-
 public class MainController {
     private View view;
     private Command[] commands;
@@ -30,6 +29,8 @@ public class MainController {
     }
 
     public void run() {
+
+
         try {
             runCommands();
         } catch (NormalExitException e) {

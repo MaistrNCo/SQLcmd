@@ -22,11 +22,11 @@ public class ConnectDef implements Command {
     public void process(String userInput) {
         try {
             ConnectionSettings connectionSettings = new ConnectionSettings();
-            connectionSettings.getProperties("config/postgres.properties");
+            connectionSettings.getSettingsFromFile("config/postgres.properties");
             dbManager.connect(connectionSettings);
             view.write("Successful connection!!");
         } catch (Exception e) {
-            throw new RuntimeException("Can`t connect, check your Postgres.ini ", e);
+            view.write("Can`t connect, " + e.getMessage());
         }
 
     }

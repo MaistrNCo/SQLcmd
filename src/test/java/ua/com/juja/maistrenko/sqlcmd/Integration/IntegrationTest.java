@@ -154,7 +154,7 @@ public class IntegrationTest {
         in.add("list");
         ConnectionSettings connSet = new ConnectionSettings();
         //connSet.getConfFileSettings("Postgres.ini");
-        connSet.getProperties("src/main/config/Postgres.ini");
+        connSet.getSettingsFromFile("src/main/config/Postgres.ini");
         dbManager.connect(connSet);
         String[] tableList = dbManager.getTablesList();
         dbManager.disconnect();

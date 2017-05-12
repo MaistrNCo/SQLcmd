@@ -11,13 +11,13 @@ public interface DBManager {
 
     int getRowCount(String tableName) throws SQLException;
 
-    String[] getTablesList();
+    String[] getTablesList() throws SQLException;
 
     String[] getColumnsNames(String tableName);
 
-    void connect(ConnectionSettings conSettings);
+    void connect(ConnectionSettings conSettings) throws ClassNotFoundException, SQLException;
 
-    void disconnect();
+    void disconnect() throws SQLException;
 
     boolean isConnected();
 
@@ -31,10 +31,10 @@ public interface DBManager {
 
     void insert(String tableName, RowData rd);
 
-    void update(String tableName, String conditionName, String conditionValue, RowData newValue);
+    void updateTableByCondition(String tableName, String conditionName, String conditionValue, RowData newValue);
 
-    void createDB(String name);
+    void createDB(String name) throws SQLException;
 
-    void dropDB(String name);
+    void dropDB(String name) throws SQLException;
 
 }

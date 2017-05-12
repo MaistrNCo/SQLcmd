@@ -1,7 +1,6 @@
 package ua.com.juja.maistrenko.sqlcmd.model;
 
 import org.junit.*;
-
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
@@ -95,7 +94,7 @@ public abstract class TestDBManager {
         RowData newValue = new RowData(1);
         newValue.addColumnValue("password", "222");
 
-        dbManager.update("test", "id", "48", newValue);
+        dbManager.updateTableByCondition("test", "id", "48", newValue);
 
         RowData[] data = dbManager.selectAllFromTable("test");
 

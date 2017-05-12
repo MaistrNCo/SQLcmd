@@ -203,7 +203,7 @@ public class MySQLdbManager implements DBManager {
     }
 
     @Override
-    public void update(String tableName, String conditionName, String conditionValue, RowData newValue) {
+    public void updateTableByCondition(String tableName, String conditionName, String conditionValue, RowData newValue) {
         try (Statement statement = connection.createStatement()) {
             String values = "";
             String[] colNames = newValue.getNames();
@@ -211,11 +211,11 @@ public class MySQLdbManager implements DBManager {
             for (int ind = 0; ind < colNames.length; ind++) {
                 values = values + ((ind != 0) ? "," : "") + colNames[ind] + " = '" + colValues[ind] + "'";
             }
-            String updateSQL = "update " + tableName +
+            String updateSQL = "updateTableByCondition " + tableName +
                     " set " + values + " where " + conditionName + " = '" + conditionValue + "'";
             statement.executeUpdate(updateSQL);
         } catch (SQLException e) {
-            throw new RuntimeException("Can't update table " + tableName, e);
+            throw new RuntimeException("Can't updateTableByCondition table " + tableName, e);
         }
     }
 

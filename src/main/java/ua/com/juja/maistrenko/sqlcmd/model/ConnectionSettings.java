@@ -48,7 +48,7 @@ public class ConnectionSettings {
     }
 
 
-    public void getProperties(String settingsFileName){
+    public void getSettingsFromFile(String settingsFileName){
 
         FileInputStream fileInput = null;
         Properties properties = new Properties();

@@ -4,6 +4,8 @@ import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.model.ConnectionSettings;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
+import java.sql.SQLException;
+
 /**
  * Created by maistrenko on 19.03.17.
  */
@@ -27,7 +29,13 @@ public class Connect implements Command {
         String[] params = prepareParams(userInput, 3);
         String[] defParams = {"192.168.1.11", "5432", params[1], params[2], params[3]};
         conSet.setSettings(defParams);
-        dbManager.connect(conSet);
+        try {
+            dbManager.connect(conSet);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         view.write("Successful connection!!");
 
     }
