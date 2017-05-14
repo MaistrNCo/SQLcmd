@@ -203,7 +203,7 @@ public class MySQLdbManager implements DBManager {
     }
 
     @Override
-    public void updateTableByCondition(String tableName, String conditionName, String conditionValue, RowData newValue) {
+    public void update(String tableName, String conditionName, String conditionValue, RowData newValue) {
         try (Statement statement = connection.createStatement()) {
             String values = "";
             String[] colNames = newValue.getNames();

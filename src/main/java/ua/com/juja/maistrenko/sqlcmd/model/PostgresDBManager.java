@@ -9,7 +9,7 @@ public class PostgresDBManager implements DBManager {
     private Connection connection;
 
     @Override
-    public void connect(ConnectionSettings connSettings) throws ClassNotFoundException, SQLException {
+    public void connect(ConnectionSettings connSettings)  {
 
         Class.forName("org.postgresql.Driver");
         this.connection = DriverManager.getConnection(
@@ -174,7 +174,7 @@ public class PostgresDBManager implements DBManager {
     }
 
     @Override
-    public void updateTableByCondition(String tableName, String conditionName, String conditionValue, RowData newValue) {
+    public void update(String tableName, String conditionName, String conditionValue, RowData newValue) {
         try (Statement statement = connection.createStatement()) {
             String values = "";
             String[] colNames = newValue.getNames();
