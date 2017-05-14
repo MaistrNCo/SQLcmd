@@ -10,7 +10,7 @@ public class TestMySQLdbManager extends TestDBManager {
         dbManager = new MySQLdbManager();
         connSet = new ConnectionSettings();
         //connSet.getConfFileSettings("mySQL.ini");
-        connSet.getSettingsFromFile("config/mysql.properties");
+        connSet.getProperties("config/mysql.properties");
         dbManager.connect(connSet);
 
         if (!dbManager.isConnected()) {

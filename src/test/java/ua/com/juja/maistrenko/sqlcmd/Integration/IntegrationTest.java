@@ -1,5 +1,6 @@
 package ua.com.juja.maistrenko.sqlcmd.Integration;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
@@ -19,18 +20,49 @@ public class IntegrationTest {
     private static ConfigurableInputStream in;
     private static ByteArrayOutputStream out;
     private DBManager dbManager;
+    private ConnectionSettings connectionSettings = new ConnectionSettings();
     private String lineBreaker = System.lineSeparator();
 
     @Before
     public void setup() {
         dbManager = new PostgresDBManager();
-
-
+        connectionSettings.getProperties("config/postgres.properties");
+        createTestDB();
+        prepareTestTables();
         in = new ConfigurableInputStream();
         out = new ByteArrayOutputStream();
         System.setIn(in);
         System.setOut(new PrintStream(out));
 
+    }
+
+    @After
+    public void closeConnection() {
+        if (dbManager.isConnected()) {
+            dbManager.drop("test");
+            dbManager.drop("test2");
+            dbManager.drop("test3");
+            dbManager.disconnect();
+//            connSet.setDataBase("");
+//            dbManager.connect(connSet);
+//            dbManager.dropDB("testdb");
+//            dbManager.disconnect();
+        }
+    }
+
+    private void createTestDB() {
+        connectionSettings.setDataBase("");
+        dbManager.connect(connectionSettings);
+        dbManager.createDB("testdb");
+        dbManager.disconnect();
+        connectionSettings.setDataBase("testdb");
+        dbManager.connect(connectionSettings);
+    }
+
+    private void prepareTestTables() {
+        dbManager.create("test", new String[]{"name", "password"});
+        dbManager.create("test2", new String[]{"name", "password"});
+        dbManager.create("test3", new String[]{"name", "password"});
     }
 
     @Test
@@ -58,7 +90,7 @@ public class IntegrationTest {
 
     @Test
     public void testList() {
-        in.add("connect");
+        in.add(getConnectionInput());
         in.add("list");
         in.add("exit");
         Main.main(new String[0]);
@@ -67,14 +99,14 @@ public class IntegrationTest {
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
-                "[employee, users, test, test2]" + lineBreaker +
+                "[test, test2, test3]" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }
 
     @Test
     public void testConnect() {
-        in.add("connect|sqlcmd|postgres|postgres");
+        in.add(getConnectionInput());
         in.add("exit");
         Main.main(new String[0]);
 
@@ -87,13 +119,17 @@ public class IntegrationTest {
 
     @Test
     public void testWrongConnect() {
-        in.add("connect|sqlcmd|unknown|xxxx");
+        in.add("connect|" +
+                connectionSettings.getServer() + "|" +
+                connectionSettings.getPort() + "|" +
+                connectionSettings.getDataBase() + "|" +
+                "sqlcmd|unknown|xxxx");
         in.add("exit");
         Main.main(new String[0]);
 
         assertEquals("Hi, program started  " + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
-                "Unsuccessful operation by reason: Couldn`t connect to server 192.168.1.11:5432 to DB: sqlcmd user: unknown password: xxxx  Connection to database unknown for user xxxx failed!" + lineBreaker +
+                "Unsuccessful operation by reason: Connection to database sqlcmd for user unknown failed!  FATAL: password authentication failed for user \"sqlcmd\"" + lineBreaker +
                 "try again please" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
@@ -114,7 +150,7 @@ public class IntegrationTest {
 
     @Test
     public void testWrongInput() {
-        in.add("connect");
+        in.add(getConnectionInput());
         in.add("con");
         in.add("exit");
         Main.main(new String[0]);
@@ -130,7 +166,7 @@ public class IntegrationTest {
 
     @Test
     public void testCreate() {
-        in.add("connect");
+        in.add(getConnectionInput());
         //String[] tableList = dbManager.getTablesList();
         in.add("create|testtable|col1|col2|col3");
         in.add("drop|testtable");
@@ -150,14 +186,9 @@ public class IntegrationTest {
 
     @Test
     public void testCreateDrop() {
-        in.add("connect");
+        in.add(getConnectionInput());
         in.add("list");
-        ConnectionSettings connSet = new ConnectionSettings();
-        //connSet.getConfFileSettings("Postgres.ini");
-        connSet.getSettingsFromFile("src/main/config/Postgres.ini");
-        dbManager.connect(connSet);
         String[] tableList = dbManager.getTablesList();
-        dbManager.disconnect();
         String[] tableList2 = Arrays.copyOf(tableList, tableList.length + 1);
         tableList2[tableList2.length - 1] = "testtable";
         in.add("create|testtable|col1|col2|col3");
@@ -183,6 +214,15 @@ public class IntegrationTest {
                 Arrays.toString(tableList) + "" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
+    }
+
+    private String getConnectionInput() {
+        return "connect|" +
+        connectionSettings.getServer()+"|"+
+        connectionSettings.getPort()+"|"+
+        connectionSettings.getDataBase()+"|"+
+        connectionSettings.getUsername()+"|"+
+        connectionSettings.getPassword();
     }
 
     public String getData() {
