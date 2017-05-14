@@ -26,7 +26,7 @@ public class ConnectDef implements Command {
             dbManager.connect(connectionSettings);
             view.write("Successful connection!!");
         } catch (Exception e) {
-            throw new RuntimeException("Can`t connect, check your Postgres.ini ", e);
+            throw new RuntimeException("Can`t connect, check postgres.properties ", e);
         }
 
     }

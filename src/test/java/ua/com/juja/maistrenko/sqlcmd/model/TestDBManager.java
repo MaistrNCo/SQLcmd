@@ -39,6 +39,12 @@ public abstract class TestDBManager {
     }
 
 
+    private void prepareTestTables() {
+        dbManager.create("test", new String[]{"name", "password"});
+        dbManager.create("test2", new String[]{"name", "password"});
+        dbManager.create("test3", new String[]{"name", "password"});
+    }
+
     @After
     public void closeConnection() {
         if (dbManager.isConnected()) {
@@ -59,12 +65,6 @@ public abstract class TestDBManager {
         assertEquals("[test, test2, test3]", Arrays.toString(dbManager.getTablesList()));
 
 
-    }
-
-    private void prepareTestTables() {
-        dbManager.create("test", new String[]{"name", "password"});
-        dbManager.create("test2", new String[]{"name", "password"});
-        dbManager.create("test3", new String[]{"name", "password"});
     }
 
     @Test
