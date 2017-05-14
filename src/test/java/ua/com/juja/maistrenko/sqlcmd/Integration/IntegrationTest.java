@@ -20,14 +20,14 @@ public class IntegrationTest {
     private static ConfigurableInputStream in;
     private static ByteArrayOutputStream out;
     private DBManager dbManager;
-    private ConnectionSettings connectionSettings;
+    private ConnectionSettings connectionSettings = new ConnectionSettings();
     private String lineBreaker = System.lineSeparator();
 
     @Before
     public void setup() {
         dbManager = new PostgresDBManager();
-        createTestDB();
         connectionSettings.getProperties("config/postgres.properties");
+        createTestDB();
         prepareTestTables();
         in = new ConfigurableInputStream();
         out = new ByteArrayOutputStream();
@@ -99,7 +99,7 @@ public class IntegrationTest {
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
-                "[employee, users, test, test2]" + lineBreaker +
+                "[test, test2, test3]" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }
@@ -129,7 +129,7 @@ public class IntegrationTest {
 
         assertEquals("Hi, program started  " + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
-                "Unsuccessful operation by reason: Couldn`t connect to server 192.168.1.11:5432 to DB: sqlcmd user: unknown password: xxxx  Connection to database unknown for user xxxx failed!" + lineBreaker +
+                "Unsuccessful operation by reason: Connection to database sqlcmd for user unknown failed!  FATAL: password authentication failed for user \"sqlcmd\"" + lineBreaker +
                 "try again please" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
@@ -188,12 +188,7 @@ public class IntegrationTest {
     public void testCreateDrop() {
         in.add(getConnectionInput());
         in.add("list");
-        ConnectionSettings connSet = new ConnectionSettings();
-        //connSet.getConfFileSettings("Postgres.ini");
-        connSet.getProperties("src/main/config/Postgres.ini");
-        dbManager.connect(connSet);
         String[] tableList = dbManager.getTablesList();
-        dbManager.disconnect();
         String[] tableList2 = Arrays.copyOf(tableList, tableList.length + 1);
         tableList2[tableList2.length - 1] = "testtable";
         in.add("create|testtable|col1|col2|col3");
