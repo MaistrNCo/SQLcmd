@@ -17,7 +17,7 @@ public interface DBManager {
 
     void connect(ConnectionSettings conSettings);
 
-    void disconnect();
+    void disconnect() ;
 
     boolean isConnected();
 
