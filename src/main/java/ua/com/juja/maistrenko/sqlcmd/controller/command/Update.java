@@ -28,7 +28,7 @@ public class Update implements Command {
         for (int ind = 0; ind < (updParams.length - 4) / 2; ind += 2) {
             insData.addColumnValue(updParams[ind + 4], updParams[ind + 5]);
         }
-        dbManager.updateTableByCondition(updParams[1], updParams[2], updParams[3], insData);
+        dbManager.update(updParams[1], updParams[2], updParams[3], insData);
         view.write(" data in table " + updParams[1] + " updated");
     }
 }

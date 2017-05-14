@@ -9,18 +9,32 @@ public class PostgresDBManager implements DBManager {
     private Connection connection;
 
     @Override
-    public void connect(ConnectionSettings connSettings)  {
+    public void connect(ConnectionSettings connSettings) {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Where is your PostgreSQL JDBC Driver? ", e);
+        }
 
-        Class.forName("org.postgresql.Driver");
-        this.connection = DriverManager.getConnection(
-                "jdbc:postgresql://" + connSettings.getAddress(),
-                connSettings.getUsername(), connSettings.getPassword());
+        try {
+            this.connection = DriverManager.getConnection(
+                    "jdbc:postgresql://" + connSettings.getAddress(),
+                    connSettings.getUsername(), connSettings.getPassword());
+        } catch (SQLException e) {
+            throw new RuntimeException(String.format("Connection to database %s for user %s failed!",
+                    connSettings.getUsername(), connSettings.getPassword()), e);
+        }
     }
 
     @Override
-    public void disconnect() throws SQLException {
-        connection.close();
+    public void disconnect() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException("SQL disconnection problem ", e);
+        }
     }
+
 
     @Override
     public boolean isConnected() {
@@ -28,10 +42,12 @@ public class PostgresDBManager implements DBManager {
     }
 
     @Override
-    public String[] getTablesList() throws SQLException {
+    public String[] getTablesList() {
+
 
         String[] result = new String[100];
         int index = 0;
+
         String[] types = {"TABLE"};
 
         try {
@@ -43,10 +59,12 @@ public class PostgresDBManager implements DBManager {
             }
             result = Arrays.copyOf(result, index, String[].class);
         } catch (SQLException e) {
-            throw e;
+            System.out.println("Tables list is not available");
+            result = new String[0];
         }
         return result;
     }
+
 
     @Override
     public RowData[] selectAllFromTable(String tableName) {
@@ -182,15 +200,15 @@ public class PostgresDBManager implements DBManager {
             for (int ind = 0; ind < colNames.length; ind++) {
                 values = values + ((ind != 0) ? "," : "") + colNames[ind] + " = '" + colValues[ind] + "'";
             }
-            String updateSQL = "updateTableByCondition " + tableName + " set " + values + " where " + conditionName + " = '" + conditionValue + "'";
+            String updateSQL = "update " + tableName + " set " + values + " where " + conditionName + " = '" + conditionValue + "'";
             statement.executeUpdate(updateSQL);
         } catch (SQLException e) {
-            throw new RuntimeException("Couldn't updateTableByCondition table " + tableName, e);
+            throw new RuntimeException("Couldn't update table " + tableName, e);
         }
     }
 
     @Override
-    public void createDB(String name) throws SQLException {
+    public void createDB(String name) {
         String getDBlist = "SELECT * from pg_catalog.pg_database where datname = '" + name + "'";
         try (Statement statement = connection.createStatement();
              ResultSet resCount = statement.executeQuery(getDBlist)) {
@@ -200,12 +218,12 @@ public class PostgresDBManager implements DBManager {
                 System.out.println("Database created successfully...");
             }
         } catch (SQLException e) {
-            throw e;
+            throw new RuntimeException(" Couldn't create new database", e);
         }
     }
 
     @Override
-    public void dropDB(String name) throws SQLException {
+    public void dropDB(String name) {
         try (Statement st = connection.createStatement()) {
 
             String sql = "DROP DATABASE " + name;
@@ -213,7 +231,7 @@ public class PostgresDBManager implements DBManager {
             System.out.println("Database " + name + " dropped successfully...");
 
         } catch (SQLException e) {
-            throw e;
+            throw new RuntimeException(" Couldn't drop database " + name, e);
         }
     }
 

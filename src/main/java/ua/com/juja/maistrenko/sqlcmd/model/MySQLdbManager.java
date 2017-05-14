@@ -211,7 +211,7 @@ public class MySQLdbManager implements DBManager {
             for (int ind = 0; ind < colNames.length; ind++) {
                 values = values + ((ind != 0) ? "," : "") + colNames[ind] + " = '" + colValues[ind] + "'";
             }
-            String updateSQL = "updateTableByCondition " + tableName +
+            String updateSQL = "update " + tableName +
                     " set " + values + " where " + conditionName + " = '" + conditionValue + "'";
             statement.executeUpdate(updateSQL);
         } catch (SQLException e) {

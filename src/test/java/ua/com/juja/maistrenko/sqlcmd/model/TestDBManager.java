@@ -94,7 +94,7 @@ public abstract class TestDBManager {
         RowData newValue = new RowData(1);
         newValue.addColumnValue("password", "222");
 
-        dbManager.updateTableByCondition("test", "id", "48", newValue);
+        dbManager.update("test", "id", "48", newValue);
 
         RowData[] data = dbManager.selectAllFromTable("test");
 
