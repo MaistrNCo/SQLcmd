@@ -1,7 +1,6 @@
 package ua.com.juja.maistrenko.sqlcmd.model;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -105,23 +104,20 @@ public class MySQLdbManager implements DBManager {
     }
 
     @Override
-    public String[] getColumnsNames(String tableName) {
+    public Set <String> getColumnsNames(String tableName) {
+        Set<String> result = new LinkedHashSet<>();
         try {
             DatabaseMetaData metadata = connection.getMetaData();
             ResultSet resultSet = metadata.getColumns(null,
                     null, tableName, null);
-            ArrayList<String> result = new ArrayList<>();
             while (resultSet.next()) {
-                String name = resultSet.getString("COLUMN_NAME");
-                //   String type = resultSet.getString("TYPE_NAME");
-                //   int size = resultSet.getInt("COLUMN_SIZE");
-                result.add(name);
-                //   System.out.println("Column name: [" + name + "]; type: [" + type + "]; size: [" + size + "]");
+                result.add(resultSet.getString("COLUMN_NAME"));
             }
-            return result.toArray(new String[result.size()]);
+
         } catch (SQLException e) {
-            return new String[0];
+
         }
+        return result;
     }
 
 

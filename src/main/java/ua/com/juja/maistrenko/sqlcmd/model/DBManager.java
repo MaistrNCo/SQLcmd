@@ -14,7 +14,7 @@ public interface DBManager {
 
     Set<String> getTablesList();
 
-    String[] getColumnsNames(String tableName);
+    Set<String> getColumnsNames(String tableName);
 
     void connect(ConnectionSettings conSettings);
 

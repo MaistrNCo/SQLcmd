@@ -8,6 +8,9 @@ import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.model.RowData;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -52,7 +55,8 @@ public class FindTest {
 
         RowData[] data = new RowData[]{user1, user2};
 
-        Mockito.when(dbManager.getColumnsNames("users")).thenReturn(new String[]{"id", "name", "password"});
+        Mockito.when(dbManager.getColumnsNames("users"))
+                .thenReturn(new LinkedHashSet<String>(Arrays.asList("id", "name", "password")));  // ());
         Mockito.when(dbManager.selectAllFromTable("users")).thenReturn(data);
 
         //when
@@ -71,7 +75,8 @@ public class FindTest {
 
         RowData[] data = new RowData[0];
 
-        Mockito.when(dbManager.getColumnsNames("users")).thenReturn(new String[]{"id", "name", "password"});
+        Mockito.when(dbManager.getColumnsNames("users"))
+                .thenReturn(new LinkedHashSet<>(Arrays.asList("id", "name", "password")));
         Mockito.when(dbManager.selectAllFromTable("users")).thenReturn(data);
 
         //when
