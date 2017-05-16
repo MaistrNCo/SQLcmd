@@ -61,7 +61,7 @@ public abstract class TestDBManager {
     @Test
     public void testAllTablesList() {
 
-        assertEquals("[test, test2, test3]", Arrays.toString(dbManager.getTablesList()));
+        assertEquals("[test, test2, test3]", dbManager.getTablesList().toString());
 
 
     }
@@ -106,7 +106,6 @@ public abstract class TestDBManager {
         }
     }
 
-
     @Test
     public void testGetColumnsNames() {
         assertEquals("[id, name, password]", Arrays.toString(dbManager.getColumnsNames("test")));
@@ -115,9 +114,9 @@ public abstract class TestDBManager {
     @Test
     public void testCreateTable() {
         dbManager.create("test4", new String[]{"name", "age"});
-        Assert.assertEquals("[test, test2, test3, test4]", Arrays.toString(dbManager.getTablesList()));
+        Assert.assertEquals("[test, test2, test3, test4]", dbManager.getTablesList().toString());
         ;
         dbManager.drop("test4");
-        Assert.assertEquals("[test, test2, test3]", Arrays.toString(dbManager.getTablesList()));
+        Assert.assertEquals("[test, test2, test3]", dbManager.getTablesList().toString());
     }
 }

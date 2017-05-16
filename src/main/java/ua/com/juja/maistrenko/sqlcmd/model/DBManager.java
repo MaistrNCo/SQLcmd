@@ -1,6 +1,7 @@
 package ua.com.juja.maistrenko.sqlcmd.model;
 
 import java.sql.SQLException;
+import java.util.Set;
 
 /**
  * Created by maistrenko on 12.03.17.
@@ -11,7 +12,7 @@ public interface DBManager {
 
     int getRowCount(String tableName) throws SQLException;
 
-    String[] getTablesList();
+    Set<String> getTablesList();
 
     String[] getColumnsNames(String tableName);
 

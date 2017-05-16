@@ -13,7 +13,8 @@ import ua.com.juja.maistrenko.sqlcmd.model.ConnectionSettings;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class IntegrationTest {
 
@@ -188,9 +189,10 @@ public class IntegrationTest {
     public void testCreateDrop() {
         in.add(getConnectionInput());
         in.add("list");
-        String[] tableList = dbManager.getTablesList();
-        String[] tableList2 = Arrays.copyOf(tableList, tableList.length + 1);
-        tableList2[tableList2.length - 1] = "testtable";
+        Set<String> tableList = dbManager.getTablesList();
+        Set<String> tableList2 = new LinkedHashSet<>();
+        tableList2.addAll(tableList)        ;
+        tableList2.add("testtable");
         in.add("create|testtable|col1|col2|col3");
         in.add("list");
         in.add("drop|testtable");
@@ -203,15 +205,15 @@ public class IntegrationTest {
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
-                Arrays.toString(tableList) + "" + lineBreaker +
+                tableList.toString() + "" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
                 " created table testtable with columns [id, col1, col2, col3]" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
-                Arrays.toString(tableList2) + "" + lineBreaker +
+                tableList2.toString() + "" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Table testtable deleted from database successfully" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
-                Arrays.toString(tableList) + "" + lineBreaker +
+                tableList.toString() + "" + lineBreaker +
                 "input command please or 'help' to see commands list" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }
@@ -225,7 +227,7 @@ public class IntegrationTest {
         connectionSettings.getPassword();
     }
 
-    public String getData() {
+    private String getData() {
         try {
             String result = new String(out.toByteArray(), "UTF-8");
             return result;

@@ -3,11 +3,6 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
-import java.util.Arrays;
-
-/**
- * Created by maistrenko on 18.03.17.
- */
 public class TablesList implements Command {
     private final DBManager dbManager;
     private final View view;
@@ -24,6 +19,6 @@ public class TablesList implements Command {
 
     @Override
     public void process(String userInput) {
-        view.write(Arrays.toString(dbManager.getTablesList()));
+        view.write(dbManager.getTablesList().toString());
     }
 }

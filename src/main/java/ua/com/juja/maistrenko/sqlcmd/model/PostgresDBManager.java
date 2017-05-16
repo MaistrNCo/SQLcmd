@@ -2,7 +2,8 @@ package ua.com.juja.maistrenko.sqlcmd.model;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class PostgresDBManager implements DBManager {
 
@@ -42,25 +43,18 @@ public class PostgresDBManager implements DBManager {
     }
 
     @Override
-    public String[] getTablesList() {
-
-
-        String[] result = new String[100];
-        int index = 0;
-
+    public Set<String> getTablesList() {
+        Set <String> result = new LinkedHashSet<>();
         String[] types = {"TABLE"};
-
         try {
             DatabaseMetaData md = connection.getMetaData();
             ResultSet rs = md.getTables(null,
                     null, "%", types);
             while (rs.next()) {
-                result[index++] = rs.getString(3);
+                result.add(rs.getString(3));
             }
-            result = Arrays.copyOf(result, index, String[].class);
         } catch (SQLException e) {
             System.out.println("Tables list is not available");
-            result = new String[0];
         }
         return result;
     }
