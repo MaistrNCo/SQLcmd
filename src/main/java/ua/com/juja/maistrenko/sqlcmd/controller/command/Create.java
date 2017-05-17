@@ -5,9 +5,6 @@ import ua.com.juja.maistrenko.sqlcmd.view.View;
 
 import java.util.Arrays;
 
-/**
- * Created by maistrenko on 18.03.17.
- */
 public class Create implements Command {
     private final View view;
     private final DBManager dbManager;

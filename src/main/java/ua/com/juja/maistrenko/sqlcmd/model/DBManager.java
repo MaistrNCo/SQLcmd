@@ -1,17 +1,11 @@
 package ua.com.juja.maistrenko.sqlcmd.model;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by maistrenko on 12.03.17.
- */
 public interface DBManager {
 
     List<RowData> selectAllFromTable(String tableName);
-
-    int getRowCount(String tableName) throws SQLException;
 
     Set<String> getTablesList();
 

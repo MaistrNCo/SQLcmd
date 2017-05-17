@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ConnectParamsParser extends MinAmountParamsParser{
 
-    public static final int INDEX_SERVER_NAME = 1;
+    private static final int INDEX_SERVER_NAME = 1;
 
     @Override
     public List<String> parseInputString(String userInput) {

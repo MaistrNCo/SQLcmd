@@ -3,10 +3,7 @@ package ua.com.juja.maistrenko.sqlcmd.Integration;
 import java.io.IOException;
 import java.io.OutputStream;
 
-/**
- * Created by maistrenko on 28.03.2017.
- */
-public class LogOutputStream extends OutputStream {
+class LogOutputStream extends OutputStream {
     private String log;
 
     @Override

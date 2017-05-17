@@ -17,16 +17,11 @@ public class RowData {
     }
 
     public Set<String> getNames() {
-        Set<String> result = new TreeSet<>();
-
-        for(String column:columns.keySet()) {
-            result.add(column);
-        }
-        return result;
+        return columns.keySet();
     }
 
     public List<Object> getValues() {
-        return new ArrayList<Object>(columns.values()) ;
+        return new ArrayList<>(columns.values()) ;
     }
 
     public Object get(String column){

@@ -84,18 +84,6 @@ public class PostgresDBManager implements DBManager {
     }
 
     @Override
-    public int getRowCount(String tableName) {
-        String selectRowCount = "SELECT COUNT (*) from " + tableName;
-        try (Statement statement = connection.createStatement();
-             ResultSet resCount = statement.executeQuery(selectRowCount)) {
-            resCount.next();
-            return resCount.getInt("count");
-        } catch (SQLException e) {
-            throw new RuntimeException("Couldn't get row count for  table " + tableName, e);
-        }
-    }
-
-    @Override
     public Set<String> getColumnsNames(String tableName) {
         Set<String> result = new LinkedHashSet<>();
         try {
@@ -133,15 +121,15 @@ public class PostgresDBManager implements DBManager {
 
     @Override
     public void create(String tableName, String[] columnNames) {
-        String createTableSQL = "CREATE TABLE IF NOT EXISTS " + tableName +
-                "(ID SERIAL NOT NULL PRIMARY KEY ";
+        StringBuilder createTableSQL = new StringBuilder("CREATE TABLE IF NOT EXISTS " + tableName +
+                "(ID SERIAL NOT NULL PRIMARY KEY ");
 
         for (String column : columnNames) {
-            createTableSQL += ", " + column + " text";
+            createTableSQL.append(", " + column + " text");
         }
-        createTableSQL += ")";
-        try (Statement statement = connection.createStatement();) {
-            statement.executeUpdate(createTableSQL);
+        createTableSQL.append(")");
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(createTableSQL.toString());
             statement.close();
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't create table " + tableName, e);
@@ -151,7 +139,7 @@ public class PostgresDBManager implements DBManager {
     @Override
     public void delete(String tableName, String conditionName, String conditionValue) {
         String deleteRowsSQL = "delete from " + tableName + " where " + conditionName + " = '" + conditionValue + "'";
-        try (Statement statement = connection.createStatement();) {
+        try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(deleteRowsSQL);
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't delete records from  table " + tableName, e);
@@ -180,12 +168,12 @@ public class PostgresDBManager implements DBManager {
     @Override
     public void update(String tableName, String conditionName, String conditionValue, RowData newValue) {
         try (Statement statement = connection.createStatement()) {
-            String values = "";
+            StringBuilder values = new StringBuilder("");
             Set<String> colNames = newValue.getNames();
             List<Object> colValues = newValue.getValues();
             int ind = 0;
             for (String column:colNames ) {
-                values = values + ((ind != 0) ? "," : "") + column + " = '" + colValues.get(ind) + "'";
+                values.append(((ind != 0) ? "," : "") + column + " = '" + colValues.get(ind) + "'");
                 ind++;
             }
             String updateSQL = "update " + tableName + " set " + values + " where " + conditionName + " = '" + conditionValue + "'";

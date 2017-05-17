@@ -29,8 +29,6 @@ public class MainController {
     }
 
     public void run() {
-
-
         try {
             runCommands();
         } catch (NormalExitException e) {
@@ -60,7 +58,7 @@ public class MainController {
         }
     }
 
-    public void showErrorMessage(Exception e) {
+    private void showErrorMessage(Exception e) {
         String errorReason = e.getMessage();
         if (e.getCause() != null) errorReason += "  " + e.getCause().getMessage();
         view.write("Unsuccessful operation by reason: " + errorReason);

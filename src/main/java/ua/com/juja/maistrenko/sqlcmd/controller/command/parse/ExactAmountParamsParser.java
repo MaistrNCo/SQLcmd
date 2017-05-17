@@ -3,12 +3,9 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command.parse;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by maistrenko on 07.05.17.
- */
 public class ExactAmountParamsParser implements Parser{
 
-    public static final int INDEX_HELP_PARAM_WAITED = 1;
+    private static final int INDEX_HELP_PARAM_WAITED = 1;
 
     @Override
     public List<String> parseInputString(String userInput) {

@@ -10,10 +10,10 @@ import static org.junit.Assert.assertEquals;
  * Created by maistrenko on 12.03.17.
  */
 public abstract class TestDBManager {
-    protected DBManager dbManager;
-    protected ConnectionSettings connSet;
+    DBManager dbManager;
+    ConnectionSettings connSet;
 
-    public abstract void initConnection();
+    protected abstract void initConnection();
 
     @Before
     public void setup() {
@@ -116,7 +116,6 @@ public abstract class TestDBManager {
     public void testCreateTable() {
         dbManager.create("test4", new String[]{"name", "age"});
         Assert.assertEquals("[test, test2, test3, test4]", dbManager.getTablesList().toString());
-        ;
         dbManager.drop("test4");
         Assert.assertEquals("[test, test2, test3]", dbManager.getTablesList().toString());
     }

@@ -7,9 +7,6 @@ import ua.com.juja.maistrenko.sqlcmd.view.View;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by maistrenko on 18.03.17.
- */
 public class Find implements Command {
     private final View view;
     private final DBManager dbManager;
@@ -30,17 +27,17 @@ public class Find implements Command {
         String tableName = params[1];
         Set <String> columnsNames = dbManager.getColumnsNames(tableName);
         List<RowData> rowDatas = dbManager.selectAllFromTable(tableName);
-        String header = "|";
+        StringBuilder header = new StringBuilder("|");
         for (String colName : columnsNames) {
-            header += colName + "\t|";
+            header.append(colName + "\t|");
         }
-        view.write(header);
+        view.write(header.toString());
         for (RowData row : rowDatas) {
-            String str = "|";
+            StringBuilder str = new StringBuilder("|");
             for (Object val : row.getValues()) {
-                str += val + "\t|";
+                str.append(val + "\t|");
             }
-            view.write(str);
+            view.write(str.toString());
         }
     }
 }

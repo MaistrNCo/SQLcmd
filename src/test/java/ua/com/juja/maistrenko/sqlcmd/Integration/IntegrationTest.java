@@ -44,10 +44,6 @@ public class IntegrationTest {
             dbManager.drop("test2");
             dbManager.drop("test3");
             dbManager.disconnect();
-//            connSet.setDataBase("");
-//            dbManager.connect(connSet);
-//            dbManager.dropDB("testdb");
-//            dbManager.disconnect();
         }
     }
 
@@ -229,8 +225,7 @@ public class IntegrationTest {
 
     private String getData() {
         try {
-            String result = new String(out.toByteArray(), "UTF-8");
-            return result;
+            return new String(out.toByteArray(), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             return e.getMessage();
         }

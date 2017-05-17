@@ -16,9 +16,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by maistrenko on 06.04.2017.
- */
 public class FindTest {
 
     private View view;
@@ -58,7 +55,7 @@ public class FindTest {
         List<RowData> data = new LinkedList<>(Arrays.asList(user1, user2));
 
         Mockito.when(dbManager.getColumnsNames("users"))
-                .thenReturn(new LinkedHashSet<String>(Arrays.asList("id", "name", "password")));  // ());
+                .thenReturn(new LinkedHashSet<>(Arrays.asList("id", "name", "password")));  // ());
         Mockito.when(dbManager.selectAllFromTable("users")).thenReturn(data);
 
         //when

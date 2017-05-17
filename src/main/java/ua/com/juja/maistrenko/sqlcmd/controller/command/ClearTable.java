@@ -9,8 +9,8 @@ import java.util.List;
 
 public class ClearTable implements Command {
 
-    public static final String DESCRIPTION = "clear|tableName - to delete all data in table 'tableName'";
-    public static final String COMMAND_PATTERN = "clear|tableName";
+    private static final String DESCRIPTION = "clear|tableName - to delete all data in table 'tableName'";
+    private static final String COMMAND_PATTERN = "clear|tableName";
     private static final int TABLE_NAME_INDEX = 1;
     private Parser parser = new ExactAmountParamsParser();
     private final DBManager dbManager;

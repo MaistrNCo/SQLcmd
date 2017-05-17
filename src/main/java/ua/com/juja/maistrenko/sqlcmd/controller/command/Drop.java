@@ -3,9 +3,6 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
-/**
- * Created by maistrenko on 18.03.17.
- */
 public class Drop implements Command {
     private final View view;
     private final DBManager dbManager;

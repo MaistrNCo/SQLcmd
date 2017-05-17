@@ -1,8 +1,5 @@
 package ua.com.juja.maistrenko.sqlcmd.controller.command;
 
-/**
- * Created by maistrenko on 16.03.17.
- */
 public interface Command {
     boolean canProcess(String userInput);
 
