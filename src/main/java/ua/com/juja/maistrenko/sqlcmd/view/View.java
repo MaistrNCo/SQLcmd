@@ -5,6 +5,6 @@ package ua.com.juja.maistrenko.sqlcmd.view;
  */
 public interface View {
     void write(String message);
-
+    void writeWrongParamsMsg(String pattern, String userInput);
     String read();
 }

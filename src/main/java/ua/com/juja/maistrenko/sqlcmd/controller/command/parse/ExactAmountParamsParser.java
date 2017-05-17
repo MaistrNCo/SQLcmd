@@ -19,7 +19,11 @@ public class ExactAmountParamsParser implements Parser{
 
     @Override
     public boolean isHelpNeeded(List<String> paramsList) {
-        return paramsList.get(INDEX_HELP_PARAM_WAITED).equalsIgnoreCase("help");
+        if (paramsList.size() > INDEX_HELP_PARAM_WAITED ) {
+            return paramsList.get(INDEX_HELP_PARAM_WAITED).equalsIgnoreCase("help");
+        } else {
+            return false;
+        }
     }
 
     @Override

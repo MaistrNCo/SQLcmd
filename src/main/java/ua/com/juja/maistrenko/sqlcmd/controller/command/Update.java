@@ -18,7 +18,7 @@ public class Update implements Command {
 
     @Override
     public boolean canProcess(String userInput) {
-        return userInput.startsWith("updateTableByCondition|");
+        return userInput.startsWith("update|");
     }
 
     @Override
