@@ -16,6 +16,6 @@ public class ConnectParamsParser extends MinAmountParamsParser{
         } else {
             result.add(INDEX_SERVER_NAME+1,"");
         }
-        return result;
+        return result.subList(INDEX_SERVER_NAME,result.size());
     }
 }

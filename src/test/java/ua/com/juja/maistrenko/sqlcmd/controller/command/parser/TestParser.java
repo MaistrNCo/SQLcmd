@@ -27,20 +27,20 @@ public class TestParser {
     public void testConnectionParser() {
         Parser parser = new ConnectParamsParser();
         List<String> list = parser.parseInputString("connect|  localhost|sqlcmd|postgres | postgres ");
-        assertEquals("connect", list.get(0));
-        assertEquals("localhost", list.get(1));
-        assertEquals("", list.get(2));
-        assertEquals("sqlcmd", list.get(3));
+
+        assertEquals("localhost", list.get(0));
+        assertEquals("", list.get(1));
+        assertEquals("sqlcmd", list.get(2));
+        assertEquals("postgres", list.get(3));
         assertEquals("postgres", list.get(4));
-        assertEquals("postgres", list.get(5));
 
         list = parser.parseInputString("connect|  localhost : 5432| sqlcmd|postgres |postgres ");
-        assertEquals("connect", list.get(0));
-        assertEquals("localhost", list.get(1));
-        assertEquals("5432", list.get(2));
-        assertEquals("sqlcmd", list.get(3));
+
+        assertEquals("localhost", list.get(0));
+        assertEquals("5432", list.get(1));
+        assertEquals("sqlcmd", list.get(2));
+        assertEquals("postgres", list.get(3));
         assertEquals("postgres", list.get(4));
-        assertEquals("postgres", list.get(5));
     }
 
     @Test

@@ -37,9 +37,9 @@ public class MainController {
     }
 
     private void runCommands() {
-        view.write("Hi, program started  ");
+        view.write("Hi, program started !");
+        view.write("Input command please or 'help' to see commands list");
         while (true) {
-            view.write("input command please or 'help' to see commands list");
             String input = view.read();
             for (Command command : commands) {
                 try {

@@ -1,6 +1,7 @@
 package ua.com.juja.maistrenko.sqlcmd.model;
 
 import java.io.*;
+import java.util.List;
 import java.util.Properties;
 
 public class ConnectionSettings {
@@ -21,6 +22,13 @@ public class ConnectionSettings {
         this.dataBase = set[2];
         this.username = set[3];
         this.password = set[4];
+    }
+    public void setSettings(List<String> set) {
+        this.server = set.get(0);
+        this.port = set.get(1);
+        this.dataBase = set.get(2);
+        this.username = set.get(3);
+        this.password = set.get(4);
     }
 
     public String getAddress() {
