@@ -74,9 +74,9 @@ public class MySQLdbManager implements DBManager {
             int columnCount = rs.getMetaData().getColumnCount();
             int ind = 0;
             while (rs.next()) {
-                RowData currRow = new RowData(columnCount);
+                RowData currRow = new RowData();
                 for (int i = 1; i <= columnCount; i++) {
-                    currRow.addColumnValue(rs.getMetaData().getColumnName(i), rs.getString(i));
+                    currRow.put(rs.getMetaData().getColumnName(i), rs.getString(i));
                 }
                 dataTable.add(currRow);
             }
@@ -195,10 +195,12 @@ public class MySQLdbManager implements DBManager {
     public void update(String tableName, String conditionName, String conditionValue, RowData newValue) {
         try (Statement statement = connection.createStatement()) {
             String values = "";
-            String[] colNames = newValue.getNames();
-            Object[] colValues = newValue.getValues();
-            for (int ind = 0; ind < colNames.length; ind++) {
-                values = values + ((ind != 0) ? "," : "") + colNames[ind] + " = '" + colValues[ind] + "'";
+            Set<String> colNames = newValue.getNames();
+            List<Object> colValues = newValue.getValues();
+            int ind = 0;
+            for (String column:colNames) {
+                values = values + ((ind != 0) ? "," : "") + column + " = '" + colValues.get(ind) + "'";
+                ind++;
             }
             String updateSQL = "update " + tableName +
                     " set " + values + " where " + conditionName + " = '" + conditionValue + "'";

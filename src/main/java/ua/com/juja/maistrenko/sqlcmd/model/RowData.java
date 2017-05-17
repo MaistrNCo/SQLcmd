@@ -1,63 +1,37 @@
 package ua.com.juja.maistrenko.sqlcmd.model;
 
+import java.util.*;
+
 /**
  * Created by maistrenko on 08.03.17.
  */
 public class RowData {
-    private Column[] columns;
-    private int index;
+    private HashMap<String, Object> columns;
 
-    public RowData(int columnsCount) {
-        this.columns = new Column[columnsCount];
+    public RowData() {
+        this.columns = new LinkedHashMap<>();
     }
 
-    public void addColumnValue(String name, String value) {
-        columns[index++] = new Column(name, value);
+    public void put(String name, String value) {
+        columns.put(name, value);
     }
 
-    public String[] getNames() {
-        String[] result = new String[columns.length];
-        int i = 0;
-        for (Column col : columns) {
-            result[i++] = col.getName();
+    public Set<String> getNames() {
+        Set<String> result = new TreeSet<>();
+
+        for(String column:columns.keySet()) {
+            result.add(column);
         }
         return result;
     }
 
-    public Object[] getValues() {
-        Object[] result = new Object[columns.length];
-        int i = 0;
-        for (Column col : columns) {
-            result[i++] = col.getValue();
-        }
-        return result;
+    public List<Object> getValues() {
+        return new ArrayList<Object>(columns.values()) ;
     }
 
-    @Override
-    public String toString() {
-        String result = "RowData ";
-        for (Column col : columns) {
-            result = result.concat("\\t " + col.getName() + "\\t  " + col.getValue());
-        }
-
-        return result;
+    public Object get(String column){
+        return columns.get(column);
     }
 
-    private class Column {
-        private String name;
-        private String value;
 
-        public Column(String name, String value) {
-            this.name = name;
-            this.value = value;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getValue() {
-            return value;
-        }
-    }
 }

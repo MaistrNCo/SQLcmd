@@ -70,9 +70,9 @@ public class PostgresDBManager implements DBManager {
             int columnCount = rs.getMetaData().getColumnCount();
             int ind = 0;
             while (rs.next()) {
-                RowData currRow = new RowData(columnCount);
+                RowData currRow = new RowData();
                 for (int i = 1; i <= columnCount; i++) {
-                    currRow.addColumnValue(rs.getMetaData().getColumnName(i), rs.getString(i));
+                    currRow.put(rs.getMetaData().getColumnName(i), rs.getString(i));
                 }
                 dataTable.add(currRow);
             }
@@ -159,15 +159,13 @@ public class PostgresDBManager implements DBManager {
     }
 
     @Override
-    public void insert(String tableName, RowData rd) {
+    public void insert(String tableName, RowData rowData) {
         try (Statement statement = connection.createStatement()) {
             String columnNames = "";
             String values = "";
-            for (String colName : rd.getNames()) {
-                columnNames = columnNames.concat(((columnNames.length() > 0) ? "," : "") + colName);
-            }
-            for (Object colValue : rd.getValues()) {
-                values = values.concat(((values.length() > 0) ? "," : "") + "'" + colValue.toString() + "'");
+            for (String columnName : rowData.getNames()) {
+                columnNames = columnNames.concat(((columnNames.length() > 0) ? "," : "") + columnName);
+                values = values.concat(((values.length() > 0) ? "," : "") + "'" + rowData.get(columnName) + "'");
             }
 
             String insertRowSQL = "insert into " + tableName
@@ -183,10 +181,12 @@ public class PostgresDBManager implements DBManager {
     public void update(String tableName, String conditionName, String conditionValue, RowData newValue) {
         try (Statement statement = connection.createStatement()) {
             String values = "";
-            String[] colNames = newValue.getNames();
-            Object[] colValues = newValue.getValues();
-            for (int ind = 0; ind < colNames.length; ind++) {
-                values = values + ((ind != 0) ? "," : "") + colNames[ind] + " = '" + colValues[ind] + "'";
+            Set<String> colNames = newValue.getNames();
+            List<Object> colValues = newValue.getValues();
+            int ind = 0;
+            for (String column:colNames ) {
+                values = values + ((ind != 0) ? "," : "") + column + " = '" + colValues.get(ind) + "'";
+                ind++;
             }
             String updateSQL = "update " + tableName + " set " + values + " where " + conditionName + " = '" + conditionValue + "'";
             statement.executeUpdate(updateSQL);

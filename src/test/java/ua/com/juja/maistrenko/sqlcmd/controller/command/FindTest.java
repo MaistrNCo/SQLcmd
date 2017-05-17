@@ -46,14 +46,14 @@ public class FindTest {
 
     @Test
     public void testSelectFromTable() {
-        RowData user1 = new RowData(3);
-        user1.addColumnValue("id", "2");
-        user1.addColumnValue("name", "Jimm");
-        user1.addColumnValue("password", "123");
-        RowData user2 = new RowData(3);
-        user2.addColumnValue("id", "3");
-        user2.addColumnValue("name", "Bimm");
-        user2.addColumnValue("password", "321");
+        RowData user1 = new RowData();
+        user1.put("id", "2");
+        user1.put("name", "Jimm");
+        user1.put("password", "123");
+        RowData user2 = new RowData();
+        user2.put("id", "3");
+        user2.put("name", "Bimm");
+        user2.put("password", "321");
 
         List<RowData> data = new LinkedList<>(Arrays.asList(user1, user2));
 

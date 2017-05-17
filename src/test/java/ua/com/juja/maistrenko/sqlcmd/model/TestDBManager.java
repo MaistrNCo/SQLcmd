@@ -1,7 +1,7 @@
 package ua.com.juja.maistrenko.sqlcmd.model;
 
 import org.junit.*;
-import java.util.Arrays;
+
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -69,31 +69,31 @@ public abstract class TestDBManager {
 
     @Test
     public void testSelect() {
-        RowData rd = new RowData(3);
-        rd.addColumnValue("name", "Jimmi");
-        rd.addColumnValue("password", "111111");
-        rd.addColumnValue("id", "48");
+        RowData rowData = new RowData();
+        rowData.put("id", "48");
+        rowData.put("name", "Jimmi");
+        rowData.put("password", "111111");
 
-        dbManager.insert("test", rd);
+        dbManager.insert("test", rowData);
         List<RowData> data = dbManager.selectAllFromTable("test");
         assertEquals(1, data.size());
         for (RowData row : data) {
-            assertEquals("[id, name, password]", Arrays.toString(data.get(0).getNames()));
-            assertEquals("[48, Jimmi, 111111]", Arrays.toString(data.get(0).getValues()));
+            assertEquals("[id, name, password]", data.get(0).getNames().toString());
+            assertEquals("[48, Jimmi, 111111]", data.get(0).getValues().toString());
             //System.out.println(row.toString());
         }
     }
 
     @Test
     public void testUpdate() {
-        RowData rd = new RowData(3);
-        rd.addColumnValue("name", "Jimmi");
-        rd.addColumnValue("password", "111111");
-        rd.addColumnValue("id", "48");
+        RowData rd = new RowData();
+        rd.put("name", "Jimmi");
+        rd.put("password", "111111");
+        rd.put("id", "48");
         dbManager.insert("test", rd);
 
-        RowData newValue = new RowData(1);
-        newValue.addColumnValue("password", "222");
+        RowData newValue = new RowData();
+        newValue.put("password", "222");
 
         dbManager.update("test", "id", "48", newValue);
 
@@ -101,8 +101,8 @@ public abstract class TestDBManager {
 
         assertEquals(1, data.size());
         for (RowData row : data) {
-            assertEquals("[id, name, password]", Arrays.toString(data.get(0).getNames()));
-            assertEquals("[48, Jimmi, 222]", Arrays.toString(data.get(0).getValues()));
+            assertEquals("[id, name, password]", data.get(0).getNames().toString());
+            assertEquals("[48, Jimmi, 222]", data.get(0).getValues().toString());
             //System.out.println(row.toString());
         }
     }

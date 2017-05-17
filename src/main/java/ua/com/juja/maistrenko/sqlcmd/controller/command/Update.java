@@ -24,9 +24,9 @@ public class Update implements Command {
     @Override
     public void process(String userInput) {
         String[] updParams = prepareParams(userInput, 6);
-        RowData insData = new RowData((updParams.length - 4) / 2);
+        RowData insData = new RowData();
         for (int ind = 0; ind < (updParams.length - 4) / 2; ind += 2) {
-            insData.addColumnValue(updParams[ind + 4], updParams[ind + 5]);
+            insData.put(updParams[ind + 4], updParams[ind + 5]);
         }
         dbManager.update(updParams[1], updParams[2], updParams[3], insData);
         view.write(" data in table " + updParams[1] + " updated");
