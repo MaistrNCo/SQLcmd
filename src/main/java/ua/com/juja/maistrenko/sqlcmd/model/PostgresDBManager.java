@@ -2,6 +2,8 @@ package ua.com.juja.maistrenko.sqlcmd.model;
 
 import java.sql.*;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 public class PostgresDBManager implements DBManager {
@@ -60,27 +62,24 @@ public class PostgresDBManager implements DBManager {
 
 
     @Override
-    public RowData[] selectAllFromTable(String tableName) {
+    public List<RowData> selectAllFromTable(String tableName) {
+        List<RowData> dataTable = new LinkedList<>();
         String selectTableSQL = "SELECT * from " + tableName;
         try (Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(selectTableSQL)) {
-            int count = getRowCount(tableName);
             int columnCount = rs.getMetaData().getColumnCount();
-            //System.out.println("row count : "+count + " col count : " +columnCount);
-
-            RowData[] dataTable = new RowData[count];
             int ind = 0;
             while (rs.next()) {
                 RowData currRow = new RowData(columnCount);
                 for (int i = 1; i <= columnCount; i++) {
                     currRow.addColumnValue(rs.getMetaData().getColumnName(i), rs.getString(i));
                 }
-                dataTable[ind++] = currRow;
+                dataTable.add(currRow);
             }
-            return dataTable;
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't print table " + tableName, e);
         }
+        return dataTable;
 
     }
 

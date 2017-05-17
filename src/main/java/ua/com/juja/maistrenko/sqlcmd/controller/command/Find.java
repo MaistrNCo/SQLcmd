@@ -3,6 +3,8 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.model.RowData;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
+
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -27,7 +29,7 @@ public class Find implements Command {
         String[] params = prepareParams(userInput, 2);
         String tableName = params[1];
         Set <String> columnsNames = dbManager.getColumnsNames(tableName);
-        RowData[] rowDatas = dbManager.selectAllFromTable(tableName);
+        List<RowData> rowDatas = dbManager.selectAllFromTable(tableName);
         String header = "|";
         for (String colName : columnsNames) {
             header += colName + "\t|";

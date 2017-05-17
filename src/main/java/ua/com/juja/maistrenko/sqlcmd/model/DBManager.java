@@ -1,6 +1,7 @@
 package ua.com.juja.maistrenko.sqlcmd.model;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Set;
  */
 public interface DBManager {
 
-    RowData[] selectAllFromTable(String tableName);
+    List<RowData> selectAllFromTable(String tableName);
 
     int getRowCount(String tableName) throws SQLException;
 

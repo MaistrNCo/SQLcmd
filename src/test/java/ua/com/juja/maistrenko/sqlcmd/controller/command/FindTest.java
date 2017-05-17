@@ -10,6 +10,8 @@ import ua.com.juja.maistrenko.sqlcmd.view.View;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -53,7 +55,7 @@ public class FindTest {
         user2.addColumnValue("name", "Bimm");
         user2.addColumnValue("password", "321");
 
-        RowData[] data = new RowData[]{user1, user2};
+        List<RowData> data = new LinkedList<>(Arrays.asList(user1, user2));
 
         Mockito.when(dbManager.getColumnsNames("users"))
                 .thenReturn(new LinkedHashSet<String>(Arrays.asList("id", "name", "password")));  // ());
@@ -73,7 +75,7 @@ public class FindTest {
     @Test
     public void testSelectFromEmptyTable() {
 
-        RowData[] data = new RowData[0];
+        List <RowData> data = new LinkedList<>();
 
         Mockito.when(dbManager.getColumnsNames("users"))
                 .thenReturn(new LinkedHashSet<>(Arrays.asList("id", "name", "password")));

@@ -2,6 +2,7 @@ package ua.com.juja.maistrenko.sqlcmd.model;
 
 import org.junit.*;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -74,11 +75,11 @@ public abstract class TestDBManager {
         rd.addColumnValue("id", "48");
 
         dbManager.insert("test", rd);
-        RowData[] data = dbManager.selectAllFromTable("test");
-        assertEquals(1, data.length);
+        List<RowData> data = dbManager.selectAllFromTable("test");
+        assertEquals(1, data.size());
         for (RowData row : data) {
-            assertEquals("[id, name, password]", Arrays.toString(data[0].getNames()));
-            assertEquals("[48, Jimmi, 111111]", Arrays.toString(data[0].getValues()));
+            assertEquals("[id, name, password]", Arrays.toString(data.get(0).getNames()));
+            assertEquals("[48, Jimmi, 111111]", Arrays.toString(data.get(0).getValues()));
             //System.out.println(row.toString());
         }
     }
@@ -96,12 +97,12 @@ public abstract class TestDBManager {
 
         dbManager.update("test", "id", "48", newValue);
 
-        RowData[] data = dbManager.selectAllFromTable("test");
+        List<RowData> data = dbManager.selectAllFromTable("test");
 
-        assertEquals(1, data.length);
+        assertEquals(1, data.size());
         for (RowData row : data) {
-            assertEquals("[id, name, password]", Arrays.toString(data[0].getNames()));
-            assertEquals("[48, Jimmi, 222]", Arrays.toString(data[0].getValues()));
+            assertEquals("[id, name, password]", Arrays.toString(data.get(0).getNames()));
+            assertEquals("[48, Jimmi, 222]", Arrays.toString(data.get(0).getValues()));
             //System.out.println(row.toString());
         }
     }
