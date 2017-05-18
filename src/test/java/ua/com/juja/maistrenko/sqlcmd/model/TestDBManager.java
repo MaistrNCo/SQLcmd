@@ -2,13 +2,11 @@ package ua.com.juja.maistrenko.sqlcmd.model;
 
 import org.junit.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by maistrenko on 12.03.17.
- */
 public abstract class TestDBManager {
     DBManager dbManager;
     ConnectionSettings connSet;
@@ -40,9 +38,9 @@ public abstract class TestDBManager {
 
 
     private void prepareTestTables() {
-        dbManager.create("test", new String[]{"name", "password"});
-        dbManager.create("test2", new String[]{"name", "password"});
-        dbManager.create("test3", new String[]{"name", "password"});
+        dbManager.create("test", Arrays.asList("name", "password"));
+        dbManager.create("test2", Arrays.asList("name", "password"));
+        dbManager.create("test3", Arrays.asList("name", "password"));
     }
 
     @After
@@ -114,7 +112,7 @@ public abstract class TestDBManager {
 
     @Test
     public void testCreateTable() {
-        dbManager.create("test4", new String[]{"name", "age"});
+        dbManager.create("test4", Arrays.asList("name", "age") );
         Assert.assertEquals("[test, test2, test3, test4]", dbManager.getTablesList().toString());
         dbManager.drop("test4");
         Assert.assertEquals("[test, test2, test3]", dbManager.getTablesList().toString());

@@ -13,6 +13,7 @@ import ua.com.juja.maistrenko.sqlcmd.model.ConnectionSettings;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -57,9 +58,9 @@ public class IntegrationTest {
     }
 
     private void prepareTestTables() {
-        dbManager.create("test", new String[]{"name", "password"});
-        dbManager.create("test2", new String[]{"name", "password"});
-        dbManager.create("test3", new String[]{"name", "password"});
+        dbManager.create("test", Arrays.asList("name", "password"));
+        dbManager.create("test2", Arrays.asList("name", "password"));
+        dbManager.create("test3", Arrays.asList("name", "password"));
     }
 
     @Test
@@ -179,7 +180,7 @@ public class IntegrationTest {
         Set<String> tableList2 = new LinkedHashSet<>();
         tableList2.addAll(tableList)        ;
         tableList2.add("testtable");
-        in.add("create|testtable|col1|col2|col3");
+        in.add("create|testtable|name|password|address");
         in.add("list");
         in.add("drop|testtable");
         in.add("list");
@@ -191,7 +192,7 @@ public class IntegrationTest {
                 "Input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
                 tableList.toString() + "" + lineBreaker +
-                " created table testtable with columns [id, col1, col2, col3]" + lineBreaker +
+                " created table testtable with columns [id, name, password, address]" + lineBreaker +
                 tableList2.toString() + "" + lineBreaker +
                 "Table testtable deleted from database successfully" + lineBreaker +
                 tableList.toString() + "" + lineBreaker +

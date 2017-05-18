@@ -21,7 +21,7 @@ public interface DBManager {
 
     void drop(String tableName);
 
-    void create(String tableName, String[] columnNames);
+    void create(String tableName, List<String> columnNames);
 
     void delete(String tableName, String conditionName, String conditionValue);
 

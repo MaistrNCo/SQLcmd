@@ -126,7 +126,7 @@ public class MySQLdbManager implements DBManager {
     }
 
     @Override
-    public void create(String tableName, String[] columnNames) {
+    public void create(String tableName, List<String> columnNames) {
         StringBuilder createTableSQL = new StringBuilder("CREATE TABLE IF NOT EXISTS " +
                 tableName + "(id SERIAL NOT NULL PRIMARY KEY ");
 
@@ -198,8 +198,6 @@ public class MySQLdbManager implements DBManager {
 
             String sql = "CREATE DATABASE IF NOT EXISTS " + name;
             st.executeUpdate(sql);
-            System.out.println("Database created successfully...");
-
         } catch (SQLException e) {
             throw new RuntimeException(" Couldn't create new database", e);
         }

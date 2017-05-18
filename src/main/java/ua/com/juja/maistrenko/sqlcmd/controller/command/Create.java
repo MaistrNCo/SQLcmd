@@ -1,11 +1,16 @@
 package ua.com.juja.maistrenko.sqlcmd.controller.command;
 
+import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.MinAmountParamsParser;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.Parser;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
-
-import java.util.Arrays;
+import java.util.List;
 
 public class Create implements Command {
+    private static final String DESCRIPTION = "create|tableName|column1|column2|...|columnN - to create table 'tableName' with defined columns";
+    private static final String COMMAND_PATTERN = "create|tableName|column1";
+    private static final int TABLE_NAME_INDEX = 1;
+    private Parser parser = new MinAmountParamsParser();
     private final View view;
     private final DBManager dbManager;
 
@@ -21,11 +26,20 @@ public class Create implements Command {
 
     @Override
     public void process(String userInput) {
-        String[] crtParams = prepareParams(userInput, 3);
-        String[] columnNames = Arrays.copyOfRange(crtParams, 2, crtParams.length);
-        dbManager.create(crtParams[1], columnNames);
-        view.write(" created table " + crtParams[1] +
-                " with columns " + dbManager.getColumnsNames(crtParams[1]).toString());
+        List <String> params = parser.parseInputString(userInput);
+
+        if (parser.isHelpNeeded(params)) {
+            view.write(DESCRIPTION);
+            return;
+        }
+
+        if (!parser.checkParamsAmount(params,COMMAND_PATTERN)) {
+            view.writeWrongParamsMsg(COMMAND_PATTERN,userInput);
+            return;
+        }
+        dbManager.create(params.get(TABLE_NAME_INDEX), params.subList(TABLE_NAME_INDEX+1,params.size()));
+        view.write(" created table " + params.get(TABLE_NAME_INDEX) +
+                " with columns " + dbManager.getColumnsNames(params.get(TABLE_NAME_INDEX)).toString());
 
     }
 }

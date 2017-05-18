@@ -66,13 +66,13 @@ public class PostgresDBManager implements DBManager {
         List<RowData> dataTable = new LinkedList<>();
         String selectTableSQL = "SELECT * from " + tableName;
         try (Statement statement = connection.createStatement();
-             ResultSet rs = statement.executeQuery(selectTableSQL)) {
-            int columnCount = rs.getMetaData().getColumnCount();
+             ResultSet resultSet = statement.executeQuery(selectTableSQL)) {
+            int columnCount = resultSet.getMetaData().getColumnCount();
             int ind = 0;
-            while (rs.next()) {
+            while (resultSet.next()) {
                 RowData currRow = new RowData();
                 for (int i = 1; i <= columnCount; i++) {
-                    currRow.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+                    currRow.put(resultSet.getMetaData().getColumnName(i), resultSet.getString(i));
                 }
                 dataTable.add(currRow);
             }
@@ -89,6 +89,7 @@ public class PostgresDBManager implements DBManager {
         try {
             DatabaseMetaData metadata = connection.getMetaData();
             ResultSet resultSet = metadata.getColumns(null, null, tableName, null);
+
             while (resultSet.next()) {
                 result.add(resultSet.getString("COLUMN_NAME"));
             }
@@ -120,7 +121,7 @@ public class PostgresDBManager implements DBManager {
     }
 
     @Override
-    public void create(String tableName, String[] columnNames) {
+    public void create(String tableName, List<String> columnNames) {
         StringBuilder createTableSQL = new StringBuilder("CREATE TABLE IF NOT EXISTS " + tableName +
                 "(ID SERIAL NOT NULL PRIMARY KEY ");
 
