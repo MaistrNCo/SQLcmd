@@ -8,6 +8,7 @@ import java.util.Set;
 
 public class PostgresDBManager implements DBManager {
 
+    public static final int LAST_AND = 4;
     private Connection connection;
 
     @Override
@@ -138,8 +139,15 @@ public class PostgresDBManager implements DBManager {
     }
 
     @Override
-    public void delete(String tableName, String conditionName, String conditionValue) {
-        String deleteRowsSQL = "delete from " + tableName + " where " + conditionName + " = '" + conditionValue + "'";
+    public void delete(String tableName, RowData conditionData) {
+        StringBuilder conditionStr = new StringBuilder();
+        Set<String> columns = conditionData.getNames();
+        for (String column:columns){
+            conditionStr.append(column+" = '"+conditionData.get(column)+ "' AND") ;
+        }
+
+        String deleteRowsSQL = "DELETE FROM " + tableName + " WHERE "
+                + conditionStr.substring(0,conditionStr.length()- LAST_AND);
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(deleteRowsSQL);
         } catch (SQLException e) {

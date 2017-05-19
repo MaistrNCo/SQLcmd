@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 public class MySQLdbManager implements DBManager {
+    public static final int LAST_AND = 4;
     public final String DEFAULT_SERVER_ADDRESS = "localhost";
     public final String DEFAULT_SERVER_PORT = "3306";
     public final String DEFAULT_SERVER_DB = "sqlcmd";
@@ -143,9 +144,14 @@ public class MySQLdbManager implements DBManager {
     }
 
     @Override
-    public void delete(String tableName, String conditionName, String conditionValue) {
-        String deleteRowsSQL = "delete from " + tableName +
-                " where " + conditionName + " = '" + conditionValue + "'";
+    public void delete(String tableName, RowData conditionData) {
+        StringBuilder conditionStr = new StringBuilder();
+        Set<String> columns = conditionData.getNames();
+        for (String column:columns){
+            conditionStr.append(column+" = '"+conditionData.get(column)+ "' AND") ;
+        }
+        String deleteRowsSQL = "DELETE FROM " + tableName + " WHERE " +
+                conditionStr.substring(0,conditionStr.length()- LAST_AND);;
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(deleteRowsSQL);
         } catch (SQLException e) {
@@ -154,14 +160,14 @@ public class MySQLdbManager implements DBManager {
     }
 
     @Override
-    public void insert(String tableName, RowData rd) {
+    public void insert(String tableName, RowData rowData) {
         try (Statement statement = connection.createStatement()) {
             String columnNames = "";
             String values = "";
 
-            for (String colName : rd.getNames()) {
+            for (String colName : rowData.getNames()) {
                 columnNames = columnNames.concat(((columnNames.length() > 0) ? "," : "") + colName);
-                values = values.concat(((values.length() > 0) ? "," : "") + "'" + rd.get(colName).toString() + "'");
+                values = values.concat(((values.length() > 0) ? "," : "") + "'" + rowData.get(colName).toString() + "'");
             }
 
             String insertRowSQL = "insert into " + tableName

@@ -1,10 +1,19 @@
 package ua.com.juja.maistrenko.sqlcmd.controller.command;
 
+import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.ExactAmountParamsParser;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.Parser;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
+import ua.com.juja.maistrenko.sqlcmd.model.RowData;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
+import java.util.List;
+
 public class Delete implements Command {
-    private final DBManager dbManager;
+    private static final String DESCRIPTION = "delete|tableName|column|value|column2|value3... - to delete data in table" +
+            " 'tableName' where column1 = value1, column2 = value2 and so on";
+    private static final String COMMAND_PATTERN = "delete|tableName|column|value";
+    private static final int TABLE_NAME_INDEX = 1;
+    private Parser parser = new ExactAmountParamsParser();private final DBManager dbManager;
     private final View view;
 
     public Delete(DBManager dbManager, View view) {
@@ -19,9 +28,24 @@ public class Delete implements Command {
 
     @Override
     public void process(String userInput) {
-        String[] delParams = prepareParams(userInput, 4);
-        dbManager.delete(delParams[1], delParams[2], delParams[3]);
-        view.write("deleted data from table " + delParams[1]);
+        List<String> params = parser.parseInputString(userInput);
+
+        if (parser.isHelpNeeded(params)) {
+            view.write(DESCRIPTION);
+            return;
+        }
+
+        if (!parser.checkParamsAmount(params,COMMAND_PATTERN)) {
+            view.writeWrongParamsMsg(COMMAND_PATTERN,userInput);
+            return;
+        }
+
+        RowData conditionData = new RowData();
+        for (int i = TABLE_NAME_INDEX+1; i <params.size() ; i++) {
+            conditionData.put(params.get(i),params.get(++i));
+        }
+        dbManager.delete(params.get(TABLE_NAME_INDEX),conditionData);
+        view.write("deleted data from table " + params.get(TABLE_NAME_INDEX));
 
     }
 }

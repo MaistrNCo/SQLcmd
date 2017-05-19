@@ -2,9 +2,6 @@ package ua.com.juja.maistrenko.sqlcmd.model;
 
 import java.util.*;
 
-/**
- * Created by maistrenko on 08.03.17.
- */
 public class RowData {
     private HashMap<String, Object> columns;
 

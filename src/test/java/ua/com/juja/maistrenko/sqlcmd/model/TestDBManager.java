@@ -106,6 +106,45 @@ public abstract class TestDBManager {
     }
 
     @Test
+    public void testDelete() {
+        RowData rowData1 = new RowData();
+        rowData1.put("name", "Jimmi");
+        rowData1.put("password", "111111");
+        rowData1.put("id", "48");
+        dbManager.insert("test", rowData1);
+        RowData rowData = new RowData();
+        rowData.put("name", "Simone");
+        rowData.put("password", "123456");
+        rowData.put("id", "2");
+        dbManager.insert("test", rowData);
+
+        List<RowData> data = dbManager.selectAllFromTable("test");
+
+        assertEquals(2, data.size());
+        for (RowData row : data) {
+            assertEquals("[id, name, password]", data.get(0).getNames().toString());
+            assertEquals("[48, Jimmi, 111111]", data.get(0).getValues().toString());
+            assertEquals("[id, name, password]", data.get(1).getNames().toString());
+            assertEquals("[2, Simone, 123456]", data.get(1).getValues().toString());
+            //System.out.println(row.toString());
+        }
+
+        RowData conditionData = new RowData();
+        conditionData.put("name", "Jimmi");
+        dbManager.delete("test",conditionData);
+
+        data = dbManager.selectAllFromTable("test");
+
+        assertEquals(1, data.size());
+        for (RowData row : data) {
+            assertEquals("[id, name, password]", data.get(0).getNames().toString());
+            assertEquals("[2, Simone, 123456]", data.get(0).getValues().toString());
+            //System.out.println(row.toString());
+        }
+
+    }
+
+    @Test
     public void testGetColumnsNames() {
         assertEquals("[id, name, password]", dbManager.getColumnsNames("test").toString());
     }
