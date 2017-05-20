@@ -70,7 +70,6 @@ public class PostgresDBManager implements DBManager {
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(selectTableSQL)) {
             int columnCount = resultSet.getMetaData().getColumnCount();
-            int ind = 0;
             while (resultSet.next()) {
                 RowData currRow = new RowData();
                 for (int i = 1; i <= columnCount; i++) {
@@ -138,7 +137,6 @@ public class PostgresDBManager implements DBManager {
         createTableSQL.append(")");
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(createTableSQL.toString());
-            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't create table " + tableName, e);
         }
@@ -187,8 +185,6 @@ public class PostgresDBManager implements DBManager {
                 values.append(((ind != 0) ? "," : "") + column + " = '" + colValues.get(ind) + "'");
                 ind++;
             }
-
-
             String updateSQL = "update " + tableName + " set " + values + " where " + conditionString;
             statement.executeUpdate(updateSQL);
         } catch (SQLException e) {

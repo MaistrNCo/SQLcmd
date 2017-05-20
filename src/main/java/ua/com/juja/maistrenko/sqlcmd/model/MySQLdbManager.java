@@ -10,7 +10,6 @@ public class MySQLdbManager implements DBManager {
 
     private static final int LAST_AND = 4;
     private final String ROPERTIES_PATH = "config/mysql.properties";
-    private final String DEFAULT_SERVER_PORT = "3306";
 
     private Connection connection;
 
@@ -71,7 +70,6 @@ public class MySQLdbManager implements DBManager {
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(selectTableSQL)) {
             int columnCount = resultSet.getMetaData().getColumnCount();
-            int ind = 0;
             while (resultSet.next()) {
                 RowData currRow = new RowData();
                 for (int i = 1; i <= columnCount; i++) {
@@ -140,7 +138,6 @@ public class MySQLdbManager implements DBManager {
         createTableSQL.append(")");
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(createTableSQL.toString());
-            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't create table " + tableName, e);
         }
@@ -149,7 +146,6 @@ public class MySQLdbManager implements DBManager {
     @Override
     public void delete(String tableName, RowData conditionData) {
         String conditionString = buildCondition(conditionData);
-
         String deleteRowsSQL = "DELETE FROM " + tableName + " WHERE "
                 + conditionString;
         try (Statement statement = connection.createStatement()) {
@@ -164,12 +160,10 @@ public class MySQLdbManager implements DBManager {
         try (Statement statement = connection.createStatement()) {
             String columnNames = "";
             String values = "";
-
             for (String colName : rowData.getNames()) {
                 columnNames = columnNames.concat(((columnNames.length() > 0) ? "," : "") + colName);
                 values = values.concat(((values.length() > 0) ? "," : "") + "'" + rowData.get(colName).toString() + "'");
             }
-
             String insertRowSQL = "insert into " + tableName
                     + " (" + columnNames + ")   values ("
                     + values + ")";
@@ -186,7 +180,6 @@ public class MySQLdbManager implements DBManager {
             StringBuilder values = new StringBuilder();
             Set<String> colNames = newValue.getNames();
             List<Object> colValues = newValue.getValues();
-
             int ind = 0;
             for (String column : colNames) {
                 values.append(((ind != 0) ? "," : "") + column + " = '" + colValues.get(ind) + "'");
@@ -203,7 +196,6 @@ public class MySQLdbManager implements DBManager {
     @Override
     public void createDB(String name) {
         try (Statement st = connection.createStatement()) {
-
             String sql = "CREATE DATABASE IF NOT EXISTS " + name;
             st.executeUpdate(sql);
         } catch (SQLException e) {
@@ -214,11 +206,9 @@ public class MySQLdbManager implements DBManager {
     @Override
     public void dropDB(String name) {
         try (Statement st = connection.createStatement()) {
-
             String sql = "DROP DATABASE " + name;
             st.executeUpdate(sql);
             System.out.println("Database " + name + " dropped successfully...");
-
         } catch (SQLException e) {
             throw new RuntimeException(" Couldn't drop database " + name, e);
         }
@@ -235,6 +225,4 @@ public class MySQLdbManager implements DBManager {
         }
         return conditionStr.substring(0, conditionStr.length() - LAST_AND);
     }
-
-
 }
