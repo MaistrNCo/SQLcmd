@@ -25,8 +25,10 @@ public class Main {
             } else if (userInput.equals("2")) {
                 controller = new MainController(new MySQLdbManager(), view);
                 controller.run();
-            }  else if (userInput.equals("q")) {
+            } else if (userInput.equals("q")) {
                 quit = true;
+            } else {
+                view.write("wrong input");
             }
         }
     }
