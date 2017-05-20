@@ -23,6 +23,7 @@ public class ConnectionSettings {
         this.username = set[3];
         this.password = set[4];
     }
+
     public void setSettings(List<String> set) {
         this.server = set.get(0);
         this.port = set.get(1);
@@ -56,7 +57,7 @@ public class ConnectionSettings {
     }
 
 
-    public void getProperties(String settingsFileName){
+    public void getProperties(String settingsFileName) {
 
         FileInputStream fileInput = null;
         Properties properties = new Properties();
@@ -64,11 +65,11 @@ public class ConnectionSettings {
         try {
             fileInput = new FileInputStream(settingsFileName);
             properties.load(fileInput);
-            server   =  properties.getProperty("server.name");
-            port     =  properties.getProperty("server.port");
-            dataBase =  properties.getProperty("server.dataBase");
-            username =  properties.getProperty("server.user.name");
-            password =  properties.getProperty("server.user.password");
+            server = properties.getProperty("server.name");
+            port = properties.getProperty("server.port");
+            dataBase = properties.getProperty("server.dataBase");
+            username = properties.getProperty("server.user.name");
+            password = properties.getProperty("server.user.password");
 
         } catch (Exception e) {
             System.out.println("Error loading config " + file.getAbsolutePath());

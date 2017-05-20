@@ -26,18 +26,18 @@ public class Create implements Command {
 
     @Override
     public void process(String userInput) {
-        List <String> params = parser.parseInputString(userInput);
+        List<String> params = parser.parseInputString(userInput);
 
         if (parser.isHelpNeeded(params)) {
             view.write(DESCRIPTION);
             return;
         }
 
-        if (!parser.checkParamsAmount(params,COMMAND_PATTERN)) {
-            view.writeWrongParamsMsg(COMMAND_PATTERN,userInput);
+        if (!parser.checkParamsAmount(params, COMMAND_PATTERN)) {
+            view.writeWrongParamsMsg(COMMAND_PATTERN, userInput);
             return;
         }
-        dbManager.create(params.get(TABLE_NAME_INDEX), params.subList(TABLE_NAME_INDEX+1,params.size()));
+        dbManager.create(params.get(TABLE_NAME_INDEX), params.subList(TABLE_NAME_INDEX + 1, params.size()));
         view.write(" created table " + params.get(TABLE_NAME_INDEX) +
                 " with columns " + dbManager.getColumnsNames(params.get(TABLE_NAME_INDEX)).toString());
 

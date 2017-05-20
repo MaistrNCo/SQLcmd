@@ -34,8 +34,8 @@ public class Drop implements Command {
             return;
         }
 
-        if (!parser.checkParamsAmount(params,COMMAND_PATTERN)) {
-            view.writeWrongParamsMsg(COMMAND_PATTERN,userInput);
+        if (!parser.checkParamsAmount(params, COMMAND_PATTERN)) {
+            view.writeWrongParamsMsg(COMMAND_PATTERN, userInput);
             return;
         }
         dbManager.drop(params.get(TABLE_NAME_INDEX));

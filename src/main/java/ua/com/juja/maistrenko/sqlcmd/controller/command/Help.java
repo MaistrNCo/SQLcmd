@@ -45,7 +45,7 @@ public class Help implements Command {
                 "\t\t to insert data to table 'tableName' \n" +
 
                 "\t update|tableName|column1|value1|column2|value2|...|columnN|valueN \n" +
-                "\t\t to updateTableByCondition records in table 'tableName' which value in 'column1' equal 'value1'\n" +
+                "\t\t to update records in table 'tableName' which value in 'column1' equal 'value1'\n" +
 
                 "\t delete|tableName|column|value \n" +
                 "\t\t to delete records in table 'tableName' which value in 'column' equal 'value'\n" +

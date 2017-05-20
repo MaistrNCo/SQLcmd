@@ -35,12 +35,12 @@ public class Find implements Command {
             return;
         }
 
-        if (!parser.checkParamsAmount(params,COMMAND_PATTERN)) {
-            view.writeWrongParamsMsg(COMMAND_PATTERN,userInput);
+        if (!parser.checkParamsAmount(params, COMMAND_PATTERN)) {
+            view.writeWrongParamsMsg(COMMAND_PATTERN, userInput);
             return;
         }
         dbManager.drop(params.get(TABLE_NAME_INDEX));
-        Set <String> columnsNames = dbManager.getColumnsNames(params.get(TABLE_NAME_INDEX));
+        Set<String> columnsNames = dbManager.getColumnsNames(params.get(TABLE_NAME_INDEX));
         List<RowData> rowDatas = dbManager.selectAllFromTable(params.get(TABLE_NAME_INDEX));
 
 
@@ -48,7 +48,7 @@ public class Find implements Command {
         for (String colName : columnsNames) {
             header.append(colName + "\t|");
         }
-        view.write(header.toString());
+        view.write(header.toString());  //TODO implement table printing method
         for (RowData row : rowDatas) {
             StringBuilder str = new StringBuilder("|");
             for (Object val : row.getValues()) {

@@ -18,12 +18,15 @@ public class RowData {
     }
 
     public List<Object> getValues() {
-        return new ArrayList<>(columns.values()) ;
+        return new ArrayList<>(columns.values());
     }
 
-    public Object get(String column){
+    public Object get(String column) {
         return columns.get(column);
     }
 
+    public boolean isEmpty() {
+        return columns.isEmpty();
+    }
 
 }

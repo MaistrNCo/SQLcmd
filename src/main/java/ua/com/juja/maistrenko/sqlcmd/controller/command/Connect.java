@@ -35,8 +35,8 @@ public class Connect implements Command {
             view.write(DESCRIPTION);
             return;
         }
-        if (!parser.checkParamsAmount(params,COMMAND_PATTERN)) {
-            view.writeWrongParamsMsg(COMMAND_PATTERN,userInput);
+        if (!parser.checkParamsAmount(params, COMMAND_PATTERN)) {
+            view.writeWrongParamsMsg(COMMAND_PATTERN, userInput);
             return;
         }
         ConnectionSettings conSet = new ConnectionSettings();

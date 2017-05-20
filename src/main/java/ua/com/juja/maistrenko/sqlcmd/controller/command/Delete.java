@@ -13,7 +13,8 @@ public class Delete implements Command {
             " 'tableName' where column1 = value1, column2 = value2 and so on";
     private static final String COMMAND_PATTERN = "delete|tableName|column|value";
     private static final int TABLE_NAME_INDEX = 1;
-    private Parser parser = new ExactAmountParamsParser();private final DBManager dbManager;
+    private Parser parser = new ExactAmountParamsParser();
+    private final DBManager dbManager;
     private final View view;
 
     public Delete(DBManager dbManager, View view) {
@@ -35,16 +36,14 @@ public class Delete implements Command {
             return;
         }
 
-        if (!parser.checkParamsAmount(params,COMMAND_PATTERN)) {
-            view.writeWrongParamsMsg(COMMAND_PATTERN,userInput);
+        if (!parser.checkParamsAmount(params, COMMAND_PATTERN)) {
+            view.writeWrongParamsMsg(COMMAND_PATTERN, userInput);
             return;
         }
 
-        RowData conditionData = new RowData();
-        for (int i = TABLE_NAME_INDEX+1; i <params.size() ; i++) {
-            conditionData.put(params.get(i),params.get(++i));
-        }
-        dbManager.delete(params.get(TABLE_NAME_INDEX),conditionData);
+        RowData conditionData = parser.convertToRowData(params, TABLE_NAME_INDEX + 1, params.size());
+
+        dbManager.delete(params.get(TABLE_NAME_INDEX), conditionData);
         view.write("deleted data from table " + params.get(TABLE_NAME_INDEX));
 
     }

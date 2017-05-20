@@ -12,7 +12,7 @@ public class MainController {
         this.view = view;
         this.commands = new Command[]{
                 new Help(view),
-                new Exit(dbManager,view),
+                new Exit(dbManager, view),
                 new ConnectDef(dbManager, view),
                 new Connect(dbManager, view),
                 new NotConnected(dbManager, view),

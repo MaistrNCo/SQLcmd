@@ -93,7 +93,11 @@ public abstract class TestDBManager {
         RowData newValue = new RowData();
         newValue.put("password", "222");
 
-        dbManager.update("test", "id", "48", newValue);
+        RowData condition = new RowData();
+        condition.put("id", "48");
+
+
+        dbManager.update("test", condition, newValue);
 
         List<RowData> data = dbManager.selectAllFromTable("test");
 
@@ -136,10 +140,10 @@ public abstract class TestDBManager {
 
         RowData conditionData = new RowData();
         conditionData.put("name", "Jimmi");
-        dbManager.delete("test",conditionData);
+        dbManager.delete("test", conditionData);
         conditionData.put("name", "Paul");
         conditionData.put("id", "3");
-        dbManager.delete("test",conditionData);
+        dbManager.delete("test", conditionData);
 
         data = dbManager.selectAllFromTable("test");
 
@@ -159,7 +163,7 @@ public abstract class TestDBManager {
 
     @Test
     public void testCreateDropTable() {
-        dbManager.create("test4", Arrays.asList("name", "age") );
+        dbManager.create("test4", Arrays.asList("name", "age"));
         Assert.assertEquals("[test, test2, test3, test4]", dbManager.getTablesList().toString());
         dbManager.drop("test4");
         Assert.assertEquals("[test, test2, test3]", dbManager.getTablesList().toString());

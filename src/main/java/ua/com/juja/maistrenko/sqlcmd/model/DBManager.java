@@ -13,7 +13,7 @@ public interface DBManager {
 
     void connect(ConnectionSettings conSettings);
 
-    void disconnect() ;
+    void disconnect();
 
     boolean isConnected();
 
@@ -27,7 +27,7 @@ public interface DBManager {
 
     void insert(String tableName, RowData rowData);
 
-    void update(String tableName, String conditionName, String conditionValue, RowData newValue);
+    void update(String tableName, RowData condition, RowData newValue);
 
     void createDB(String name);
 

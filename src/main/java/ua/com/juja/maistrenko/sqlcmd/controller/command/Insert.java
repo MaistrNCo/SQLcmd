@@ -1,10 +1,19 @@
 package ua.com.juja.maistrenko.sqlcmd.controller.command;
 
+import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.MinAmountParamsParser;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.Parser;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.model.RowData;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
+import java.util.List;
+
 public class Insert implements Command {
+    private static final String DESCRIPTION = "insert|tableName|column1|value1|column2|value2|...|columnN|valueN " +
+            "- to add new data row in table 'tableName'";
+    private static final String COMMAND_PATTERN = "insert|tableName|column1|value1";
+    private static final int TABLE_NAME_INDEX = 1;
+    private Parser parser = new MinAmountParamsParser();
     private final View view;
     private final DBManager dbManager;
 
@@ -20,13 +29,21 @@ public class Insert implements Command {
 
     @Override
     public void process(String userInput) {
-        String[] insertParams = prepareParams(userInput, 4);
-        RowData insertData = new RowData();
-        for (int ind = 0; ind < (insertParams.length - 2); ind += 2) {
-            insertData.put(insertParams[ind + 2], insertParams[ind + 3]);
+        List<String> params = parser.parseInputString(userInput);
+        if (parser.isHelpNeeded(params)) {
+            view.write(DESCRIPTION);
+            return;
         }
-        dbManager.insert(insertParams[1], insertData);
-        view.write(" added new row to table " + insertParams[1]
-                + "  which has values: " + insertData.getValues().toString());
+
+        if (!parser.checkParamsAmount(params, COMMAND_PATTERN)) {
+            view.writeWrongParamsMsg(COMMAND_PATTERN, userInput);
+            return;
+        }
+
+        RowData rowData = parser.convertToRowData(params, TABLE_NAME_INDEX + 1, params.size());
+
+        dbManager.insert(params.get(TABLE_NAME_INDEX), rowData);
+        view.write("added new row to table " + params.get(TABLE_NAME_INDEX)
+                + "  which has values: " + rowData.getValues().toString());
     }
 }

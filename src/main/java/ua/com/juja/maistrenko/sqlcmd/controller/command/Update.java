@@ -1,13 +1,19 @@
 package ua.com.juja.maistrenko.sqlcmd.controller.command;
 
+import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.MinAmountParamsParser;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.Parser;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.model.RowData;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
-/**
- * Created by maistrenko on 18.03.17.
- */
+import java.util.List;
+
 public class Update implements Command {
+    private static final String DESCRIPTION = "update|tableName|conditionalColumn|conditionalValue|column1|value1|...|columnN|valueN " +
+            "- to update data in rows of table 'tableName' selected by condition: conditionalColumn == conditionalValue";
+    private static final String COMMAND_PATTERN = "update|tableName|column1|value1column2|value2";
+    private static final int TABLE_NAME_INDEX = 1;
+    private Parser parser = new MinAmountParamsParser();
     private final View view;
     private final DBManager dbManager;
 
@@ -23,12 +29,21 @@ public class Update implements Command {
 
     @Override
     public void process(String userInput) {
-        String[] updParams = prepareParams(userInput, 6);
-        RowData insData = new RowData();
-        for (int ind = 0; ind < (updParams.length - 4) / 2; ind += 2) {
-            insData.put(updParams[ind + 4], updParams[ind + 5]);
+        List<String> params = parser.parseInputString(userInput);
+        if (parser.isHelpNeeded(params)) {
+            view.write(DESCRIPTION);
+            return;
         }
-        dbManager.update(updParams[1], updParams[2], updParams[3], insData);
-        view.write(" data in table " + updParams[1] + " updated");
+
+        if (!parser.checkParamsAmount(params, COMMAND_PATTERN)) {
+            view.writeWrongParamsMsg(COMMAND_PATTERN, userInput);
+            return;
+        }
+
+        RowData conditionData = parser.convertToRowData(params, TABLE_NAME_INDEX + 1, TABLE_NAME_INDEX + 3);
+        RowData rowData = parser.convertToRowData(params, TABLE_NAME_INDEX + 3, params.size());
+
+        dbManager.update(params.get(TABLE_NAME_INDEX), conditionData, rowData);
+        view.write(" data in table " + params.get(TABLE_NAME_INDEX) + " updated");
     }
 }

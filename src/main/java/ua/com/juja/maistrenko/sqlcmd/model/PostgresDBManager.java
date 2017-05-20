@@ -46,7 +46,7 @@ public class PostgresDBManager implements DBManager {
 
     @Override
     public Set<String> getTablesList() {
-        Set <String> result = new LinkedHashSet<>();
+        Set<String> result = new LinkedHashSet<>();
         String[] types = {"TABLE"};
         try {
             DatabaseMetaData md = connection.getMetaData();
@@ -140,14 +140,9 @@ public class PostgresDBManager implements DBManager {
 
     @Override
     public void delete(String tableName, RowData conditionData) {
-        StringBuilder conditionStr = new StringBuilder();
-        Set<String> columns = conditionData.getNames();
-        for (String column:columns){
-            conditionStr.append(column+" = '"+conditionData.get(column)+ "' AND ") ;
-        }
+        String conditionString = buildCondition(conditionData);
 
-        String deleteRowsSQL = "DELETE FROM " + tableName + " WHERE "
-                + conditionStr.substring(0,conditionStr.length()- LAST_AND);
+        String deleteRowsSQL = "DELETE FROM " + tableName + " WHERE " + conditionString;
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(deleteRowsSQL);
         } catch (SQLException e) {
@@ -175,17 +170,20 @@ public class PostgresDBManager implements DBManager {
     }
 
     @Override
-    public void update(String tableName, String conditionName, String conditionValue, RowData newValue) {
+    public void update(String tableName, RowData conditionData, RowData newValue) {
         try (Statement statement = connection.createStatement()) {
+            String conditionString = buildCondition(conditionData);
             StringBuilder values = new StringBuilder("");
             Set<String> colNames = newValue.getNames();
             List<Object> colValues = newValue.getValues();
             int ind = 0;
-            for (String column:colNames ) {
+            for (String column : colNames) {
                 values.append(((ind != 0) ? "," : "") + column + " = '" + colValues.get(ind) + "'");
                 ind++;
             }
-            String updateSQL = "update " + tableName + " set " + values + " where " + conditionName + " = '" + conditionValue + "'";
+
+
+            String updateSQL = "update " + tableName + " set " + values + " where " + conditionString;
             statement.executeUpdate(updateSQL);
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't update table " + tableName, e);
@@ -218,6 +216,18 @@ public class PostgresDBManager implements DBManager {
         } catch (SQLException e) {
             throw new RuntimeException(" Couldn't drop database " + name, e);
         }
+    }
+
+    private String buildCondition(RowData conditionData) {
+        if (conditionData.isEmpty()) {
+            return "";
+        }
+        StringBuilder conditionStr = new StringBuilder();
+        Set<String> columns = conditionData.getNames();
+        for (String column : columns) {
+            conditionStr.append(column + " = '" + conditionData.get(column) + "' AND ");
+        }
+        return conditionStr.substring(0, conditionStr.length() - LAST_AND);
     }
 
 
