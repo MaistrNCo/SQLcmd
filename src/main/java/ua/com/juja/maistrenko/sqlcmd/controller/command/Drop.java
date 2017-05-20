@@ -1,7 +1,6 @@
 package ua.com.juja.maistrenko.sqlcmd.controller.command;
 
 import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.ExactAmountParamsParser;
-import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.MinAmountParamsParser;
 import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.Parser;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
@@ -40,5 +39,10 @@ public class Drop implements Command {
         }
         dbManager.drop(params.get(TABLE_NAME_INDEX));
         view.write("Table " + params.get(TABLE_NAME_INDEX) + " deleted from database successfully");
+    }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
     }
 }

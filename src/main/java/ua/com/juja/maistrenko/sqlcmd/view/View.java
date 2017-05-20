@@ -1,12 +1,13 @@
 package ua.com.juja.maistrenko.sqlcmd.view;
 
-/**
- * Created by maistrenko on 12.03.17.
- */
 public interface View {
+    String read();
+
     void write(String message);
+
+    void writeCommandDescription(String description);
 
     void writeWrongParamsMsg(String pattern, String userInput);
 
-    String read();
+    void showExceptionErrorMessage(Exception e);
 }

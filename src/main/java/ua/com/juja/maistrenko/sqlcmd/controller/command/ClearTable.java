@@ -40,8 +40,13 @@ public class ClearTable implements Command {
             return;
         }
 
-
         dbManager.clear(params.get(TABLE_NAME_INDEX));
         view.write("table " + params.get(TABLE_NAME_INDEX) + " cleared successfully");
     }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
+    }
+
 }

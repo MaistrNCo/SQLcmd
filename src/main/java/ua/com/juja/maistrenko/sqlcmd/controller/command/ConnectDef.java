@@ -5,6 +5,8 @@ import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
 public class ConnectDef implements Command {
+    private static final String DESCRIPTION = "connect - to connect to SQL server with settings" +
+            " saved in properties file.";
     private final View view;
     private final DBManager dbManager;
 
@@ -20,15 +22,14 @@ public class ConnectDef implements Command {
 
     @Override
     public void process(String userInput) {
-        try {
-            ConnectionSettings connectionSettings = new ConnectionSettings();
-            connectionSettings.getProperties("config/postgres.properties");
-            dbManager.connect(connectionSettings);
-            view.write("Successful connection!!");
-        } catch (Exception e) {
-            throw new RuntimeException("Can`t connect, check postgres.properties ", e);
-        }
-
+        ConnectionSettings connectionSettings = new ConnectionSettings();
+        connectionSettings.getProperties("config/postgres.properties");
+        dbManager.connect(connectionSettings);
+        view.write("Successful connection!!");
     }
 
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
+    }
 }

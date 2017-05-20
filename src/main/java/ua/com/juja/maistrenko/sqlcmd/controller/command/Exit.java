@@ -4,7 +4,7 @@ import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
 public class Exit implements Command {
-
+    private static final String DESCRIPTION = "exit - to close current program";
     private DBManager dbManager;
     private View view;
 
@@ -25,5 +25,10 @@ public class Exit implements Command {
         }
         view.write("Goodbye, to see soon. ");
         throw new NormalExitException();
+    }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
     }
 }

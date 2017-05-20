@@ -13,7 +13,6 @@ public class Connect implements Command {
     private static final String DESCRIPTION = "connect|serverName:port|dataBase|userName|password - " +
             "for connection to SQL server.";
     private static final String COMMAND_PATTERN = "connect|serverName:port|dataBase|userName|password";
-    //private static final int TABLE_NAME_INDEX = 1;
     private Parser parser = new ConnectParamsParser();
     private final View view;
     private final DBManager dbManager;
@@ -44,5 +43,9 @@ public class Connect implements Command {
         dbManager.connect(conSet);
         view.write("Successful connection!!");
 
+    }
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
     }
 }

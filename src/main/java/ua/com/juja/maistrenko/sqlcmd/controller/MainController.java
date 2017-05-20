@@ -4,66 +4,59 @@ import ua.com.juja.maistrenko.sqlcmd.controller.command.*;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public class MainController {
     private View view;
-    private Command[] commands;
+    private Set<Command> commands;
 
     public MainController(DBManager dbManager, View view) {
         this.view = view;
-        this.commands = new Command[]{
-                new Help(view),
-                new Exit(dbManager, view),
-                new ConnectDef(dbManager, view),
-                new Connect(dbManager, view),
-                new NotConnected(dbManager, view),
-                new TablesList(dbManager, view),
-                new Find(dbManager, view),
-                new ClearTable(dbManager, view),
-                new Drop(dbManager, view),
-                new Create(dbManager, view),
-                new Insert(dbManager, view),
-                new Update(dbManager, view),
-                new Delete(dbManager, view),
-                new WrongInput(view)
-        };
+        this.commands = new LinkedHashSet<>();
+        this.commands.add(new Help(view,this));
+        this.commands.add(new Exit(dbManager, view));
+        this.commands.add(new ConnectDef(dbManager, view));
+        this.commands.add(new Connect(dbManager, view));
+        this.commands.add(new NotConnected(dbManager, view));
+        this.commands.add(new TablesList(dbManager, view));
+        this.commands.add(new Find(dbManager, view));
+        this.commands.add(new ClearTable(dbManager, view));
+        this.commands.add(new Drop(dbManager, view));
+        this.commands.add(new Create(dbManager, view));
+        this.commands.add(new Insert(dbManager, view));
+        this.commands.add(new Update(dbManager, view));
+        this.commands.add(new Delete(dbManager, view));
+        this.commands.add(new WrongInput(view));
+
     }
 
     public void run() {
-        try {
-            runCommands();
-        } catch (NormalExitException e) {
-
-        }
-    }
-
-    private void runCommands() {
+        boolean exitCalled = false;
         view.write("Hi, program started !");
         view.write("Input command please or 'help' to see commands list");
-        while (true) {
-            String input = view.read();
+
+        while (!exitCalled) {
+            String userInput = view.read().trim();
             for (Command command : commands) {
                 try {
-                    if (command.canProcess(input)) {
-                        command.process(input);
+                    if (command.canProcess(userInput)) {
+                        command.process(userInput);
                         break;
                     }
                 } catch (NormalExitException e) {
-                    throw e;
-                    //System.exit(0);
+                    exitCalled = true;
+                    break;
                 } catch (Exception e) {
-                    showErrorMessage(e);
+                    view.showExceptionErrorMessage(e);
                     break;
                 }
             }
         }
     }
 
-    private void showErrorMessage(Exception e) {
-        String errorReason = e.getMessage();
-        if (e.getCause() != null) errorReason += "  " + e.getCause().getMessage();
-        view.write("Unsuccessful operation by reason: " + errorReason);
-        view.write("try again please");
+    public Set<Command> getCommands(){
+        return commands;
     }
-
 
 }

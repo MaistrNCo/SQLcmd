@@ -46,4 +46,9 @@ public class Update implements Command {
         dbManager.update(params.get(TABLE_NAME_INDEX), conditionData, rowData);
         view.write(" data in table " + params.get(TABLE_NAME_INDEX) + " updated");
     }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
+    }
 }

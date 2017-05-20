@@ -57,4 +57,9 @@ public class Find implements Command {
             view.write(str.toString());
         }
     }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
+    }
 }

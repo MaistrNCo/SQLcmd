@@ -46,4 +46,9 @@ public class Insert implements Command {
         view.write("added new row to table " + params.get(TABLE_NAME_INDEX)
                 + "  which has values: " + rowData.getValues().toString());
     }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
+    }
 }
