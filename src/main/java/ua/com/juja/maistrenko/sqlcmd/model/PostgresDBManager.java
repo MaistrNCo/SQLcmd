@@ -143,7 +143,7 @@ public class PostgresDBManager implements DBManager {
         StringBuilder conditionStr = new StringBuilder();
         Set<String> columns = conditionData.getNames();
         for (String column:columns){
-            conditionStr.append(column+" = '"+conditionData.get(column)+ "' AND") ;
+            conditionStr.append(column+" = '"+conditionData.get(column)+ "' AND ") ;
         }
 
         String deleteRowsSQL = "DELETE FROM " + tableName + " WHERE "

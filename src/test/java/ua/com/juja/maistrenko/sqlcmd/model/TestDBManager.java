@@ -107,30 +107,38 @@ public abstract class TestDBManager {
 
     @Test
     public void testDelete() {
-        RowData rowData1 = new RowData();
-        rowData1.put("name", "Jimmi");
-        rowData1.put("password", "111111");
-        rowData1.put("id", "48");
-        dbManager.insert("test", rowData1);
         RowData rowData = new RowData();
         rowData.put("name", "Simone");
         rowData.put("password", "123456");
         rowData.put("id", "2");
         dbManager.insert("test", rowData);
+        rowData.put("name", "Paul");
+        rowData.put("password", "56789");
+        rowData.put("id", "3");
+        dbManager.insert("test", rowData);
+        rowData.put("name", "Jimmi");
+        rowData.put("password", "111111");
+        rowData.put("id", "48");
+        dbManager.insert("test", rowData);
 
         List<RowData> data = dbManager.selectAllFromTable("test");
 
-        assertEquals(2, data.size());
+        assertEquals(3, data.size());
         for (RowData row : data) {
             assertEquals("[id, name, password]", data.get(0).getNames().toString());
-            assertEquals("[48, Jimmi, 111111]", data.get(0).getValues().toString());
+            assertEquals("[2, Simone, 123456]", data.get(0).getValues().toString());
             assertEquals("[id, name, password]", data.get(1).getNames().toString());
-            assertEquals("[2, Simone, 123456]", data.get(1).getValues().toString());
+            assertEquals("[3, Paul, 56789]", data.get(1).getValues().toString());
+            assertEquals("[id, name, password]", data.get(2).getNames().toString());
+            assertEquals("[48, Jimmi, 111111]", data.get(2).getValues().toString());
             //System.out.println(row.toString());
         }
 
         RowData conditionData = new RowData();
         conditionData.put("name", "Jimmi");
+        dbManager.delete("test",conditionData);
+        conditionData.put("name", "Paul");
+        conditionData.put("id", "3");
         dbManager.delete("test",conditionData);
 
         data = dbManager.selectAllFromTable("test");
@@ -150,7 +158,7 @@ public abstract class TestDBManager {
     }
 
     @Test
-    public void testCreateTable() {
+    public void testCreateDropTable() {
         dbManager.create("test4", Arrays.asList("name", "age") );
         Assert.assertEquals("[test, test2, test3, test4]", dbManager.getTablesList().toString());
         dbManager.drop("test4");

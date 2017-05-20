@@ -27,7 +27,7 @@ public class MySQLdbManager implements DBManager {
 
         try {
             this.connection = DriverManager.getConnection(
-                    "jdbc:mysql://" + conSettings.getAddress()+"?useSSL=false",
+                    "jdbc:mysql://" + conSettings.getAddress() + "?useSSL=false",
                     conSettings.getUsername(), conSettings.getPassword());
         } catch (SQLException e) {
             throw new RuntimeException(String.format("Connection to database %s for user %s failed!",
@@ -52,7 +52,7 @@ public class MySQLdbManager implements DBManager {
 
     @Override
     public Set<String> getTablesList() {
-        Set <String> result = new LinkedHashSet<>();
+        Set<String> result = new LinkedHashSet<>();
         try {
             DatabaseMetaData md = connection.getMetaData();
             ResultSet rs = md.getTables(null,
@@ -71,13 +71,13 @@ public class MySQLdbManager implements DBManager {
         List<RowData> dataTable = new LinkedList<>();
         String selectTableSQL = "SELECT * from " + tableName;
         try (Statement statement = connection.createStatement();
-             ResultSet rs = statement.executeQuery(selectTableSQL)) {
-            int columnCount = rs.getMetaData().getColumnCount();
+             ResultSet resultSet = statement.executeQuery(selectTableSQL)) {
+            int columnCount = resultSet.getMetaData().getColumnCount();
             int ind = 0;
-            while (rs.next()) {
+            while (resultSet.next()) {
                 RowData currRow = new RowData();
                 for (int i = 1; i <= columnCount; i++) {
-                    currRow.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+                    currRow.put(resultSet.getMetaData().getColumnName(i), resultSet.getString(i));
                 }
                 dataTable.add(currRow);
             }
@@ -89,7 +89,7 @@ public class MySQLdbManager implements DBManager {
     }
 
     @Override
-    public Set <String> getColumnsNames(String tableName) {
+    public Set<String> getColumnsNames(String tableName) {
         Set<String> result = new LinkedHashSet<>();
         try {
             DatabaseMetaData metadata = connection.getMetaData();
@@ -147,11 +147,12 @@ public class MySQLdbManager implements DBManager {
     public void delete(String tableName, RowData conditionData) {
         StringBuilder conditionStr = new StringBuilder();
         Set<String> columns = conditionData.getNames();
-        for (String column:columns){
-            conditionStr.append(column+" = '"+conditionData.get(column)+ "' AND") ;
+        for (String column : columns) {
+            conditionStr.append(column + " = '" + conditionData.get(column) + "' AND ");
         }
-        String deleteRowsSQL = "DELETE FROM " + tableName + " WHERE " +
-                conditionStr.substring(0,conditionStr.length()- LAST_AND);;
+
+        String deleteRowsSQL = "DELETE FROM " + tableName + " WHERE "
+                + conditionStr.substring(0, conditionStr.length() - LAST_AND);
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(deleteRowsSQL);
         } catch (SQLException e) {
@@ -186,7 +187,7 @@ public class MySQLdbManager implements DBManager {
             Set<String> colNames = newValue.getNames();
             List<Object> colValues = newValue.getValues();
             int ind = 0;
-            for (String column:colNames) {
+            for (String column : colNames) {
                 values.append(((ind != 0) ? "," : "") + column + " = '" + colValues.get(ind) + "'");
                 ind++;
             }
