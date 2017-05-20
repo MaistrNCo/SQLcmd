@@ -39,7 +39,7 @@ public class Find implements Command {
             view.writeWrongParamsMsg(COMMAND_PATTERN, userInput);
             return;
         }
-        dbManager.drop(params.get(TABLE_NAME_INDEX));
+        dbManager.selectAllFromTable(params.get(TABLE_NAME_INDEX));
         Set<String> columnsNames = dbManager.getColumnsNames(params.get(TABLE_NAME_INDEX));
         List<RowData> rowDatas = dbManager.selectAllFromTable(params.get(TABLE_NAME_INDEX));
 

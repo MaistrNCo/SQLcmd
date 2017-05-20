@@ -7,12 +7,10 @@ import java.util.List;
 import java.util.Set;
 
 public class MySQLdbManager implements DBManager {
-    public static final int LAST_AND = 4;
-    public final String DEFAULT_SERVER_ADDRESS = "localhost";
-    public final String DEFAULT_SERVER_PORT = "3306";
-    public final String DEFAULT_SERVER_DB = "sqlcmd";
-    public final String DEFAULT_SERVER_USER = "root";
-    public final String DEFAULT_SERVER_PASSWORD = "root";
+
+    private static final int LAST_AND = 4;
+    private final String ROPERTIES_PATH = "config/mysql.properties";
+    private final String DEFAULT_SERVER_PORT = "3306";
 
     private Connection connection;
 
@@ -103,6 +101,11 @@ public class MySQLdbManager implements DBManager {
 
         }
         return result;
+    }
+
+    @Override
+    public String getPropertiesPath() {
+        return ROPERTIES_PATH;
     }
 
 

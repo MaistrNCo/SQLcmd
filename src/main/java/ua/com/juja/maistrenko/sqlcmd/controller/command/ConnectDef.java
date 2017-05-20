@@ -23,7 +23,7 @@ public class ConnectDef implements Command {
     @Override
     public void process(String userInput) {
         ConnectionSettings connectionSettings = new ConnectionSettings();
-        connectionSettings.getProperties("config/postgres.properties");
+        connectionSettings.getProperties(dbManager.getPropertiesPath());
         dbManager.connect(connectionSettings);
         view.write("Successful connection!!");
     }

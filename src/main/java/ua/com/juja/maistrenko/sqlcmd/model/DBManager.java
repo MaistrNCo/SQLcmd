@@ -11,6 +11,8 @@ public interface DBManager {
 
     Set<String> getColumnsNames(String tableName);
 
+    String getPropertiesPath();
+
     void connect(ConnectionSettings conSettings);
 
     void disconnect();

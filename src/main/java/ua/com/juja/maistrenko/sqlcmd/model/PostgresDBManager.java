@@ -8,7 +8,8 @@ import java.util.Set;
 
 public class PostgresDBManager implements DBManager {
 
-    public static final int LAST_AND = 4;
+    private static final int LAST_AND = 4;
+    private static final String PROPERTIES_PATH = "config/postgres.properties";
     private Connection connection;
 
     @Override
@@ -98,6 +99,11 @@ public class PostgresDBManager implements DBManager {
             //
         }
         return result;
+    }
+
+    @Override
+    public String getPropertiesPath() {
+        return PROPERTIES_PATH;
     }
 
 
