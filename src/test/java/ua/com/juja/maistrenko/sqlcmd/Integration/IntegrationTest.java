@@ -70,7 +70,7 @@ public class IntegrationTest {
         Main.main(new String[0]);
 
         assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection, type: "+ lineBreaker +
+                "Please choose type of SQL connection : "+ lineBreaker +
                 "\t 1 - for PostreSQL"+ lineBreaker +
                 "\t 2 - for MySQL"+ lineBreaker +
                 "or q - to close program"+ lineBreaker +
@@ -84,7 +84,7 @@ public class IntegrationTest {
         Main.main(new String[0]);
 
         assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection, type: "+ lineBreaker +
+                "Please choose type of SQL connection : "+ lineBreaker +
                 "\t 1 - for PostreSQL"+ lineBreaker +
                 "\t 2 - for MySQL"+ lineBreaker +
                 "or q - to close program"+ lineBreaker, getData());
@@ -98,7 +98,7 @@ public class IntegrationTest {
         Main.main(new String[0]);
 
         assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection, type: "+ lineBreaker +
+                "Please choose type of SQL connection : "+ lineBreaker +
                 "\t 1 - for PostreSQL"+ lineBreaker +
                 "\t 2 - for MySQL"+ lineBreaker +
                 "or q - to close program"+ lineBreaker +
@@ -117,7 +117,7 @@ public class IntegrationTest {
         Main.main(new String[0]);
 
         assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection, type: "+ lineBreaker +
+                "Please choose type of SQL connection : "+ lineBreaker +
                 "\t 1 - for PostreSQL"+ lineBreaker +
                 "\t 2 - for MySQL"+ lineBreaker +
                 "or q - to close program"+ lineBreaker +
@@ -136,7 +136,7 @@ public class IntegrationTest {
         Main.main(new String[0]);
 
         assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection, type: "+ lineBreaker +
+                "Please choose type of SQL connection : "+ lineBreaker +
                 "\t 1 - for PostreSQL"+ lineBreaker +
                 "\t 2 - for MySQL"+ lineBreaker +
                 "or q - to close program"+ lineBreaker +
@@ -158,7 +158,7 @@ public class IntegrationTest {
         Main.main(new String[0]);
 
         assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection, type: "+ lineBreaker +
+                "Please choose type of SQL connection : "+ lineBreaker +
                 "\t 1 - for PostreSQL"+ lineBreaker +
                 "\t 2 - for MySQL"+ lineBreaker +
                 "or q - to close program"+ lineBreaker +
@@ -177,7 +177,7 @@ public class IntegrationTest {
         Main.main(new String[0]);
 
         assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection, type: "+ lineBreaker +
+                "Please choose type of SQL connection : "+ lineBreaker +
                 "\t 1 - for PostreSQL"+ lineBreaker +
                 "\t 2 - for MySQL"+ lineBreaker +
                 "or q - to close program"+ lineBreaker +
@@ -197,7 +197,7 @@ public class IntegrationTest {
         Main.main(new String[0]);
 
         assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection, type: "+ lineBreaker +
+                "Please choose type of SQL connection : "+ lineBreaker +
                 "\t 1 - for PostreSQL"+ lineBreaker +
                 "\t 2 - for MySQL"+ lineBreaker +
                 "or q - to close program"+ lineBreaker +
@@ -218,7 +218,7 @@ public class IntegrationTest {
         Main.main(new String[0]);
 
         assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection, type: "+ lineBreaker +
+                "Please choose type of SQL connection : "+ lineBreaker +
                 "\t 1 - for PostreSQL"+ lineBreaker +
                 "\t 2 - for MySQL"+ lineBreaker +
                 "or q - to close program"+ lineBreaker +
@@ -248,7 +248,7 @@ public class IntegrationTest {
         Main.main(new String[0]);
 
         assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection, type: "+ lineBreaker +
+                "Please choose type of SQL connection : "+ lineBreaker +
                 "\t 1 - for PostreSQL"+ lineBreaker +
                 "\t 2 - for MySQL"+ lineBreaker +
                 "or q - to close program"+ lineBreaker +

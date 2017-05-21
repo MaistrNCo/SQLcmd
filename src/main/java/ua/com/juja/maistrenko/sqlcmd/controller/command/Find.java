@@ -39,23 +39,13 @@ public class Find implements Command {
             view.writeWrongParamsMsg(COMMAND_PATTERN, userInput);
             return;
         }
+
         dbManager.selectAllFromTable(params.get(TABLE_NAME_INDEX));
         Set<String> columnsNames = dbManager.getColumnsNames(params.get(TABLE_NAME_INDEX));
         List<RowData> rowDatas = dbManager.selectAllFromTable(params.get(TABLE_NAME_INDEX));
 
+        view.printTable(rowDatas, columnsNames.toArray(new String[0]));
 
-        StringBuilder header = new StringBuilder("|");
-        for (String colName : columnsNames) {
-            header.append(colName + "\t|");
-        }
-        view.write(header.toString());  //TODO implement table printing method
-        for (RowData row : rowDatas) {
-            StringBuilder str = new StringBuilder("|");
-            for (Object val : row.getValues()) {
-                str.append(val + "\t|");
-            }
-            view.write(str.toString());
-        }
     }
 
     @Override
