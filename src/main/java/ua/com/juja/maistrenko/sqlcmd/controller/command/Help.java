@@ -25,7 +25,7 @@ public class Help implements Command {
         view.write("Commands full list :");
 
         Set<Command> commands = mainController.getCommands();
-        for (Command command:commands) {
+        for (Command command : commands) {
             view.writeCommandDescription(command.getDescription());
         }
     }

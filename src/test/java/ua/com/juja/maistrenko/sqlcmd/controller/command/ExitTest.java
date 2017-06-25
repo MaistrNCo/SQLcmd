@@ -14,19 +14,19 @@ public class ExitTest {
 
     @Test
     public void testExitCanProcessTrue() {
-        Command command = new Exit(dbManager,view);
+        Command command = new Exit(dbManager, view);
         assertTrue(command.canProcess("exit"));
     }
 
     @Test
     public void testExitCanProcessFalse() {
-        Command command = new Exit(dbManager,view);
+        Command command = new Exit(dbManager, view);
         assertTrue(!command.canProcess("Exit"));
     }
 
     @Test
     public void testExitProcess() {
-        Command command = new Exit(dbManager,view);
+        Command command = new Exit(dbManager, view);
         try {
             command.process("exit");
         } catch (NormalExitException e) {

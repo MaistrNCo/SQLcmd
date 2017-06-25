@@ -8,7 +8,7 @@ import ua.com.juja.maistrenko.sqlcmd.view.View;
 
 public class Main {
     public static void main(String[] args) {
-        View view  = new Console();
+        View view = new Console();
         MainController controller = null;
         boolean quit = false;
         view.write("Hello, SQLcmd program started.");
@@ -17,7 +17,7 @@ public class Main {
         view.write("\t 2 - for MySQL");
         view.write("or q - to close program");
 
-        while (!quit&&controller==null){
+        while (!quit && controller == null) {
             String userInput = view.read();
             if (userInput.equals("1")) {
                 controller = new MainController(new PostgresDBManager(), view);

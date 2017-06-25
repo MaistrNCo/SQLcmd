@@ -14,7 +14,7 @@ public class MainController {
     public MainController(DBManager dbManager, View view) {
         this.view = view;
         this.commands = new LinkedHashSet<>();
-        this.commands.add(new Help(view,this));
+        this.commands.add(new Help(view, this));
         this.commands.add(new Exit(dbManager, view));
         this.commands.add(new ConnectDef(dbManager, view));
         this.commands.add(new Connect(dbManager, view));
@@ -55,7 +55,7 @@ public class MainController {
         }
     }
 
-    public Set<Command> getCommands(){
+    public Set<Command> getCommands() {
         return commands;
     }
 

@@ -3,7 +3,7 @@ package ua.com.juja.maistrenko.sqlcmd.model;
 /**
  * Created by maistrenko on 07.03.17.
  */
-public class TestMySQLdbManager extends TestDBManager {
+public class MySQLdbManagerTest extends DBManagerTest {
 
     @Override
     public void initConnection() {

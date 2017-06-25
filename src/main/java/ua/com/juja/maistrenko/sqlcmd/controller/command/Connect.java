@@ -44,6 +44,7 @@ public class Connect implements Command {
         view.write("Successful connection!!");
 
     }
+
     @Override
     public String getDescription() {
         return DESCRIPTION;

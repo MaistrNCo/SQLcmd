@@ -1,8 +1,7 @@
 package ua.com.juja.maistrenko.sqlcmd.Integration;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+
 import static org.junit.Assert.assertEquals;
 
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
@@ -21,25 +20,28 @@ public class IntegrationTest {
 
     private static ConfigurableInputStream in;
     private static ByteArrayOutputStream out;
-    private DBManager dbManager;
-    private ConnectionSettings connectionSettings = new ConnectionSettings();
+    private static DBManager dbManager;
+    private static ConnectionSettings connectionSettings = new ConnectionSettings();
     private String lineBreaker = System.lineSeparator();
 
-    @Before
-    public void setup() {
+    @BeforeClass
+    public static void setupDB() {
         dbManager = new PostgresDBManager();
         connectionSettings.getProperties("config/postgres.properties");
         createTestDB();
         prepareTestTables();
+    }
+
+    @Before
+    public void setup() {
         in = new ConfigurableInputStream();
         out = new ByteArrayOutputStream();
         System.setIn(in);
         System.setOut(new PrintStream(out));
-
     }
 
-    @After
-    public void closeConnection() {
+    @AfterClass
+    public static void closeConnection() {
         if (dbManager.isConnected()) {
             dbManager.drop("test");
             dbManager.drop("test2");
@@ -48,7 +50,7 @@ public class IntegrationTest {
         }
     }
 
-    private void createTestDB() {
+    private static void createTestDB() {
         connectionSettings.setDataBase("");
         dbManager.connect(connectionSettings);
         dbManager.createDB("testdb");
@@ -57,7 +59,7 @@ public class IntegrationTest {
         dbManager.connect(connectionSettings);
     }
 
-    private void prepareTestTables() {
+    private static void prepareTestTables() {
         dbManager.create("test", Arrays.asList("name", "password"));
         dbManager.create("test2", Arrays.asList("name", "password"));
         dbManager.create("test3", Arrays.asList("name", "password"));
@@ -69,25 +71,26 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection : "+ lineBreaker +
-                "\t 1 - for PostreSQL"+ lineBreaker +
-                "\t 2 - for MySQL"+ lineBreaker +
-                "or q - to close program"+ lineBreaker +
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
                 "Input command please or 'help' to see commands list" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }
-@Test
+
+    @Test
     public void testQuit() {
         in.add("q");
         Main.main(new String[0]);
 
-        assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection : "+ lineBreaker +
-                "\t 1 - for PostreSQL"+ lineBreaker +
-                "\t 2 - for MySQL"+ lineBreaker +
-                "or q - to close program"+ lineBreaker, getData());
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker, getData());
     }
 
     @Test
@@ -97,11 +100,11 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection : "+ lineBreaker +
-                "\t 1 - for PostreSQL"+ lineBreaker +
-                "\t 2 - for MySQL"+ lineBreaker +
-                "or q - to close program"+ lineBreaker +
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
                 "Input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
@@ -116,11 +119,11 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection : "+ lineBreaker +
-                "\t 1 - for PostreSQL"+ lineBreaker +
-                "\t 2 - for MySQL"+ lineBreaker +
-                "or q - to close program"+ lineBreaker +
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
                 "Input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
@@ -135,11 +138,11 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection : "+ lineBreaker +
-                "\t 1 - for PostreSQL"+ lineBreaker +
-                "\t 2 - for MySQL"+ lineBreaker +
-                "or q - to close program"+ lineBreaker +
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
                 "Input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
@@ -157,11 +160,11 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection : "+ lineBreaker +
-                "\t 1 - for PostreSQL"+ lineBreaker +
-                "\t 2 - for MySQL"+ lineBreaker +
-                "or q - to close program"+ lineBreaker +
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
                 "Input command please or 'help' to see commands list" + lineBreaker +
                 "Unsuccessful operation by reason: Connection to database sqlcmd for user unknown failed!  FATAL: password authentication failed for user \"sqlcmd\"" + lineBreaker +
@@ -176,11 +179,11 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection : "+ lineBreaker +
-                "\t 1 - for PostreSQL"+ lineBreaker +
-                "\t 2 - for MySQL"+ lineBreaker +
-                "or q - to close program"+ lineBreaker +
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
                 "Input command please or 'help' to see commands list" + lineBreaker +
                 "No DB connection present. Available commands is: help, exit," +
@@ -196,11 +199,11 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection : "+ lineBreaker +
-                "\t 1 - for PostreSQL"+ lineBreaker +
-                "\t 2 - for MySQL"+ lineBreaker +
-                "or q - to close program"+ lineBreaker +
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
                 "Input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
@@ -217,11 +220,11 @@ public class IntegrationTest {
         in.add("exit");
         Main.main(new String[0]);
 
-        assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection : "+ lineBreaker +
-                "\t 1 - for PostreSQL"+ lineBreaker +
-                "\t 2 - for MySQL"+ lineBreaker +
-                "or q - to close program"+ lineBreaker +
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
                 "Input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
@@ -237,7 +240,7 @@ public class IntegrationTest {
         in.add("list");
         Set<String> tableList = dbManager.getTablesList();
         Set<String> tableList2 = new LinkedHashSet<>();
-        tableList2.addAll(tableList)        ;
+        tableList2.addAll(tableList);
         tableList2.add("testtable");
         in.add("create|testtable|name|password|address");
         in.add("list");
@@ -247,11 +250,11 @@ public class IntegrationTest {
 
         Main.main(new String[0]);
 
-        assertEquals("Hello, SQLcmd program started."+ lineBreaker +
-                "Please choose type of SQL connection : "+ lineBreaker +
-                "\t 1 - for PostreSQL"+ lineBreaker +
-                "\t 2 - for MySQL"+ lineBreaker +
-                "or q - to close program"+ lineBreaker +
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
                 "Input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
@@ -265,11 +268,11 @@ public class IntegrationTest {
 
     private String getConnectionInput() {
         return "connect|" +
-        connectionSettings.getServer()+":"+
-        connectionSettings.getPort()+"|"+
-        connectionSettings.getDataBase()+"|"+
-        connectionSettings.getUsername()+"|"+
-        connectionSettings.getPassword();
+                connectionSettings.getServer() + ":" +
+                connectionSettings.getPort() + "|" +
+                connectionSettings.getDataBase() + "|" +
+                connectionSettings.getUsername() + "|" +
+                connectionSettings.getPassword();
     }
 
     private String getData() {

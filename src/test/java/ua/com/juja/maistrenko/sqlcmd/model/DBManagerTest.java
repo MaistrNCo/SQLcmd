@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public abstract class TestDBManager {
+public abstract class DBManagerTest {
     DBManager dbManager;
     ConnectionSettings connSet;
 

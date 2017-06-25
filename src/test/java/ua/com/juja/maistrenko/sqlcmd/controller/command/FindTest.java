@@ -72,7 +72,7 @@ public class FindTest {
     @Test
     public void testSelectFromEmptyTable() {
 
-        List <RowData> data = new LinkedList<>();
+        List<RowData> data = new LinkedList<>();
 
         Mockito.when(dbManager.getColumnsNames("users"))
                 .thenReturn(new LinkedHashSet<>(Arrays.asList("id", "name", "password")));

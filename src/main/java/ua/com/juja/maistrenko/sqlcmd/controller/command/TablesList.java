@@ -33,6 +33,7 @@ public class TablesList implements Command {
         }
         view.write(dbManager.getTablesList().toString());
     }
+
     @Override
     public String getDescription() {
         return DESCRIPTION;

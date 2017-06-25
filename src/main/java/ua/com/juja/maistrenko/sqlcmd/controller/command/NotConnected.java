@@ -21,6 +21,7 @@ public class NotConnected implements Command {
     public void process(String userInput) {
         view.write("No DB connection present. Available commands is: help, exit, connect or connect with parameters");
     }
+
     @Override
     public String getDescription() {
         return null;

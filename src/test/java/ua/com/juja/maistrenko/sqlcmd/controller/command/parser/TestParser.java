@@ -23,7 +23,8 @@ public class TestParser {
         assertEquals("postgres", list.get(3));
         assertEquals("postgres", list.get(4));
     }
-@Test
+
+    @Test
     public void testConnectionParser() {
         Parser parser = new ConnectParamsParser();
         List<String> list = parser.parseInputString("connect|  localhost|sqlcmd|postgres | postgres ");
@@ -44,7 +45,7 @@ public class TestParser {
     }
 
     @Test
-    public void testParserConnectHelp(){
+    public void testParserConnectHelp() {
         Parser parser = new ExactAmountParamsParser();
         List<String> list = parser.parseInputString("connect|  help ");
         assertTrue(parser.isHelpNeeded(list));
@@ -54,19 +55,19 @@ public class TestParser {
     }
 
     @Test
-    public void testParserCheckAmount(){
+    public void testParserCheckAmount() {
         Parser parser = new ExactAmountParamsParser();
         List<String> list = parser.parseInputString("connect|  help ");
-        assertTrue(parser.checkParamsAmount(list,"connect| param1"));
-        assertFalse(parser.checkParamsAmount(list,"connect|param1|param2 "));
+        assertTrue(parser.checkParamsAmount(list, "connect| param1"));
+        assertFalse(parser.checkParamsAmount(list, "connect|param1|param2 "));
     }
 
     @Test
-    public void testParserCheckMinAmount(){
+    public void testParserCheckMinAmount() {
         Parser parser = new MinAmountParamsParser();
         List<String> list = parser.parseInputString("connect|  localhost|sqlcmd|postgres | postgres ");
-        assertTrue(parser.checkParamsAmount(list,"connect|param1|param2|param3 "));
-        assertTrue(parser.checkParamsAmount(list,"connect|param1|param2|param3| param4 "));
-        assertFalse(parser.checkParamsAmount(list,"connect|  param1|param2|param3 |param4| param5 "));
+        assertTrue(parser.checkParamsAmount(list, "connect|param1|param2|param3 "));
+        assertTrue(parser.checkParamsAmount(list, "connect|param1|param2|param3| param4 "));
+        assertFalse(parser.checkParamsAmount(list, "connect|  param1|param2|param3 |param4| param5 "));
     }
 }

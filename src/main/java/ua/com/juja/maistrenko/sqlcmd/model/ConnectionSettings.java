@@ -56,7 +56,6 @@ public class ConnectionSettings {
         return this.password;
     }
 
-
     public void getProperties(String settingsFileName) {
 
         FileInputStream fileInput = null;

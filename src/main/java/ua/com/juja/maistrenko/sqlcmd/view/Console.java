@@ -22,10 +22,12 @@ public class Console implements View {
 
     @Override
     public void writeCommandDescription(String description) {
-        if (description == null) { return; }
+        if (description == null) {
+            return;
+        }
         String[] message = description.split("-");
-        System.out.println("  " + message[0] );
-        System.out.println("\t\t" + message[1] );
+        System.out.println("  " + message[0]);
+        System.out.println("\t\t" + message[1]);
         System.out.println();
     }
 
@@ -41,7 +43,7 @@ public class Console implements View {
         StringBuilder rowDivider = new StringBuilder("+");
 
         for (int i = 0; i < columns.length; i++) {
-            printedStr.append(format("%-"+lengths[i]+"s | ",columns[i]));
+            printedStr.append(format("%-" + lengths[i] + "s | ", columns[i]));
             for (int j = 0; j < lengths[i]; j++) {
                 rowDivider.append("-");
             }
@@ -50,13 +52,13 @@ public class Console implements View {
         write(rowDivider.substring(0));
         write(printedStr.substring(0));
         write(rowDivider.substring(0));
-        printedStr.delete(2,printedStr.length());
-        for (RowData row:data) {
+        printedStr.delete(2, printedStr.length());
+        for (RowData row : data) {
             for (int i = 0; i < columns.length; i++) {
-                printedStr.append(format("%-"+lengths[i]+"s | ",row.get(columns[i])));
+                printedStr.append(format("%-" + lengths[i] + "s | ", row.get(columns[i])));
             }
             write(printedStr.substring(0));
-            printedStr.delete(2,printedStr.length());
+            printedStr.delete(2, printedStr.length());
         }
         write(rowDivider.substring(0));
     }
@@ -68,7 +70,7 @@ public class Console implements View {
             lengths[ind] = columns[ind].length();
         }
 
-        for (RowData row:data) {
+        for (RowData row : data) {
             for (int ind = 0; ind < columns.length; ind++) {
                 if (row.get(columns[ind]).toString().length() > lengths[ind]) {
                     lengths[ind] = row.get(columns[ind]).toString().length();
