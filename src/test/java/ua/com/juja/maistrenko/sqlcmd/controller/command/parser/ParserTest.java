@@ -12,7 +12,7 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
-public class TestParser {
+public class ParserTest {
     @Test
     public void testParser() {
         Parser parser = new ExactAmountParamsParser();

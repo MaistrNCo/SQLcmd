@@ -6,10 +6,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static ua.com.juja.maistrenko.sqlcmd.TestingCommon.*;
 
 public abstract class DBManagerTest {
-    DBManager dbManager;
-    ConnectionSettings connSet;
+
 
     protected abstract void initConnection();
 
@@ -27,35 +27,11 @@ public abstract class DBManagerTest {
 
     }
 
-    private void createTestDB() {
-        connSet.setDataBase("");
-        dbManager.connect(connSet);
-        dbManager.createDB("testdb");
-        dbManager.disconnect();
-        connSet.setDataBase("testdb");
-        dbManager.connect(connSet);
-    }
-
-
-    private void prepareTestTables() {
-        dbManager.create("test", Arrays.asList("name", "password"));
-        dbManager.create("test2", Arrays.asList("name", "password"));
-        dbManager.create("test3", Arrays.asList("name", "password"));
-    }
-
     @After
-    public void closeConnection() {
-        if (dbManager.isConnected()) {
-            dbManager.drop("test");
-            dbManager.drop("test2");
-            dbManager.drop("test3");
-            dbManager.disconnect();
-//            connSet.setDataBase("");
-//            dbManager.connect(connSet);
-//            dbManager.dropDB("testdb");
-//            dbManager.disconnect();
-        }
+    public void clearBase() {
+        closeConnection();
     }
+
 
     @Test
     public void testAllTablesList() {

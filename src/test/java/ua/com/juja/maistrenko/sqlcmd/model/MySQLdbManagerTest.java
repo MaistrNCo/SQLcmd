@@ -1,8 +1,7 @@
 package ua.com.juja.maistrenko.sqlcmd.model;
 
-/**
- * Created by maistrenko on 07.03.17.
- */
+import static ua.com.juja.maistrenko.sqlcmd.TestingCommon.*;
+
 public class MySQLdbManagerTest extends DBManagerTest {
 
     @Override

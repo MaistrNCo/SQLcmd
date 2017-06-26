@@ -3,31 +3,26 @@ package ua.com.juja.maistrenko.sqlcmd.Integration;
 import org.junit.*;
 
 import static org.junit.Assert.assertEquals;
+import static ua.com.juja.maistrenko.sqlcmd.TestingCommon.*;
 
-import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
-import ua.com.juja.maistrenko.sqlcmd.model.PostgresDBManager;
 import ua.com.juja.maistrenko.sqlcmd.Main;
-import ua.com.juja.maistrenko.sqlcmd.model.ConnectionSettings;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
 
 public class IntegrationTest {
 
     private static ConfigurableInputStream in;
     private static ByteArrayOutputStream out;
-    private static DBManager dbManager;
-    private static ConnectionSettings connectionSettings = new ConnectionSettings();
     private String lineBreaker = System.lineSeparator();
 
     @BeforeClass
     public static void setupDB() {
-        dbManager = new PostgresDBManager();
-        connectionSettings.getProperties("config/postgres.properties");
+        setConnection();
         createTestDB();
         prepareTestTables();
     }
@@ -41,28 +36,8 @@ public class IntegrationTest {
     }
 
     @AfterClass
-    public static void closeConnection() {
-        if (dbManager.isConnected()) {
-            dbManager.drop("test");
-            dbManager.drop("test2");
-            dbManager.drop("test3");
-            dbManager.disconnect();
-        }
-    }
-
-    private static void createTestDB() {
-        connectionSettings.setDataBase("");
-        dbManager.connect(connectionSettings);
-        dbManager.createDB("testdb");
-        dbManager.disconnect();
-        connectionSettings.setDataBase("testdb");
-        dbManager.connect(connectionSettings);
-    }
-
-    private static void prepareTestTables() {
-        dbManager.create("test", Arrays.asList("name", "password"));
-        dbManager.create("test2", Arrays.asList("name", "password"));
-        dbManager.create("test3", Arrays.asList("name", "password"));
+    public static void clearDB() {
+        closeConnection();
     }
 
     @Test
@@ -153,9 +128,9 @@ public class IntegrationTest {
     public void testWrongConnect() {
         in.add("1");
         in.add("connect|" +
-                connectionSettings.getServer() + ":" +
-                connectionSettings.getPort() + "|" +
-                connectionSettings.getDataBase() + "|" +
+                connSet.getServer() + ":" +
+                connSet.getPort() + "|" +
+                connSet.getDataBase() + "|" +
                 "sqlcmd|unknown|xxxx");
         in.add("exit");
         Main.main(new String[0]);
@@ -268,11 +243,11 @@ public class IntegrationTest {
 
     private String getConnectionInput() {
         return "connect|" +
-                connectionSettings.getServer() + ":" +
-                connectionSettings.getPort() + "|" +
-                connectionSettings.getDataBase() + "|" +
-                connectionSettings.getUsername() + "|" +
-                connectionSettings.getPassword();
+                connSet.getServer() + ":" +
+                connSet.getPort() + "|" +
+                connSet.getDataBase() + "|" +
+                connSet.getUsername() + "|" +
+                connSet.getPassword();
     }
 
     private String getData() {

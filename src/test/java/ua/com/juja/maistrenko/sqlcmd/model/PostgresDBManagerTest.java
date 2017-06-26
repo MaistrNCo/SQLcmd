@@ -1,5 +1,7 @@
 package ua.com.juja.maistrenko.sqlcmd.model;
 
+import static ua.com.juja.maistrenko.sqlcmd.TestingCommon.*;
+
 public class PostgresDBManagerTest extends DBManagerTest {
 
     @Override
