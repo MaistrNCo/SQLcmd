@@ -13,7 +13,7 @@ public class Update implements Command {
             "- to update data in rows of table 'tableName' selected by condition: conditionalColumn == conditionalValue";
     private static final String COMMAND_PATTERN = "update|tableName|column1|value1column2|value2";
     private static final int TABLE_NAME_INDEX = 1;
-    private Parser parser = new MinAmountParamsParser();
+    private final Parser parser = new MinAmountParamsParser();
     private final View view;
     private final DBManager dbManager;
 

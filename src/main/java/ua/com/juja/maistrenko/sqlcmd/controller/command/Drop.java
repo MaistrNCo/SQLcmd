@@ -11,7 +11,7 @@ public class Drop implements Command {
     private static final String DESCRIPTION = "drop|tableName - to delete table 'tableName' with all contained data";
     private static final String COMMAND_PATTERN = "drop|tableName";
     private static final int TABLE_NAME_INDEX = 1;
-    private Parser parser = new ExactAmountParamsParser();
+    private final Parser parser = new ExactAmountParamsParser();
     private final View view;
     private final DBManager dbManager;
 

@@ -13,7 +13,7 @@ public class Find implements Command {
     private static final String DESCRIPTION = "find|tableName - to show all data from table 'tableName'";
     private static final String COMMAND_PATTERN = "find|tableName";
     private static final int TABLE_NAME_INDEX = 1;
-    private Parser parser = new ExactAmountParamsParser();
+    private final Parser parser = new ExactAmountParamsParser();
     private final View view;
     private final DBManager dbManager;
 

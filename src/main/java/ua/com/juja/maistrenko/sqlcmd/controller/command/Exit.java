@@ -5,8 +5,8 @@ import ua.com.juja.maistrenko.sqlcmd.view.View;
 
 public class Exit implements Command {
     private static final String DESCRIPTION = "exit - to close current program";
-    private DBManager dbManager;
-    private View view;
+    private final DBManager dbManager;
+    private final View view;
 
     public Exit(DBManager dbManager, View view) {
         this.dbManager = dbManager;

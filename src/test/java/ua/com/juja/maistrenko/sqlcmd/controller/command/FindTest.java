@@ -3,7 +3,9 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.model.RowData;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
@@ -13,8 +15,9 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
 
 public class FindTest {
 
@@ -22,11 +25,15 @@ public class FindTest {
     private DBManager dbManager;
     private Command command;
 
+    @Captor
+    private ArgumentCaptor<List<RowData>> listCaptor;
+
     @Before
     public void setUp() {
         view = Mockito.mock(View.class);
         dbManager = Mockito.mock(DBManager.class);
         command = new Find(dbManager, view);
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
@@ -37,12 +44,13 @@ public class FindTest {
     @Test
     public void testFindCanProcessFalse() {
 
-        assertTrue(!command.canProcess("find"));
+        assertFalse(command.canProcess("find"));
+        assertFalse(command.canProcess("fin"));
     }
-
 
     @Test
     public void testSelectFromTable() {
+        //given
         RowData user1 = new RowData();
         user1.put("id", "2");
         user1.put("name", "Jimm");
@@ -51,8 +59,12 @@ public class FindTest {
         user2.put("id", "3");
         user2.put("name", "Bimm");
         user2.put("password", "321");
+        RowData user3 = new RowData();
+        user3.put("id", "5");
+        user3.put("name", "John");
+        user3.put("password", "468987");
 
-        List<RowData> data = new LinkedList<>(Arrays.asList(user1, user2));
+        List<RowData> data = new LinkedList<>(Arrays.asList(user1, user2, user3));
 
         Mockito.when(dbManager.getColumnsNames("users"))
                 .thenReturn(new LinkedHashSet<>(Arrays.asList("id", "name", "password")));  // ());
@@ -60,19 +72,23 @@ public class FindTest {
 
         //when
         command.process("find|users");
+
         //then
+
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(view, Mockito.atLeastOnce()).write(captor.capture());
-        assertEquals("[|id\t|name\t|password\t|," +
-                        " |2\t|Jimm\t|123\t|," +
-                        " |3\t|Bimm\t|321\t|]",
-                captor.getAllValues().toString());
+
+        verify(view, atLeastOnce()).printTable(listCaptor.capture(), captor.capture());
+
+        assertEquals("[id, name, password]", captor.getAllValues().toString());
+        assertEquals("[[2, Jimm, 123], [3, Bimm, 321], [5, John, 468987]]",
+                listCaptor.getAllValues().get(0).toString());
     }
 
     @Test
     public void testSelectFromEmptyTable() {
 
         List<RowData> data = new LinkedList<>();
+
 
         Mockito.when(dbManager.getColumnsNames("users"))
                 .thenReturn(new LinkedHashSet<>(Arrays.asList("id", "name", "password")));
@@ -82,9 +98,10 @@ public class FindTest {
         command.process("find|users");
         //then
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(view, Mockito.atLeastOnce()).write(captor.capture());
-        assertEquals("[|id\t|name\t|password\t|]",
-                captor.getAllValues().toString());
+        verify(view, atLeastOnce()).printTable(listCaptor.capture(), captor.capture());
+
+        assertEquals("[id, name, password]", captor.getAllValues().toString());
+        assertEquals("[]", listCaptor.getAllValues().get(0).toString());
     }
 
 }

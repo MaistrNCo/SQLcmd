@@ -13,7 +13,7 @@ public class Connect implements Command {
     private static final String DESCRIPTION = "connect|serverName:port|dataBase|userName|password - " +
             "for connection to SQL server.";
     private static final String COMMAND_PATTERN = "connect|serverName:port|dataBase|userName|password";
-    private Parser parser = new ConnectParamsParser();
+    private final Parser parser = new ConnectParamsParser();
     private final View view;
     private final DBManager dbManager;
 

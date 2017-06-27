@@ -8,7 +8,7 @@ import java.util.Set;
 public class Help implements Command {
     private static final String DESCRIPTION = "help - to display commands list and usage hints";
     private final View view;
-    private MainController mainController;
+    private final MainController mainController;
 
     public Help(View view, MainController mainController) {
         this.view = view;

@@ -132,7 +132,7 @@ public class PostgresDBManager implements DBManager {
                 "(ID SERIAL NOT NULL PRIMARY KEY ");
 
         for (String column : columnNames) {
-            createTableSQL.append(", " + column + " text");
+            createTableSQL.append(", ").append(column).append(" text");
         }
         createTableSQL.append(")");
         try (Statement statement = connection.createStatement()) {
@@ -182,7 +182,7 @@ public class PostgresDBManager implements DBManager {
             List<Object> colValues = newValue.getValues();
             int ind = 0;
             for (String column : colNames) {
-                values.append(((ind != 0) ? "," : "") + column + " = '" + colValues.get(ind) + "'");
+                values.append((ind != 0) ? "," : "").append(column).append(" = '").append(colValues.get(ind)).append("'");
                 ind++;
             }
             String updateSQL = "update " + tableName + " set " + values + " where " + conditionString;
@@ -227,7 +227,7 @@ public class PostgresDBManager implements DBManager {
         StringBuilder conditionStr = new StringBuilder();
         Set<String> columns = conditionData.getNames();
         for (String column : columns) {
-            conditionStr.append(column + " = '" + conditionData.get(column) + "' AND ");
+            conditionStr.append(column).append(" = '").append(conditionData.get(column)).append("' AND ");
         }
         return conditionStr.substring(0, conditionStr.length() - LAST_AND);
     }

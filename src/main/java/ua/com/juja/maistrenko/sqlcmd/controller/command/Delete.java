@@ -13,7 +13,7 @@ public class Delete implements Command {
             "to delete data in table 'tableName' where column1 = value1, column2 = value2 and so on";
     private static final String COMMAND_PATTERN = "delete|tableName|column|value";
     private static final int TABLE_NAME_INDEX = 1;
-    private Parser parser = new ExactAmountParamsParser();
+    private final Parser parser = new ExactAmountParamsParser();
     private final DBManager dbManager;
     private final View view;
 

@@ -18,7 +18,7 @@ public class IntegrationTest {
 
     private static ConfigurableInputStream in;
     private static ByteArrayOutputStream out;
-    private String lineBreaker = System.lineSeparator();
+    private final String lineBreaker = System.lineSeparator();
 
     @BeforeClass
     public static void setupDB() {

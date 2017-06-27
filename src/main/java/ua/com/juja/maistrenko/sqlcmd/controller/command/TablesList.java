@@ -9,7 +9,7 @@ import java.util.List;
 
 public class TablesList implements Command {
     private static final String DESCRIPTION = "list - to get tables list in connected database";
-    private Parser parser = new MinAmountParamsParser();
+    private final Parser parser = new MinAmountParamsParser();
     private final DBManager dbManager;
     private final View view;
 

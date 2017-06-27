@@ -9,7 +9,7 @@ import java.util.Set;
 public class MySQLdbManager implements DBManager {
 
     private static final int LAST_AND = 4;
-    private final String ROPERTIES_PATH = "config/mysql.properties";
+    private final String PROPERTIES_PATH = "config/mysql.properties";
 
     private Connection connection;
 
@@ -103,7 +103,7 @@ public class MySQLdbManager implements DBManager {
 
     @Override
     public String getPropertiesPath() {
-        return ROPERTIES_PATH;
+        return PROPERTIES_PATH;
     }
 
 
@@ -133,7 +133,7 @@ public class MySQLdbManager implements DBManager {
                 tableName + "(id SERIAL NOT NULL PRIMARY KEY ");
 
         for (String column : columnNames) {
-            createTableSQL.append(", " + column + " text");
+            createTableSQL.append(", ").append(column).append(" text");
         }
         createTableSQL.append(")");
         try (Statement statement = connection.createStatement()) {
@@ -221,7 +221,7 @@ public class MySQLdbManager implements DBManager {
         StringBuilder conditionStr = new StringBuilder();
         Set<String> columns = conditionData.getNames();
         for (String column : columns) {
-            conditionStr.append(column + " = '" + conditionData.get(column) + "' AND ");
+            conditionStr.append(column).append(" = '").append(conditionData.get(column)).append("' AND ");
         }
         return conditionStr.substring(0, conditionStr.length() - LAST_AND);
     }

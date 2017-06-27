@@ -13,7 +13,7 @@ public class Insert implements Command {
             "- to add new data row in table 'tableName'";
     private static final String COMMAND_PATTERN = "insert|tableName|column1|value1";
     private static final int TABLE_NAME_INDEX = 1;
-    private Parser parser = new MinAmountParamsParser();
+    private final Parser parser = new MinAmountParamsParser();
     private final View view;
     private final DBManager dbManager;
 

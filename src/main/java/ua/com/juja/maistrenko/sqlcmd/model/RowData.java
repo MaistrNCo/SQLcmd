@@ -3,7 +3,17 @@ package ua.com.juja.maistrenko.sqlcmd.model;
 import java.util.*;
 
 public class RowData {
-    private HashMap<String, Object> columns;
+    private final HashMap<String, Object> columns;
+
+    @Override
+    public String toString() {
+        if (columns.size() == 0) return "";
+        StringBuilder result = new StringBuilder("[");
+        for (Object value : columns.values()) {
+            result.append(value).append(", ");
+        }
+        return result.substring(0, result.length() - 2) + "]";
+    }
 
     public RowData() {
         this.columns = new LinkedHashMap<>();

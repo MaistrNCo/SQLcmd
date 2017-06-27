@@ -19,16 +19,21 @@ public class Main {
 
         while (!quit && controller == null) {
             String userInput = view.read();
-            if (userInput.equals("1")) {
-                controller = new MainController(new PostgresDBManager(), view);
-                controller.run();
-            } else if (userInput.equals("2")) {
-                controller = new MainController(new MySQLdbManager(), view);
-                controller.run();
-            } else if (userInput.equals("q")) {
-                quit = true;
-            } else {
-                view.write("wrong input");
+            switch (userInput) {
+                case "1":
+                    controller = new MainController(new PostgresDBManager(), view);
+                    controller.run();
+                    break;
+                case "2":
+                    controller = new MainController(new MySQLdbManager(), view);
+                    controller.run();
+                    break;
+                case "q":
+                    quit = true;
+                    break;
+                default:
+                    view.write("wrong input");
+                    break;
             }
         }
     }

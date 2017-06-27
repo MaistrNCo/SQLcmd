@@ -9,8 +9,8 @@ import static org.junit.Assert.assertTrue;
 
 public class ExitTest {
 
-    private View view = Mockito.mock(View.class);
-    private DBManager dbManager = Mockito.mock(DBManager.class);
+    private final View view = Mockito.mock(View.class);
+    private final DBManager dbManager = Mockito.mock(DBManager.class);
 
     @Test
     public void testExitCanProcessTrue() {

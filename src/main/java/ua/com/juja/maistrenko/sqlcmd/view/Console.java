@@ -4,7 +4,6 @@ import ua.com.juja.maistrenko.sqlcmd.model.RowData;
 
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 
 import static java.lang.String.format;
 

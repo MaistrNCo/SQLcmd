@@ -8,8 +8,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class MainController {
-    private View view;
-    private Set<Command> commands;
+    private final View view;
+    private final Set<Command> commands;
 
     public MainController(DBManager dbManager, View view) {
         this.view = view;

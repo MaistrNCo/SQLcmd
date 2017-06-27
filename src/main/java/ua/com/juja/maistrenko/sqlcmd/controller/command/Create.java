@@ -12,7 +12,7 @@ public class Create implements Command {
             "to create table 'tableName' with defined columns";
     private static final String COMMAND_PATTERN = "create|tableName|column1";
     private static final int TABLE_NAME_INDEX = 1;
-    private Parser parser = new MinAmountParamsParser();
+    private final Parser parser = new MinAmountParamsParser();
     private final View view;
     private final DBManager dbManager;
 
