@@ -105,6 +105,53 @@ public class IntegrationTest {
                 "[test, test2, test3]" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }
+    @Test
+    public void FindWrongTableTest() {
+        in.add("1");
+        in.add(getConnectionInput());
+        in.add("find|unknowntable");
+        in.add("exit");
+        Main.main(new String[0]);
+
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
+                "Hi, program started !" + lineBreaker +
+                "Input command please or 'help' to see commands list" + lineBreaker +
+                "Successful connection!!" + lineBreaker +
+                "Unsuccessful operation by reason: Couldn't print table unknowntable  ERROR:" +
+                " relation \"unknowntable\" does not exist" + lineBreaker+
+                "  Position: 15" + lineBreaker +
+                "try again please" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
+    }
+    @Test
+    public void FindTest() {
+        in.add("1");
+        in.add(getConnectionInput());
+        in.add("insert|test|id|33|name|Vitja|password|prahvessor");
+        in.add("find|test");
+        in.add("exit");
+        Main.main(new String[0]);
+
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
+                "Hi, program started !" + lineBreaker +
+                "Input command please or 'help' to see commands list" + lineBreaker +
+                "Successful connection!!" + lineBreaker +
+                "added new row to table test  which has values: [33, Vitja, prahvessor]\n" +
+                "+----+-------+------------+" + lineBreaker +
+                "| id | name  | password   | " + lineBreaker +
+                "+----+-------+------------+" + lineBreaker +
+                "| 33 | Vitja | prahvessor | " + lineBreaker +
+                "+----+-------+------------+" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
+    }
 
     @Test
     public void testConnect() {
