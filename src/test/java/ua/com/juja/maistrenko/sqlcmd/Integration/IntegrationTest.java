@@ -18,7 +18,7 @@ public class IntegrationTest {
 
     private static ConfigurableInputStream in;
     private static ByteArrayOutputStream out;
-    private final String lineBreaker = System.lineSeparator();
+    private static final String lineBreaker = System.lineSeparator();
 
     @BeforeClass
     public static void setupDB() {
@@ -178,7 +178,7 @@ public class IntegrationTest {
                 connSet.getServer() + ":" +
                 connSet.getPort() + "|" +
                 connSet.getDataBase() + "|" +
-                "sqlcmd|unknown|xxxx");
+                "unknown|xxxx");
         in.add("exit");
         Main.main(new String[0]);
 
@@ -189,7 +189,7 @@ public class IntegrationTest {
                 "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
                 "Input command please or 'help' to see commands list" + lineBreaker +
-                "Unsuccessful operation by reason: Connection to database sqlcmd for user unknown failed!  FATAL: password authentication failed for user \"sqlcmd\"" + lineBreaker +
+                "Unsuccessful operation by reason: Connection to database testdb for user unknown failed!  FATAL: password authentication failed for user \"unknown\"" + lineBreaker +
                 "try again please" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }

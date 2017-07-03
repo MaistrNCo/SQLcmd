@@ -26,7 +26,7 @@ public class PostgresDBManager implements DBManager {
                     connSettings.getUsername(), connSettings.getPassword());
         } catch (SQLException e) {
             throw new RuntimeException(String.format("Connection to database %s for user %s failed!",
-                    connSettings.getUsername(), connSettings.getPassword()), e);
+                    connSettings.getDataBase(), connSettings.getUsername()), e);
         }
     }
 

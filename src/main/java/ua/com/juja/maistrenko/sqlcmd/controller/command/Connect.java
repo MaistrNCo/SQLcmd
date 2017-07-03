@@ -11,8 +11,8 @@ import java.util.List;
 public class Connect implements Command {
 
     private static final String DESCRIPTION = "connect|serverName:port|dataBase|userName|password - " +
-            "for connection to SQL server.";
-    private static final String COMMAND_PATTERN = "connect|serverName:port|dataBase|userName|password";
+            "for connection to SQL server. You can omit 'port' or 'serverName:port' for default port on localhost";
+    private static final String COMMAND_PATTERN = "connect|dataBase|userName|password";
     private final Parser parser = new ConnectParamsParser();
     private final View view;
     private final DBManager dbManager;
@@ -38,8 +38,7 @@ public class Connect implements Command {
             view.writeWrongParamsMsg(COMMAND_PATTERN, userInput);
             return;
         }
-        ConnectionSettings conSet = new ConnectionSettings();
-        conSet.setSettings(params);
+        ConnectionSettings conSet = new ConnectionSettings(params, dbManager);
         dbManager.connect(conSet);
         view.write("Successful connection!!");
 
