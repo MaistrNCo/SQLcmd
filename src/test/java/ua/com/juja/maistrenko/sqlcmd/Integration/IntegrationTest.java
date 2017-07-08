@@ -22,7 +22,7 @@ public class IntegrationTest {
 
     @BeforeClass
     public static void setupDB() {
-        setConnection();
+        setConnectionPostgres();
         createTestDB();
         prepareTestTables();
     }
@@ -105,6 +105,7 @@ public class IntegrationTest {
                 "[test, test2, test3]" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }
+
     @Test
     public void FindWrongTableTest() {
         in.add("1");
@@ -122,11 +123,12 @@ public class IntegrationTest {
                 "Input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
                 "Unsuccessful operation by reason: Couldn't print table unknowntable  ERROR:" +
-                " relation \"unknowntable\" does not exist" + lineBreaker+
+                " relation \"unknowntable\" does not exist" + lineBreaker +
                 "  Position: 15" + lineBreaker +
                 "try again please" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }
+
     @Test
     public void FindTest() {
         in.add("1");

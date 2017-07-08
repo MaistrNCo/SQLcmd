@@ -208,7 +208,6 @@ public class MySQLdbManager implements DBManager {
         try (Statement st = connection.createStatement()) {
             String sql = "DROP DATABASE " + name;
             st.executeUpdate(sql);
-            System.out.println("Database " + name + " dropped successfully...");
         } catch (SQLException e) {
             throw new RuntimeException(" Couldn't drop database " + name, e);
         }

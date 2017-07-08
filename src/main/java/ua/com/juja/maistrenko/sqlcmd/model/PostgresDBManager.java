@@ -200,7 +200,6 @@ public class PostgresDBManager implements DBManager {
             if (!resCount.next()) {
                 String sql = "CREATE DATABASE " + name;
                 statement.executeUpdate(sql);
-                System.out.println("Database created successfully...");
             }
         } catch (SQLException e) {
             throw new RuntimeException(" Couldn't create new database", e);
@@ -210,11 +209,8 @@ public class PostgresDBManager implements DBManager {
     @Override
     public void dropDB(String name) {
         try (Statement st = connection.createStatement()) {
-
             String sql = "DROP DATABASE " + name;
             st.executeUpdate(sql);
-            System.out.println("Database " + name + " dropped successfully...");
-
         } catch (SQLException e) {
             throw new RuntimeException(" Couldn't drop database " + name, e);
         }

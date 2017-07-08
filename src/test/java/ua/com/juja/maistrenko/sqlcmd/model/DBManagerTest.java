@@ -10,12 +10,9 @@ import static ua.com.juja.maistrenko.sqlcmd.TestingCommon.*;
 
 public abstract class DBManagerTest {
 
-
-    protected abstract void initConnection();
-
     @Before
     public void setup() {
-        initConnection();
+
         if (dbManager.isConnected()) {
             dbManager.disconnect();
             createTestDB();
@@ -27,11 +24,15 @@ public abstract class DBManagerTest {
 
     }
 
+    @AfterClass
+    public static void dropBase() {
+        dropTestData();
+    }
+
     @After
     public void clearBase() {
         closeConnection();
     }
-
 
     @Test
     public void testAllTablesList() {

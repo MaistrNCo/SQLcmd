@@ -15,7 +15,7 @@ public class ConnectParamsParser extends ExactAmountParamsParser {
             return true;
         } else {
             //else pattern reduce by one parameter
-            return super.checkParamsAmount(paramsList,pattern.substring(1));
+            return super.checkParamsAmount(paramsList, pattern.substring(1));
         }
 
     }

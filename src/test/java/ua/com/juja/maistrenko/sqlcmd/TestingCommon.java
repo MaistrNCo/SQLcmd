@@ -7,13 +7,24 @@ import ua.com.juja.maistrenko.sqlcmd.model.PostgresDBManager;
 import java.util.Arrays;
 
 public class TestingCommon {
+
+    public final static boolean USE_MYSQL_IN_TESTS = true;
+    public final static boolean USE_POSTGRESQL_IN_TESTS = true;
+
     public static DBManager dbManager;
     public static ConnectionSettings connSet;
 
-    public static void setConnection() {
+    public static void setConnectionPostgres() {
         dbManager = new PostgresDBManager();
         connSet = new ConnectionSettings();
         connSet.getProperties("config/postgres.properties");
+        dbManager.connect(connSet);
+    }
+
+    public static void setConnectionMySQL() {
+        dbManager = new PostgresDBManager();
+        connSet = new ConnectionSettings();
+        connSet.getProperties("config/mysql.properties");
         dbManager.connect(connSet);
     }
 
@@ -39,10 +50,14 @@ public class TestingCommon {
             dbManager.drop("test2");
             dbManager.drop("test3");
             dbManager.disconnect();
-//            connSet.setDataBase("");
-//            dbManager.connect(connSet);
-//            dbManager.dropDB("testdb");
-//            dbManager.disconnect();
         }
+    }
+
+    public static void dropTestData() {
+        connSet.setDataBase("");
+        dbManager.connect(connSet);
+        dbManager.dropDB("testdb");
+        dbManager.disconnect();
+
     }
 }
