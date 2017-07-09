@@ -139,6 +139,13 @@ public abstract class DBManagerTest {
     }
 
     @Test
+    public void testClearTable() {
+        dbManager.clear("test3");
+        List<RowData>data = dbManager.selectAllFromTable("test3");
+        assertEquals(0,data.size());
+    }
+
+   @Test
     public void testCreateDropTable() {
         dbManager.create("test4", Arrays.asList("name", "age"));
         Assert.assertEquals("[test, test2, test3, test4]", dbManager.getTablesList().toString());

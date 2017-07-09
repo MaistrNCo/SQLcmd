@@ -316,6 +316,81 @@ public class IntegrationTest {
                 tableList.toString() + "" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }
+    @Test
+    public void testWrongParamsAmount() {
+        in.add("1");
+        in.add(getConnectionInput());
+        in.add("delete|");
+        in.add("exit");
+        Main.main(new String[0]);
+
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
+                "Hi, program started !" + lineBreaker +
+                "Input command please or 'help' to see commands list" + lineBreaker +
+                "Successful connection!!" + lineBreaker +
+                "Wrong parameters amount. Must be 'delete|tableName|column|value' " +
+                "But was: 'delete|'" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
+    }
+    @Test
+    public void testCommandHelp() {
+        in.add("1");
+        in.add(getConnectionInput());
+        in.add("help");
+        in.add("exit");
+        Main.main(new String[0]);
+
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
+                "Hi, program started !" + lineBreaker +
+                "Input command please or 'help' to see commands list" + lineBreaker +
+                "Successful connection!!" + lineBreaker +
+                "Commands full list :" + lineBreaker +
+                "  help " + lineBreaker +
+                "\t\t to display commands list and usage hints" + lineBreaker +
+                "" + lineBreaker +
+                "  exit " + lineBreaker +
+                "\t\t to close current program" + lineBreaker +
+                "" + lineBreaker +
+                "  connect " + lineBreaker +
+                "\t\t to connect to SQL server with settings saved in properties file." + lineBreaker +
+                "" + lineBreaker +
+                "  connect|serverName:port|dataBase|userName|password " + lineBreaker +
+                "\t\t for connection to SQL server. You can omit 'port' or 'serverName:port' for default port on localhost" + lineBreaker +
+                "" + lineBreaker +
+                "  list " + lineBreaker +
+                "\t\t to get tables list in connected database" + lineBreaker +
+                "" + lineBreaker +
+                "  find|tableName " + lineBreaker +
+                "\t\t to show all data from table 'tableName'" + lineBreaker +
+                "" + lineBreaker +
+                "  clear|tableName " + lineBreaker +
+                "\t\t to delete all data in table 'tableName'" + lineBreaker +
+                "" + lineBreaker +
+                "  drop|tableName " + lineBreaker +
+                "\t\t to delete table 'tableName' with all contained data" + lineBreaker +
+                "" + lineBreaker +
+                "  create|tableName|column1|column2|...|columnN " + lineBreaker +
+                "\t\t to create table 'tableName' with defined columns" + lineBreaker +
+                "" + lineBreaker +
+                "  insert|tableName|column1|value1|column2|value2|...|columnN|valueN " + lineBreaker +
+                "\t\t to add new data row in table 'tableName'" + lineBreaker +
+                "" + lineBreaker +
+                "  update|tableName|conditionalColumn|conditionalValue|column1|value1|...|columnN|valueN " + lineBreaker +
+                "\t\t to update data in rows of table 'tableName' selected by condition: conditionalColumn == conditionalValue" + lineBreaker +
+                "" + lineBreaker +
+                "  delete|tableName|column1|value1|column2|value2... " + lineBreaker +
+                "\t\t to delete data in table 'tableName' where column1 = value1, column2 = value2 and so on" + lineBreaker +
+                "" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
+    }
 
     private String getConnectionInput() {
         return "connect|" +

@@ -182,7 +182,8 @@ public class MySQLdbManager implements DBManager {
             List<Object> colValues = newValue.getValues();
             int ind = 0;
             for (String column : colNames) {
-                values.append(((ind != 0) ? "," : "") + column + " = '" + colValues.get(ind) + "'");
+                values.append((ind != 0) ? "," : "");
+                values.append(column).append(" = '").append(colValues.get(ind)).append("'");
                 ind++;
             }
             String updateSQL = "update " + tableName +
