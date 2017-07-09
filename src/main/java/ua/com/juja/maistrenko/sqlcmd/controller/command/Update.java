@@ -30,8 +30,14 @@ public class Update implements Command {
     @Override
     public void process(String userInput) {
         List<String> params = parser.parseInputString(userInput);
+
         if (parser.isHelpNeeded(params)) {
             view.write(DESCRIPTION);
+            return;
+        }
+
+        if (params.size()%2!=0) {
+            view.write("parameters amount must be paired");
             return;
         }
 

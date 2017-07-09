@@ -20,7 +20,7 @@ public class TablesList implements Command {
 
     @Override
     public boolean canProcess(String userInput) {
-        return userInput.startsWith("list");
+        return userInput.equals("list");
     }
 
     @Override
