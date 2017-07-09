@@ -5,6 +5,7 @@ import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.ExactAmountParamsP
 import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.Parser;
 import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.ConnectParamsParser;
 import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.MinAmountParamsParser;
+import ua.com.juja.maistrenko.sqlcmd.model.RowData;
 
 import java.util.List;
 
@@ -69,5 +70,23 @@ public class ParserTest {
         assertTrue(parser.checkParamsAmount(list, "connect|param1|param2|param3 "));
         assertTrue(parser.checkParamsAmount(list, "connect|param1|param2|param3| param4 "));
         assertFalse(parser.checkParamsAmount(list, "connect|  param1|param2|param3 |param4| param5 "));
+    }
+
+    @Test
+    public void testParserConvertToRowDataWrong() {
+        Parser parser = new ExactAmountParamsParser();
+        List<String> list = parser.parseInputString("name|Mary|id|0001 | password ");
+        assertEquals(null,parser.convertToRowData(list,0,list.size()));
+    }
+
+    @Test
+    public void testParserConvertToRowData() {
+        Parser parser = new ExactAmountParamsParser();
+        List<String> list = parser.parseInputString("name|Mary|id|0001 |password|ASbn06! ");
+        RowData testRow = new RowData();
+        testRow.put("name","Mary");
+        testRow.put("id","0001");
+        testRow.put("password","ASbn06!");
+        assertEquals(testRow.toString(),parser.convertToRowData(list,0,list.size()).toString());
     }
 }

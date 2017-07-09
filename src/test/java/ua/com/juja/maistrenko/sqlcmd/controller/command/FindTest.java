@@ -49,6 +49,16 @@ public class FindTest {
     }
 
     @Test
+    public void testFindProcessHelp() {
+        try {
+            command.process("find|help");
+        } catch (NormalExitException e) {
+            //
+        }
+        verify(view).write("find|tableName - to show all data from table 'tableName'");
+    }
+
+    @Test
     public void testSelectFromTable() {
         //given
         RowData user1 = new RowData();
@@ -102,6 +112,16 @@ public class FindTest {
 
         assertEquals("[id, name, password]", captor.getAllValues().toString());
         assertEquals("[]", listCaptor.getAllValues().get(0).toString());
+    }
+
+    @Test
+    public void testFindProcessWrongParamsAmount() {
+        try {
+            command.process("find|tableName|sdfg");
+        } catch (NormalExitException e) {
+            //
+        }
+        verify(view).writeWrongParamsMsg("find|tableName","find|tableName|sdfg");
     }
 
 }
