@@ -67,6 +67,34 @@ public class IntegrationTest {
                 "\t 2 - for MySQL" + lineBreaker +
                 "or q - to close program" + lineBreaker, getData());
     }
+    @Test
+    public void testMainMenuWrongInp() {
+        in.add("5");
+        in.add("q");
+        Main.main(new String[0]);
+
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
+                "wrong input"+ lineBreaker, getData());
+    }
+    @Test
+    public void testMainMenu2() {
+        in.add("2");
+        in.add("exit");
+        Main.main(new String[0]);
+
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
+                "Hi, program started !" + lineBreaker +
+                "Input command please or 'help' to see commands list" + lineBreaker +
+                "Goodbye, to see soon. "+ lineBreaker, getData());
+    }
 
     @Test
     public void testConnectDef() {
