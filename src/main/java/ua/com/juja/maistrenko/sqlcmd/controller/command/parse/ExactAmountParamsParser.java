@@ -29,6 +29,11 @@ public class ExactAmountParamsParser implements Parser {
     }
 
     @Override
+    public boolean isHelpNeeded(String userInput) {
+        return userInput.split("\\|")[INDEX_HELP_PARAM_WAITED].equals("help");
+    }
+
+    @Override
     public boolean checkParamsAmount(List<String> paramsList, String pattern) {
 
         return paramsList.size() == parseInputString(pattern).size();

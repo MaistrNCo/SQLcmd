@@ -122,8 +122,7 @@ public class IntegrationTest {
                 "Hi, program started !" + lineBreaker +
                 "Input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
-                "Unsuccessful operation by reason: Couldn't print table unknowntable  ERROR:" +
-                " relation \"unknowntable\" does not exist" + lineBreaker +
+                "Unsuccessful operation by reason: Couldn't print table unknowntable  ERROR: relation \"unknowntable\" does not exist\n" +
                 "  Position: 15" + lineBreaker +
                 "try again please" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
@@ -146,7 +145,7 @@ public class IntegrationTest {
                 "Hi, program started !" + lineBreaker +
                 "Input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
-                "added new row to table test  which has values: [33, Vitja, prahvessor]\n" +
+                "added new row to table test  which has values: [33, Vitja, prahvessor]" + lineBreaker +
                 "+----+-------+------------+" + lineBreaker +
                 "| id | name  | password   | " + lineBreaker +
                 "+----+-------+------------+" + lineBreaker +

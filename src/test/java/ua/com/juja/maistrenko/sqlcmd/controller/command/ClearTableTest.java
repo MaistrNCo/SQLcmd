@@ -31,6 +31,16 @@ public class ClearTableTest {
     }
 
     @Test
+    public void testClearCanProcessHelp() {
+        try {
+            command.process("clear|help");
+        } catch (NormalExitException e) {
+            //
+        }
+        verify(view).write("clear|tableName - to delete all data in table 'tableName'");
+    }
+
+    @Test
     public void testClearCanProcessFalse() {
         assertFalse(command.canProcess("clear"));
     }
@@ -43,7 +53,6 @@ public class ClearTableTest {
             //
         }
         verify(view).write("table users cleared successfully");
-
     }
 
     @Test

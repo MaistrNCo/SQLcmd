@@ -9,6 +9,8 @@ public interface Parser {
 
     boolean isHelpNeeded(List<String> paramsList);
 
+    boolean isHelpNeeded(String userInput);
+
     boolean checkParamsAmount(List<String> paramsList, String pattern);
 
     RowData convertToRowData(List<String> params, int beginIndex, int endIndex);

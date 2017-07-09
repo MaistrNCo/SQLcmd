@@ -29,11 +29,11 @@ public class Connect implements Command {
 
     @Override
     public void process(String userInput) {
-        List<String> params = parser.parseInputString(userInput);
-        if (parser.isHelpNeeded(params)) {
+        if (parser.isHelpNeeded(userInput)) {
             view.write(DESCRIPTION);
             return;
         }
+        List<String> params = parser.parseInputString(userInput);
         if (!parser.checkParamsAmount(params, COMMAND_PATTERN)) {
             view.writeWrongParamsMsg(COMMAND_PATTERN, userInput);
             return;
