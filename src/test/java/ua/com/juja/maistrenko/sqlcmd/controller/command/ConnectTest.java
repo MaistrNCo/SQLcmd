@@ -1,11 +1,7 @@
-package ua.com.juja.maistrenko.sqlcmd.controller.command.parser;
+package ua.com.juja.maistrenko.sqlcmd.controller.command;
 
 import org.junit.Before;
 import org.junit.Test;
-import ua.com.juja.maistrenko.sqlcmd.controller.command.ClearTable;
-import ua.com.juja.maistrenko.sqlcmd.controller.command.Command;
-import ua.com.juja.maistrenko.sqlcmd.controller.command.Connect;
-import ua.com.juja.maistrenko.sqlcmd.controller.command.NormalExitException;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
@@ -27,12 +23,16 @@ public class ConnectTest {
     }
 
     @Test
-    public void testClearCanProcessTrue() {
+    public void testConnectCanProcessTrue() {
         assertTrue(command.canProcess("connect|dataBase|userName|password"));
     }
 
     @Test
-    public void testClearCanProcessHelp() {
+    public void testConnectCanProcessFalse() {
+        assertFalse(command.canProcess("connect"));
+    }
+    @Test
+    public void testConnectHelp() {
         try {
             command.process("connect|help");
         } catch (NormalExitException e) {
@@ -41,19 +41,15 @@ public class ConnectTest {
         verify(view).write("connect|serverName:port|dataBase|userName|password - " +
                 "for connection to SQL server. You can omit 'port' or 'serverName:port' for default port on localhost");
     }
+
     @Test
-    public void testClearCanProcessWrongParamsAmount() {
+    public void testConnectProcessWrongParamsAmount() {
         try {
             command.process("connect|postgres|postgres");
         } catch (NormalExitException e) {
             //
         }
         verify(view).writeWrongParamsMsg("connect|dataBase|userName|password","connect|postgres|postgres");
-    }
-
-    @Test
-    public void testClearCanProcessFalse() {
-        assertFalse(command.canProcess("connect"));
     }
 
 }
