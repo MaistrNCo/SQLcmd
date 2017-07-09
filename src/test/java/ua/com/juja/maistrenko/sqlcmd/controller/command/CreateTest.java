@@ -47,7 +47,7 @@ public class CreateTest {
     }
 
     @Test
-    public void testConnectProcessWrongParamsAmount() {
+    public void testCreateProcessWrongParamsAmount() {
         try {
             command.process("create|tableName");
         } catch (NormalExitException e) {

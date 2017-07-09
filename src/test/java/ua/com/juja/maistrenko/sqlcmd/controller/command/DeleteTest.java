@@ -54,7 +54,7 @@ public class DeleteTest {
     }
 
     @Test
-    public void testCreateProcessSuccessful() {
+    public void testDeleteProcessSuccessful() {
         try {
             command.process("delete|tableName|column1|value");
         } catch (NormalExitException e) {
