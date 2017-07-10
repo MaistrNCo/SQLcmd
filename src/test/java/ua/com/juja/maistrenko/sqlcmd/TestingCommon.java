@@ -1,9 +1,6 @@
 package ua.com.juja.maistrenko.sqlcmd;
 
-import ua.com.juja.maistrenko.sqlcmd.model.ConnectionSettings;
-import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
-import ua.com.juja.maistrenko.sqlcmd.model.PostgresDBManager;
-import ua.com.juja.maistrenko.sqlcmd.model.RowData;
+import ua.com.juja.maistrenko.sqlcmd.model.*;
 
 import java.util.Arrays;
 
@@ -23,7 +20,7 @@ public class TestingCommon {
     }
 
     public static void setConnectionMySQL() {
-        dbManager = new PostgresDBManager();
+        dbManager = new MySQLdbManager();
         connSet = new ConnectionSettings();
         connSet.getProperties("config/mysql.properties");
         dbManager.connect(connSet);
@@ -60,12 +57,14 @@ public class TestingCommon {
     }
 
     public static void closeConnection() {
-        if (dbManager.isConnected()) {
+        if (!dbManager.isConnected()) {
+            dbManager.connect(connSet);
+        }
             dbManager.drop("test");
             dbManager.drop("test2");
             dbManager.drop("test3");
             dbManager.disconnect();
-        }
+
     }
 
     public static void dropTestData() {

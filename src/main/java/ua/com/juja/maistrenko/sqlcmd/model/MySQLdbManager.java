@@ -28,7 +28,7 @@ public class MySQLdbManager implements DBManager {
                     conSettings.getUsername(), conSettings.getPassword());
         } catch (SQLException e) {
             throw new RuntimeException(String.format("Connection to database %s for user %s failed!",
-                    conSettings.getUsername(), conSettings.getPassword()), e);
+                    conSettings.getDataBase(), conSettings.getUsername()), e);
         }
     }
 
