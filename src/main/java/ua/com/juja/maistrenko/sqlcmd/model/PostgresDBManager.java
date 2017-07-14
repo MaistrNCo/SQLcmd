@@ -118,7 +118,7 @@ public class PostgresDBManager implements DBManager {
 
     @Override
     public void drop(String tableName) {
-        String dropTableSQL = "drop table " + tableName;
+        String dropTableSQL = "drop table if exists " + tableName;
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(dropTableSQL);
         } catch (SQLException e) {
@@ -209,7 +209,7 @@ public class PostgresDBManager implements DBManager {
     @Override
     public void dropDB(String name) {
         try (Statement st = connection.createStatement()) {
-            String sql = "DROP DATABASE " + name;
+            String sql = "DROP DATABASE IF EXISTS " + name;
             st.executeUpdate(sql);
         } catch (SQLException e) {
             throw new RuntimeException(" Couldn't drop database " + name, e);

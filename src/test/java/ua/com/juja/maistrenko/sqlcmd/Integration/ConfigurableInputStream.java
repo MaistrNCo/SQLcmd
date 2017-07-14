@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 class ConfigurableInputStream extends InputStream {
-    private String line;
+    private String line = "";
     private boolean endLine = false;
 
     @Override
@@ -40,6 +40,5 @@ class ConfigurableInputStream extends InputStream {
             this.line += "\n" + line;
         }
     }
-
 
 }

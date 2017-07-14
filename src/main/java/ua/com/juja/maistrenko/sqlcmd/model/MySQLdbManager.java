@@ -1,5 +1,7 @@
 package ua.com.juja.maistrenko.sqlcmd.model;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import java.sql.*;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -119,7 +121,7 @@ public class MySQLdbManager implements DBManager {
 
     @Override
     public void drop(String tableName) {
-        String dropTableSQL = "drop table " + tableName;
+        String dropTableSQL = "drop table if exists " + tableName;
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(dropTableSQL);
         } catch (SQLException e) {
@@ -168,6 +170,8 @@ public class MySQLdbManager implements DBManager {
                     + " (" + columnNames + ")   values ("
                     + values + ")";
             statement.executeUpdate(insertRowSQL);
+        } catch (MySQLIntegrityConstraintViolationException e){
+            throw new RuntimeException("Couldn't make insert to table " + tableName + " row with defined primary key already exist", e);
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't make insert to table " + tableName, e);
         }
@@ -207,7 +211,7 @@ public class MySQLdbManager implements DBManager {
     @Override
     public void dropDB(String name) {
         try (Statement st = connection.createStatement()) {
-            String sql = "DROP DATABASE " + name;
+            String sql = "DROP DATABASE IF EXISTS " + name;
             st.executeUpdate(sql);
         } catch (SQLException e) {
             throw new RuntimeException(" Couldn't drop database " + name, e);

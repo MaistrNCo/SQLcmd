@@ -5,7 +5,7 @@ import org.junit.BeforeClass;
 
 import static ua.com.juja.maistrenko.sqlcmd.TestingCommon.*;
 
-public class MySQLdbManagerTest extends DBManagerTest {
+public class   MySQLdbManagerTest extends DBManagerTest {
 
     @BeforeClass
     public static void initialisation() {

@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class TestingCommon {
 
-    public final static boolean USE_MYSQL_IN_TESTS = true;
+    public final static boolean USE_MYSQL_IN_TESTS = false;
     public final static boolean USE_POSTGRESQL_IN_TESTS = true;
 
     public static DBManager dbManager;
@@ -16,14 +16,12 @@ public class TestingCommon {
         dbManager = new PostgresDBManager();
         connSet = new ConnectionSettings();
         connSet.getProperties("config/postgres.properties");
-        dbManager.connect(connSet);
-    }
+     }
 
     public static void setConnectionMySQL() {
         dbManager = new MySQLdbManager();
         connSet = new ConnectionSettings();
         connSet.getProperties("config/mysql.properties");
-        dbManager.connect(connSet);
     }
 
     public static void createTestDB() {
@@ -32,11 +30,11 @@ public class TestingCommon {
         dbManager.createDB("testdb");
         dbManager.disconnect();
         connSet.setDataBase("testdb");
-        dbManager.connect(connSet);
     }
 
 
     public static void prepareTestTables() {
+        dbManager.connect(connSet);
         dbManager.create("test", Arrays.asList("name", "password"));
         dbManager.create("test2", Arrays.asList("name", "password"));
         dbManager.create("test3", Arrays.asList("name", "password"));
@@ -54,16 +52,17 @@ public class TestingCommon {
         rowData.put("password", "111111");
         rowData.put("id", "48");
         dbManager.insert("test3", rowData);
+        dbManager.disconnect();
     }
 
     public static void closeConnection() {
         if (!dbManager.isConnected()) {
             dbManager.connect(connSet);
         }
-            dbManager.drop("test");
-            dbManager.drop("test2");
-            dbManager.drop("test3");
-            dbManager.disconnect();
+       dbManager.drop("test");
+        dbManager.drop("test2");
+        dbManager.drop("test3");
+        dbManager.disconnect();
 
     }
 
@@ -72,6 +71,5 @@ public class TestingCommon {
         dbManager.connect(connSet);
         dbManager.dropDB("testdb");
         dbManager.disconnect();
-
     }
 }

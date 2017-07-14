@@ -8,13 +8,11 @@ import static ua.com.juja.maistrenko.sqlcmd.TestingCommon.*;
 import ua.com.juja.maistrenko.sqlcmd.Main;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
-
-public class IntegrationTest {
+public class IntegrationTestPostgres {
 
     private static ConfigurableInputStream in;
     private static ByteArrayOutputStream out;
@@ -22,22 +20,31 @@ public class IntegrationTest {
 
     @BeforeClass
     public static void setupDB() {
+        Assume.assumeTrue(USE_POSTGRESQL_IN_TESTS);
         setConnectionPostgres();
         createTestDB();
         prepareTestTables();
-    }
-
-    @Before
-    public void setup() {
         in = new ConfigurableInputStream();
         out = new ByteArrayOutputStream();
         System.setIn(in);
         System.setOut(new PrintStream(out));
     }
 
+    @Before
+    public void setup() {
+        try {
+            in.reset();
+            out.reset();
+        } catch (IOException e) {
+            //do nothing
+        }
+
+    }
+
     @AfterClass
     public static void clearDB() {
-        closeConnection();
+        Assume.assumeTrue(USE_POSTGRESQL_IN_TESTS);
+        dropTestData();
     }
 
     @Test
@@ -289,10 +296,6 @@ public class IntegrationTest {
         in.add("1");
         in.add(getConnectionInput());
         in.add("list");
-        Set<String> tableList = dbManager.getTablesList();
-        Set<String> tableList2 = new LinkedHashSet<>();
-        tableList2.addAll(tableList);
-        tableList2.add("testtable");
         in.add("create|testtable|name|password|address");
         in.add("list");
         in.add("drop|testtable");
@@ -309,11 +312,11 @@ public class IntegrationTest {
                 "Hi, program started !" + lineBreaker +
                 "Input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
-                tableList.toString() + "" + lineBreaker +
+                "[test, test2, test3]" + lineBreaker +
                 " created table testtable with columns [id, name, password, address]" + lineBreaker +
-                tableList2.toString() + "" + lineBreaker +
+                "[test, test2, test3, testtable]" + "" + lineBreaker +
                 "Table testtable deleted from database successfully" + lineBreaker +
-                tableList.toString() + "" + lineBreaker +
+                "[test, test2, test3]" + "" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }
     @Test
