@@ -10,6 +10,10 @@ import static ua.com.juja.maistrenko.sqlcmd.TestingCommon.*;
 
 public abstract class DBManagerTest {
 
+    @After
+    public void clearTestInput(){
+        dbManager.clear("test");
+    }
     @Test
     public void testAllTablesList() {
         assertEquals("[test, test2, test3]", dbManager.getTablesList().toString());
@@ -124,5 +128,15 @@ public abstract class DBManagerTest {
         Assert.assertEquals("[test, test2, test3, test4]", dbManager.getTablesList().toString());
         dbManager.drop("test4");
         Assert.assertEquals("[test, test2, test3]", dbManager.getTablesList().toString());
+    }
+
+    @Test (expected = RuntimeException.class)
+    public void testInsertAlreadyExist() {
+        RowData rd = new RowData();
+        rd.put("name", "Jimmi");
+        rd.put("password", "111111");
+        rd.put("id", "48");
+        dbManager.insert("test", rd);
+        dbManager.insert("test", rd);
     }
 }

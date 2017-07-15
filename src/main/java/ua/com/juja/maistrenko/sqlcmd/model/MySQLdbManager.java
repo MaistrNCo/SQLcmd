@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class MySQLdbManager implements DBManager {
 
-    private static final int LAST_AND = 4;
+    private static final int LAST_AND_LENGTH = 4;
     private final String PROPERTIES_PATH = "config/mysql.properties";
 
     private Connection connection;
@@ -68,7 +68,7 @@ public class MySQLdbManager implements DBManager {
     @Override
     public List<RowData> selectAllFromTable(String tableName) {
         List<RowData> dataTable = new LinkedList<>();
-        String selectTableSQL = "SELECT * from " + tableName;
+        String selectTableSQL = "select * from " + tableName;
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(selectTableSQL)) {
             int columnCount = resultSet.getMetaData().getColumnCount();
@@ -104,12 +104,6 @@ public class MySQLdbManager implements DBManager {
     }
 
     @Override
-    public String getPropertiesPath() {
-        return PROPERTIES_PATH;
-    }
-
-
-    @Override
     public void clear(String tableName) {
         String deleteRowsSQL = "delete from " + tableName;
         try (Statement statement = connection.createStatement()) {
@@ -118,6 +112,7 @@ public class MySQLdbManager implements DBManager {
             throw new RuntimeException("Couldn't clear table " + tableName, e);
         }
     }
+
 
     @Override
     public void drop(String tableName) {
@@ -131,8 +126,8 @@ public class MySQLdbManager implements DBManager {
 
     @Override
     public void create(String tableName, List<String> columnNames) {
-        StringBuilder createTableSQL = new StringBuilder("CREATE TABLE IF NOT EXISTS " +
-                tableName + "(id SERIAL NOT NULL PRIMARY KEY ");
+        StringBuilder createTableSQL = new StringBuilder("create table if not exists " +
+                tableName + "(id serial not null primary key ");
 
         for (String column : columnNames) {
             createTableSQL.append(", ").append(column).append(" text");
@@ -148,7 +143,7 @@ public class MySQLdbManager implements DBManager {
     @Override
     public void delete(String tableName, RowData conditionData) {
         String conditionString = buildCondition(conditionData);
-        String deleteRowsSQL = "DELETE FROM " + tableName + " WHERE "
+        String deleteRowsSQL = "delete from " + tableName + " where "
                 + conditionString;
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(deleteRowsSQL);
@@ -171,7 +166,7 @@ public class MySQLdbManager implements DBManager {
                     + values + ")";
             statement.executeUpdate(insertRowSQL);
         } catch (MySQLIntegrityConstraintViolationException e){
-            //throw new RuntimeException("Couldn't make insert to table " + tableName + " row with defined primary key already exist", e);
+            throw new RuntimeException("Couldn't make insert to table " + tableName + " row with defined primary key already exist", e);
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't make insert to table " + tableName, e);
         }
@@ -201,7 +196,7 @@ public class MySQLdbManager implements DBManager {
     @Override
     public void createDB(String name) {
         try (Statement st = connection.createStatement()) {
-            String sql = "CREATE DATABASE IF NOT EXISTS " + name;
+            String sql = "create database if not exists " + name;
             st.executeUpdate(sql);
         } catch (SQLException e) {
             throw new RuntimeException(" Couldn't create new database", e);
@@ -211,11 +206,16 @@ public class MySQLdbManager implements DBManager {
     @Override
     public void dropDB(String name) {
         try (Statement st = connection.createStatement()) {
-            String sql = "DROP DATABASE IF EXISTS " + name;
+            String sql = "drop database if exists " + name;
             st.executeUpdate(sql);
         } catch (SQLException e) {
             throw new RuntimeException(" Couldn't drop database " + name, e);
         }
+    }
+
+    @Override
+    public String getPropertiesPath() {
+        return PROPERTIES_PATH;
     }
 
     private String buildCondition(RowData conditionData) {
@@ -225,8 +225,8 @@ public class MySQLdbManager implements DBManager {
         StringBuilder conditionStr = new StringBuilder();
         Set<String> columns = conditionData.getNames();
         for (String column : columns) {
-            conditionStr.append(column).append(" = '").append(conditionData.get(column)).append("' AND ");
+            conditionStr.append(column).append(" = '").append(conditionData.get(column)).append("' and ");
         }
-        return conditionStr.substring(0, conditionStr.length() - LAST_AND);
+        return conditionStr.substring(0, conditionStr.length() - LAST_AND_LENGTH);
     }
 }

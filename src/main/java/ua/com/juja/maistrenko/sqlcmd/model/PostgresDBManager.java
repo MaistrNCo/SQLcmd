@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class PostgresDBManager implements DBManager {
 
-    private static final int LAST_AND = 4;
+    private static final int LAST_AND_LENGTH  = 4;
     private static final String PROPERTIES_PATH = "config/postgres.properties";
     private Connection connection;
 
@@ -130,8 +130,8 @@ public class PostgresDBManager implements DBManager {
 
     @Override
     public void create(String tableName, List<String> columnNames) {
-        StringBuilder createTableSQL = new StringBuilder("CREATE TABLE IF NOT EXISTS " + tableName +
-                "(ID SERIAL NOT NULL PRIMARY KEY ");
+        StringBuilder createTableSQL = new StringBuilder("create table if not exists " + tableName +
+                "(id serial not null primary key ");
 
         for (String column : columnNames) {
             createTableSQL.append(", ").append(column).append(" text");
@@ -148,7 +148,7 @@ public class PostgresDBManager implements DBManager {
     public void delete(String tableName, RowData conditionData) {
         String conditionString = buildCondition(conditionData);
 
-        String deleteRowsSQL = "DELETE FROM " + tableName + " WHERE " + conditionString;
+        String deleteRowsSQL = "delete from " + tableName + " where " + conditionString;
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(deleteRowsSQL);
         } catch (SQLException e) {
@@ -172,7 +172,7 @@ public class PostgresDBManager implements DBManager {
             statement.executeUpdate(insertRowSQL);
         } catch (PSQLException e) {
             if (e.getMessage().indexOf("duplicate key") > -1) {
-            //    throw new RuntimeException("Couldn't make insert to table " + tableName + " row with defined primary key already exist", e);
+                throw new RuntimeException("Couldn't make insert to table " + tableName + " row with defined primary key already exist", e);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't make insert to table " + tableName, e);
@@ -200,11 +200,11 @@ public class PostgresDBManager implements DBManager {
 
     @Override
     public void createDB(String name) {
-        String getDBlist = "SELECT * from pg_catalog.pg_database where datname = '" + name + "'";
+        String getDBlist = "select * from pg_catalog.pg_database where datname = '" + name + "'";
         try (Statement statement = connection.createStatement();
-             ResultSet resCount = statement.executeQuery(getDBlist)) {
+            ResultSet resCount = statement.executeQuery(getDBlist)) {
             if (!resCount.next()) {
-                String sql = "CREATE DATABASE " + name;
+                String sql = "create database " + name;
                 statement.executeUpdate(sql);
             }
         } catch (SQLException e) {
@@ -215,7 +215,7 @@ public class PostgresDBManager implements DBManager {
     @Override
     public void dropDB(String name) {
         try (Statement st = connection.createStatement()) {
-            String sql = "DROP DATABASE IF EXISTS " + name;
+            String sql = "drop database if exists " + name;
             st.executeUpdate(sql);
         } catch (SQLException e) {
             throw new RuntimeException(" Couldn't drop database " + name, e);
@@ -229,9 +229,9 @@ public class PostgresDBManager implements DBManager {
         StringBuilder conditionStr = new StringBuilder();
         Set<String> columns = conditionData.getNames();
         for (String column : columns) {
-            conditionStr.append(column).append(" = '").append(conditionData.get(column)).append("' AND ");
+            conditionStr.append(column).append(" = '").append(conditionData.get(column)).append("' and ");
         }
-        return conditionStr.substring(0, conditionStr.length() - LAST_AND);
+        return conditionStr.substring(0, conditionStr.length() - LAST_AND_LENGTH);
     }
 
 
