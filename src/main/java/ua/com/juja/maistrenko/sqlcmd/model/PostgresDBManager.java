@@ -1,5 +1,7 @@
 package ua.com.juja.maistrenko.sqlcmd.model;
 
+import org.postgresql.util.PSQLException;
+
 import java.sql.*;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -168,6 +170,10 @@ public class PostgresDBManager implements DBManager {
                     + " (" + columnNames + ")   values ("
                     + values + ")";
             statement.executeUpdate(insertRowSQL);
+        } catch (PSQLException e) {
+            if (e.getMessage().indexOf("duplicate key") > -1) {
+            //    throw new RuntimeException("Couldn't make insert to table " + tableName + " row with defined primary key already exist", e);
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't make insert to table " + tableName, e);
         }

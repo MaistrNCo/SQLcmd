@@ -1,5 +1,6 @@
 package ua.com.juja.maistrenko.sqlcmd.model;
 
+import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 
@@ -13,11 +14,16 @@ public class PostgresDBManagerTest extends DBManagerTest {
         dbManager = new PostgresDBManager();
         connSet = new ConnectionSettings();
         connSet.getProperties("config/postgres.properties");
+        createTestDB();
+        prepareTestTables();
         dbManager.connect(connSet);
+    }
 
-        if (!dbManager.isConnected()) {
-            System.out.println("Connection to PostgreSQL DB unsuccessful");
-        }
+    @AfterClass
+    public static void dropBase() {
+        Assume.assumeTrue(USE_POSTGRESQL_IN_TESTS);
+        dbManager.disconnect();
+        dropTestData();
     }
 
 }

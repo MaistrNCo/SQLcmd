@@ -41,6 +41,11 @@ public class IntegrationTestPostgres {
 
     }
 
+    @After
+    public void disconnect() {
+        dbManager.disconnect();
+    }
+
     @AfterClass
     public static void clearDB() {
         Assume.assumeTrue(USE_POSTGRESQL_IN_TESTS);

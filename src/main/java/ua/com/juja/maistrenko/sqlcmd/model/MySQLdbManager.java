@@ -171,7 +171,7 @@ public class MySQLdbManager implements DBManager {
                     + values + ")";
             statement.executeUpdate(insertRowSQL);
         } catch (MySQLIntegrityConstraintViolationException e){
-            throw new RuntimeException("Couldn't make insert to table " + tableName + " row with defined primary key already exist", e);
+            //throw new RuntimeException("Couldn't make insert to table " + tableName + " row with defined primary key already exist", e);
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't make insert to table " + tableName, e);
         }

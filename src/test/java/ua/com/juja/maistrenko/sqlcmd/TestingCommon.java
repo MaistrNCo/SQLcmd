@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class TestingCommon {
 
-    public final static boolean USE_MYSQL_IN_TESTS = false;
+    public final static boolean USE_MYSQL_IN_TESTS = true;
     public final static boolean USE_POSTGRESQL_IN_TESTS = true;
 
     public static DBManager dbManager;
@@ -59,7 +59,7 @@ public class TestingCommon {
         if (!dbManager.isConnected()) {
             dbManager.connect(connSet);
         }
-       dbManager.drop("test");
+        dbManager.drop("test");
         dbManager.drop("test2");
         dbManager.drop("test3");
         dbManager.disconnect();

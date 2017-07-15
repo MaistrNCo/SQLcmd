@@ -10,36 +10,9 @@ import static ua.com.juja.maistrenko.sqlcmd.TestingCommon.*;
 
 public abstract class DBManagerTest {
 
-    @Before
-    public void setup() {
-
-        if (dbManager.isConnected()) {
-            dbManager.disconnect();
-            createTestDB();
-            prepareTestTables();
-
-        } else {
-            System.exit(0);
-        }
-
-    }
-
-    @AfterClass
-    public static void dropBase() {
-        dropTestData();
-    }
-
-    @After
-    public void clearBase() {
-        closeConnection();
-    }
-
     @Test
     public void testAllTablesList() {
-
         assertEquals("[test, test2, test3]", dbManager.getTablesList().toString());
-
-
     }
 
     @Test
@@ -92,17 +65,17 @@ public abstract class DBManagerTest {
         rowData.put("name", "Simone");
         rowData.put("password", "123456");
         rowData.put("id", "2");
-        dbManager.insert("test", rowData);
+        dbManager.insert("test2", rowData);
         rowData.put("name", "Paul");
         rowData.put("password", "56789");
         rowData.put("id", "3");
-        dbManager.insert("test", rowData);
+        dbManager.insert("test2", rowData);
         rowData.put("name", "Jimmi");
         rowData.put("password", "111111");
         rowData.put("id", "48");
-        dbManager.insert("test", rowData);
+        dbManager.insert("test2", rowData);
 
-        List<RowData> data = dbManager.selectAllFromTable("test");
+        List<RowData> data = dbManager.selectAllFromTable("test2");
 
         assertEquals(3, data.size());
         for (RowData row : data) {
@@ -117,12 +90,12 @@ public abstract class DBManagerTest {
 
         RowData conditionData = new RowData();
         conditionData.put("name", "Jimmi");
-        dbManager.delete("test", conditionData);
+        dbManager.delete("test2", conditionData);
         conditionData.put("name", "Paul");
         conditionData.put("id", "3");
-        dbManager.delete("test", conditionData);
+        dbManager.delete("test2", conditionData);
 
-        data = dbManager.selectAllFromTable("test");
+        data = dbManager.selectAllFromTable("test2");
 
         assertEquals(1, data.size());
         for (RowData row : data) {
