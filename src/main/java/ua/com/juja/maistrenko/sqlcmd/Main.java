@@ -13,7 +13,7 @@ public class Main {
         boolean quit = false;
         view.write("Hello, SQLcmd program started.");
         view.write("Please choose type of SQL connection : ");
-        view.write("\t 1 - for PostreSQL");
+        view.write("\t 1 - for PostgreSQL");
         view.write("\t 2 - for MySQL");
         view.write("or q - to close program");
 

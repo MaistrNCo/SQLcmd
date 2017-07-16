@@ -36,7 +36,7 @@ public class Update implements Command {
             return;
         }
 
-        if (params.size()%2!=0) {
+        if (params.size() % 2 != 0) {
             view.write("parameters amount must be paired");
             return;
         }

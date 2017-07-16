@@ -38,12 +38,12 @@ public class CreateTest {
     @Test
     public void testCreateProcessHelp() {
         try {
-            command.process("crate|help");
+            command.process("create|help");
         } catch (NormalExitException e) {
             //
         }
         verify(view).write("create|tableName|column1|column2|...|columnN - " +
-                "to create table 'tableName' with defined columns");
+                "to create table 'tableName' with defined columns. WARNING 'column1' will be set as PRIMARY KEY, serial");
     }
 
     @Test

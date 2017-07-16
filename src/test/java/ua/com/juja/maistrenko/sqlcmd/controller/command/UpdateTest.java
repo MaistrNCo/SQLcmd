@@ -12,13 +12,12 @@ import static org.mockito.Mockito.verify;
 
 public class UpdateTest {
     private View view;
-    private DBManager dbManager;
     private Command command;
 
     @Before
     public void init() {
         view = mock(View.class);
-        dbManager = mock(DBManager.class);
+        DBManager dbManager = mock(DBManager.class);
         command = new Update(dbManager, view);
     }
 

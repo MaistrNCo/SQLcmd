@@ -35,9 +35,9 @@ public class TestingCommon {
 
     public static void prepareTestTables() {
         dbManager.connect(connSet);
-        dbManager.create("test", Arrays.asList("name", "password"));
-        dbManager.create("test2", Arrays.asList("name", "password"));
-        dbManager.create("test3", Arrays.asList("name", "password"));
+        dbManager.create("test", Arrays.asList("id", "name", "password"));
+        dbManager.create("test2", Arrays.asList("id", "name", "password"));
+        dbManager.create("test3", Arrays.asList("id", "name", "password"));
 
         RowData rowData = new RowData();
         rowData.put("name", "Simone");
@@ -53,17 +53,6 @@ public class TestingCommon {
         rowData.put("id", "48");
         dbManager.insert("test3", rowData);
         dbManager.disconnect();
-    }
-
-    public static void closeConnection() {
-        if (!dbManager.isConnected()) {
-            dbManager.connect(connSet);
-        }
-        dbManager.drop("test");
-        dbManager.drop("test2");
-        dbManager.drop("test3");
-        dbManager.disconnect();
-
     }
 
     public static void dropTestData() {

@@ -98,7 +98,7 @@ public class MySQLdbManager implements DBManager {
             }
 
         } catch (SQLException e) {
-
+            //nothing
         }
         return result;
     }
@@ -126,11 +126,11 @@ public class MySQLdbManager implements DBManager {
 
     @Override
     public void create(String tableName, List<String> columnNames) {
-        StringBuilder createTableSQL = new StringBuilder("create table if not exists " +
-                tableName + "(id serial not null primary key ");
+        StringBuilder createTableSQL = new StringBuilder("create table if not exists " + tableName +
+                "(" + columnNames.get(0) + " serial not null primary key ");
 
-        for (String column : columnNames) {
-            createTableSQL.append(", ").append(column).append(" text");
+        for (int ind = 1; ind < columnNames.size(); ind++) {
+            createTableSQL.append(", ").append(columnNames.get(ind)).append(" text");
         }
         createTableSQL.append(")");
         try (Statement statement = connection.createStatement()) {
@@ -165,7 +165,7 @@ public class MySQLdbManager implements DBManager {
                     + " (" + columnNames + ")   values ("
                     + values + ")";
             statement.executeUpdate(insertRowSQL);
-        } catch (MySQLIntegrityConstraintViolationException e){
+        } catch (MySQLIntegrityConstraintViolationException e) {
             throw new RuntimeException("Couldn't make insert to table " + tableName + " row with defined primary key already exist", e);
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't make insert to table " + tableName, e);

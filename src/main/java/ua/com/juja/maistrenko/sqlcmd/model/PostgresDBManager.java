@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class PostgresDBManager implements DBManager {
 
-    private static final int LAST_AND_LENGTH  = 4;
+    private static final int LAST_AND_LENGTH = 4;
     private static final String PROPERTIES_PATH = "config/postgres.properties";
     private Connection connection;
 
@@ -131,10 +131,10 @@ public class PostgresDBManager implements DBManager {
     @Override
     public void create(String tableName, List<String> columnNames) {
         StringBuilder createTableSQL = new StringBuilder("create table if not exists " + tableName +
-                "(id serial not null primary key ");
+                "(" + columnNames.get(0) + " serial not null primary key ");
 
-        for (String column : columnNames) {
-            createTableSQL.append(", ").append(column).append(" text");
+        for (int ind = 1; ind < columnNames.size(); ind++) {
+            createTableSQL.append(", ").append(columnNames.get(ind)).append(" text");
         }
         createTableSQL.append(")");
         try (Statement statement = connection.createStatement()) {
@@ -171,7 +171,7 @@ public class PostgresDBManager implements DBManager {
                     + values + ")";
             statement.executeUpdate(insertRowSQL);
         } catch (PSQLException e) {
-            if (e.getMessage().indexOf("duplicate key") > -1) {
+            if (e.getMessage().contains("duplicate key")) {
                 throw new RuntimeException("Couldn't make insert to table " + tableName + " row with defined primary key already exist", e);
             }
         } catch (SQLException e) {
@@ -202,7 +202,7 @@ public class PostgresDBManager implements DBManager {
     public void createDB(String name) {
         String getDBlist = "select * from pg_catalog.pg_database where datname = '" + name + "'";
         try (Statement statement = connection.createStatement();
-            ResultSet resCount = statement.executeQuery(getDBlist)) {
+             ResultSet resCount = statement.executeQuery(getDBlist)) {
             if (!resCount.next()) {
                 String sql = "create database " + name;
                 statement.executeUpdate(sql);

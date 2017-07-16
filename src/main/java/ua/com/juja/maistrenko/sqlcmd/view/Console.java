@@ -84,6 +84,6 @@ public class Console implements View {
         String errorReason = e.getMessage();
         if (e.getCause() != null) errorReason += "  " + e.getCause().getMessage();
         write("Unsuccessful operation by reason: " + errorReason);
-        write("try again please");
+        write("try again please or use 'commandName|help' to see command description");
     }
 }

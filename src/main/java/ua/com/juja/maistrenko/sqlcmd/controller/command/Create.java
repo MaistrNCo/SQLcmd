@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Create implements Command {
     private static final String DESCRIPTION = "create|tableName|column1|column2|...|columnN - " +
-            "to create table 'tableName' with defined columns";
+            "to create table 'tableName' with defined columns. WARNING 'column1' will be set as PRIMARY KEY, serial";
     private static final String COMMAND_PATTERN = "create|tableName|column1";
     private static final int TABLE_NAME_INDEX = 1;
     private final Parser parser = new MinAmountParamsParser();

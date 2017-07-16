@@ -14,6 +14,7 @@ public abstract class DBManagerTest {
     public void clearTestInput(){
         dbManager.clear("test");
     }
+
     @Test
     public void testAllTablesList() {
         assertEquals("[test, test2, test3]", dbManager.getTablesList().toString());
@@ -59,7 +60,6 @@ public abstract class DBManagerTest {
         for (RowData row : data) {
             assertEquals("[id, name, password]", data.get(0).getNames().toString());
             assertEquals("[48, Jimmi, 222]", data.get(0).getValues().toString());
-            //System.out.println(row.toString());
         }
     }
 
@@ -89,7 +89,6 @@ public abstract class DBManagerTest {
             assertEquals("[3, Paul, 56789]", data.get(1).getValues().toString());
             assertEquals("[id, name, password]", data.get(2).getNames().toString());
             assertEquals("[48, Jimmi, 111111]", data.get(2).getValues().toString());
-            //System.out.println(row.toString());
         }
 
         RowData conditionData = new RowData();
@@ -105,7 +104,6 @@ public abstract class DBManagerTest {
         for (RowData row : data) {
             assertEquals("[id, name, password]", data.get(0).getNames().toString());
             assertEquals("[2, Simone, 123456]", data.get(0).getValues().toString());
-            //System.out.println(row.toString());
         }
 
     }

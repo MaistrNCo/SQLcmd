@@ -7,7 +7,7 @@ public class ConnectParamsParser extends ExactAmountParamsParser {
     private static final int INDEX_FIRST_PARAM = 0;
     private static final int INDEX_SERVER_NAME = 1;
     private static final int INDEX_SERVER_PORT = 2;
-    public static final int PARAMS_AMOUNT_WITHOUT_SERVER = 4;
+    private static final int PARAMS_AMOUNT_WITHOUT_SERVER = 4;
 
     @Override
     public boolean checkParamsAmount(List<String> paramsList, String pattern) {

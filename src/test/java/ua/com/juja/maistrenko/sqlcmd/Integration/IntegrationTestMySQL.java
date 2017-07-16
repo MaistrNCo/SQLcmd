@@ -40,12 +40,6 @@ public class IntegrationTestMySQL {
         }
     }
 
-    @After
-    public void disconnect() {
-        //dbManager.disconnect();
-        //closeConnection();
-    }
-
     @AfterClass
     public static void clearDB() {
         Assume.assumeTrue(USE_MYSQL_IN_TESTS);
@@ -60,7 +54,7 @@ public class IntegrationTestMySQL {
 
         assertEquals("Hello, SQLcmd program started." + lineBreaker +
                 "Please choose type of SQL connection : " + lineBreaker +
-                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
                 "\t 2 - for MySQL" + lineBreaker +
                 "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
@@ -75,7 +69,7 @@ public class IntegrationTestMySQL {
 
         assertEquals("Hello, SQLcmd program started." + lineBreaker +
                 "Please choose type of SQL connection : " + lineBreaker +
-                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
                 "\t 2 - for MySQL" + lineBreaker +
                 "or q - to close program" + lineBreaker, getData());
     }
@@ -87,7 +81,7 @@ public class IntegrationTestMySQL {
 
         assertEquals("Hello, SQLcmd program started." + lineBreaker +
                 "Please choose type of SQL connection : " + lineBreaker +
-                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
                 "\t 2 - for MySQL" + lineBreaker +
                 "or q - to close program" + lineBreaker +
                 "wrong input"+ lineBreaker, getData());
@@ -100,7 +94,7 @@ public class IntegrationTestMySQL {
 
         assertEquals("Hello, SQLcmd program started." + lineBreaker +
                 "Please choose type of SQL connection : " + lineBreaker +
-                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
                 "\t 2 - for MySQL" + lineBreaker +
                 "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
@@ -117,7 +111,7 @@ public class IntegrationTestMySQL {
 
         assertEquals("Hello, SQLcmd program started." + lineBreaker +
                 "Please choose type of SQL connection : " + lineBreaker +
-                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
                 "\t 2 - for MySQL" + lineBreaker +
                 "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
@@ -136,7 +130,7 @@ public class IntegrationTestMySQL {
 
         assertEquals("Hello, SQLcmd program started." + lineBreaker +
                 "Please choose type of SQL connection : " + lineBreaker +
-                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
                 "\t 2 - for MySQL" + lineBreaker +
                 "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
@@ -156,14 +150,14 @@ public class IntegrationTestMySQL {
 
         assertEquals("Hello, SQLcmd program started." + lineBreaker +
                 "Please choose type of SQL connection : " + lineBreaker +
-                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
                 "\t 2 - for MySQL" + lineBreaker +
                 "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
                 "Input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
                 "Unsuccessful operation by reason: Couldn't print table unknowntable  Table 'testdb.unknowntable' doesn't exist" + lineBreaker +
-                "try again please" + lineBreaker +
+                "try again please or use 'commandName|help' to see command description" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }
 
@@ -178,7 +172,7 @@ public class IntegrationTestMySQL {
 
         assertEquals("Hello, SQLcmd program started." + lineBreaker +
                 "Please choose type of SQL connection : " + lineBreaker +
-                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
                 "\t 2 - for MySQL" + lineBreaker +
                 "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
@@ -202,7 +196,7 @@ public class IntegrationTestMySQL {
 
         assertEquals("Hello, SQLcmd program started." + lineBreaker +
                 "Please choose type of SQL connection : " + lineBreaker +
-                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
                 "\t 2 - for MySQL" + lineBreaker +
                 "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
@@ -224,13 +218,13 @@ public class IntegrationTestMySQL {
 
         assertEquals("Hello, SQLcmd program started." + lineBreaker +
                 "Please choose type of SQL connection : " + lineBreaker +
-                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
                 "\t 2 - for MySQL" + lineBreaker +
                 "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
                 "Input command please or 'help' to see commands list" + lineBreaker +
-                "Unsuccessful operation by reason: Connection to database testdb for user unknown failed!  Access denied for user 'unknown'@'192.168.77.120' (using password: YES)" + lineBreaker +
-                "try again please" + lineBreaker +
+                "Unsuccessful operation by reason: Connection to database testdb for user unknown failed!  Access denied for user 'unknown'@'192.168.1.104' (using password: YES)" + lineBreaker +
+                "try again please or use 'commandName|help' to see command description" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }
 
@@ -243,7 +237,7 @@ public class IntegrationTestMySQL {
 
         assertEquals("Hello, SQLcmd program started." + lineBreaker +
                 "Please choose type of SQL connection : " + lineBreaker +
-                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
                 "\t 2 - for MySQL" + lineBreaker +
                 "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
@@ -263,7 +257,7 @@ public class IntegrationTestMySQL {
 
         assertEquals("Hello, SQLcmd program started." + lineBreaker +
                 "Please choose type of SQL connection : " + lineBreaker +
-                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
                 "\t 2 - for MySQL" + lineBreaker +
                 "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
@@ -277,14 +271,14 @@ public class IntegrationTestMySQL {
     public void testCreate() {
         in.add("2");
         in.add(getConnectionInput());
-        in.add("create|testtable|col1|col2|col3");
+        in.add("create|testtable|id|col1|col2|col3");
         in.add("drop|testtable");
         in.add("exit");
         Main.main(new String[0]);
 
         assertEquals("Hello, SQLcmd program started." + lineBreaker +
                 "Please choose type of SQL connection : " + lineBreaker +
-                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
                 "\t 2 - for MySQL" + lineBreaker +
                 "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
@@ -300,7 +294,7 @@ public class IntegrationTestMySQL {
         in.add("2");
         in.add(getConnectionInput());
         in.add("list");
-        in.add("create|testtable|name|password|address");
+        in.add("create|testtable|id|name|password|address");
         in.add("list");
         in.add("drop|testtable");
         in.add("list");
@@ -310,7 +304,7 @@ public class IntegrationTestMySQL {
 
         assertEquals("Hello, SQLcmd program started." + lineBreaker +
                 "Please choose type of SQL connection : " + lineBreaker +
-                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
                 "\t 2 - for MySQL" + lineBreaker +
                 "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
@@ -333,7 +327,7 @@ public class IntegrationTestMySQL {
 
         assertEquals("Hello, SQLcmd program started." + lineBreaker +
                 "Please choose type of SQL connection : " + lineBreaker +
-                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
                 "\t 2 - for MySQL" + lineBreaker +
                 "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
@@ -353,7 +347,7 @@ public class IntegrationTestMySQL {
 
         assertEquals("Hello, SQLcmd program started." + lineBreaker +
                 "Please choose type of SQL connection : " + lineBreaker +
-                "\t 1 - for PostreSQL" + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
                 "\t 2 - for MySQL" + lineBreaker +
                 "or q - to close program" + lineBreaker +
                 "Hi, program started !" + lineBreaker +
@@ -385,7 +379,7 @@ public class IntegrationTestMySQL {
                 "\t\t to delete table 'tableName' with all contained data" + lineBreaker +
                 "" + lineBreaker +
                 "  create|tableName|column1|column2|...|columnN " + lineBreaker +
-                "\t\t to create table 'tableName' with defined columns" + lineBreaker +
+                "\t\t to create table 'tableName' with defined columns. WARNING 'column1' will be set as PRIMARY KEY, serial" + lineBreaker +
                 "" + lineBreaker +
                 "  insert|tableName|column1|value1|column2|value2|...|columnN|valueN " + lineBreaker +
                 "\t\t to add new data row in table 'tableName'" + lineBreaker +
