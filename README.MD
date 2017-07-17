@@ -1,7 +1,7 @@
 This console application allow to perform basic operations with SQL databases.
 MySQL & PostgreSQL RDBMs supported.
 
-User stories:
+User stories:<br>
 As user I want to choose connection type so that I can connect to DBMS of choosen type.
 As user I want to connect to DBMS so that I can view its content or change data.
 As user I want to view tables list so that I can start to work with them.
