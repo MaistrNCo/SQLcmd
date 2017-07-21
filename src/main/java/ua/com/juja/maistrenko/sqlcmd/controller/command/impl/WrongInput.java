@@ -1,5 +1,6 @@
-package ua.com.juja.maistrenko.sqlcmd.controller.command;
+package ua.com.juja.maistrenko.sqlcmd.controller.command.impl;
 
+import ua.com.juja.maistrenko.sqlcmd.controller.command.Command;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
 public class WrongInput implements Command {

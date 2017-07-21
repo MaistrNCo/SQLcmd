@@ -2,6 +2,7 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command;
 
 import org.junit.Before;
 import org.junit.Test;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.impl.Update;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
@@ -22,17 +23,17 @@ public class UpdateTest {
     }
 
     @Test
-    public void testUpdateCanProcessTrue() {
+    public void updateCanProcessTrue() {
         assertTrue(command.canProcess("update|werwert"));
     }
 
     @Test
-    public void testUpdateCanProcessFalse() {
+    public void updateCanProcessFalse() {
         assertFalse(command.canProcess("update"));
     }
 
     @Test
-    public void testUpdateProcessHelp() {
+    public void updateProcessHelp() {
         try {
             command.process("update|help");
         } catch (NormalExitException e) {
@@ -43,7 +44,7 @@ public class UpdateTest {
     }
 
     @Test
-    public void testUpdateProcessWrongParamsAmount() {
+    public void updateProcessWrongParamsAmount() {
         try {
             command.process("update|tableName");
         } catch (NormalExitException e) {
@@ -52,7 +53,7 @@ public class UpdateTest {
         verify(view).writeWrongParamsMsg("update|tableName|column1|value1column2|value2","update|tableName");
     }
     @Test
-    public void testUpdateProcessWrongParamsAmountMore() {
+    public void updateProcessWrongParamsAmountMore() {
         try {
             command.process("update|tableName|column1|value1|column2|value2|value3");
         } catch (NormalExitException e) {
@@ -62,7 +63,7 @@ public class UpdateTest {
     }
 
     @Test
-    public void testUpdateProcessSuccessful() {
+    public void updateProcessSuccessful() {
         try {
             command.process("update|tableName|column1|value1|column2|value2");
         } catch (NormalExitException e) {

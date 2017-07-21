@@ -7,6 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.*;
 
+import ua.com.juja.maistrenko.sqlcmd.controller.command.impl.ClearTable;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
@@ -25,12 +26,12 @@ public class ClearTableTest {
     }
 
     @Test
-    public void testClearCanProcessTrue() {
+    public void clearCanProcessTrue() {
         assertTrue(command.canProcess("clear|werwert"));
     }
 
     @Test
-    public void testClearCanProcessHelp() {
+    public void clearCanProcessHelp() {
         try {
             command.process("clear|help");
         } catch (NormalExitException e) {
@@ -40,12 +41,12 @@ public class ClearTableTest {
     }
 
     @Test
-    public void testClearCanProcessFalse() {
+    public void clearCanProcessFalse() {
         assertFalse(command.canProcess("clear"));
     }
 
     @Test
-    public void testClearProcessSuccessful() {
+    public void clearProcessSuccessful() {
         try {
             command.process("clear|users");
         } catch (NormalExitException e) {
@@ -55,7 +56,7 @@ public class ClearTableTest {
     }
 
     @Test
-    public void testClearProcessNonSuccessfulParamsLess() {
+    public void clearProcessNonSuccessfulParamsLess() {
 
         try {
             command.process("clear");

@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static ua.com.juja.maistrenko.sqlcmd.TestingCommon.*;
 
 
-public class IntegrationTestMySQL {
+public class MySQLIntegrationTest {
 
     private static ConfigurableInputStream in;
     private static ByteArrayOutputStream out;
@@ -47,7 +47,7 @@ public class IntegrationTestMySQL {
     }
 
     @Test
-    public void testExit() {
+    public void exit() {
         in.add("2");
         in.add("exit");
         Main.main(new String[0]);
@@ -63,7 +63,7 @@ public class IntegrationTestMySQL {
     }
 
     @Test
-    public void testQuit() {
+    public void quit() {
         in.add("q");
         Main.main(new String[0]);
 
@@ -74,7 +74,7 @@ public class IntegrationTestMySQL {
                 "or q - to close program" + lineBreaker, getData());
     }
     @Test
-    public void testMainMenuWrongInp() {
+    public void mainMenuWrongInp() {
         in.add("5");
         in.add("q");
         Main.main(new String[0]);
@@ -87,7 +87,7 @@ public class IntegrationTestMySQL {
                 "wrong input"+ lineBreaker, getData());
     }
     @Test
-    public void testMainMenu2() {
+    public void mainMenuInput2() {
         in.add("2");
         in.add("exit");
         Main.main(new String[0]);
@@ -103,7 +103,7 @@ public class IntegrationTestMySQL {
     }
 
     @Test
-    public void testConnectDef() {
+    public void connectDef() {
         in.add("2");
         in.add("connect");
         in.add("exit");
@@ -121,7 +121,7 @@ public class IntegrationTestMySQL {
     }
 
     @Test
-    public void testList() {
+    public void list() {
         in.add("2");
         in.add(getConnectionInput());
         in.add("list");
@@ -141,7 +141,7 @@ public class IntegrationTestMySQL {
     }
 
     @Test
-    public void FindWrongTableTest() {
+    public void findWrongTableTest() {
         in.add("2");
         in.add(getConnectionInput());
         in.add("find|unknowntable");
@@ -162,7 +162,7 @@ public class IntegrationTestMySQL {
     }
 
     @Test
-    public void FindTest() {
+    public void findTest() {
         in.add("2");
         in.add(getConnectionInput());
         in.add("insert|test|id|33|name|Vitja|password|prahvessor");
@@ -188,7 +188,7 @@ public class IntegrationTestMySQL {
     }
 
     @Test
-    public void testConnect() {
+    public void connect() {
         in.add("2");
         in.add(getConnectionInput());
         in.add("exit");
@@ -206,7 +206,7 @@ public class IntegrationTestMySQL {
     }
 
     @Test
-    public void testWrongConnect() {
+    public void wrongConnect() {
         in.add("2");
         in.add("connect|" +
                 connSet.getServer() + ":" +
@@ -229,7 +229,7 @@ public class IntegrationTestMySQL {
     }
 
     @Test
-    public void testNotConnected() {
+    public void notConnected() {
         in.add("2");
         in.add("list");
         in.add("exit");
@@ -248,7 +248,7 @@ public class IntegrationTestMySQL {
     }
 
     @Test
-    public void testWrongInput() {
+    public void wrongInput() {
         in.add("2");
         in.add(getConnectionInput());
         in.add("con");
@@ -268,7 +268,7 @@ public class IntegrationTestMySQL {
     }
 
     @Test
-    public void testCreate() {
+    public void create() {
         in.add("2");
         in.add(getConnectionInput());
         in.add("create|testtable|id|col1|col2|col3");
@@ -290,7 +290,7 @@ public class IntegrationTestMySQL {
     }
 
     @Test
-    public void testCreateDrop() {
+    public void createDrop() {
         in.add("2");
         in.add(getConnectionInput());
         in.add("list");
@@ -318,7 +318,7 @@ public class IntegrationTestMySQL {
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }
     @Test
-    public void testWrongParamsAmount() {
+    public void wrongParamsAmount() {
         in.add("2");
         in.add(getConnectionInput());
         in.add("delete|");
@@ -338,7 +338,7 @@ public class IntegrationTestMySQL {
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }
     @Test
-    public void testCommandHelp() {
+    public void commandHelp() {
         in.add("2");
         in.add(getConnectionInput());
         in.add("help");

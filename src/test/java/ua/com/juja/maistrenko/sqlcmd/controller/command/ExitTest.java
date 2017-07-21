@@ -3,6 +3,7 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.impl.Exit;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
@@ -22,18 +23,18 @@ public class ExitTest {
         command = new Exit(dbManager, view);
     }
     @Test
-    public void testExitCanProcessTrue() {
+    public void exitCanProcessTrue() {
         assertTrue(command.canProcess("exit"));
     }
 
     @Test
-    public void testExitCanProcessFalse() {
+    public void exitCanProcessFalse() {
         assertFalse(command.canProcess("Exit"));
         assertFalse(command.canProcess("exit|we"));
     }
 
     @Test
-    public void testExitProcess() {
+    public void exitProcess() {
         try {
             command.process("exit");
         } catch (NormalExitException e) {

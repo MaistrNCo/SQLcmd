@@ -3,6 +3,7 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.impl.Create;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
@@ -26,17 +27,17 @@ public class CreateTest {
     }
 
     @Test
-    public void testCreateCanProcessTrue() {
+    public void createCanProcessTrue() {
         assertTrue(command.canProcess("create|werwert"));
     }
 
     @Test
-    public void testCreateCanProcessFalse() {
+    public void createCanProcessFalse() {
         assertFalse(command.canProcess("create"));
     }
 
     @Test
-    public void testCreateProcessHelp() {
+    public void createProcessHelp() {
         try {
             command.process("create|help");
         } catch (NormalExitException e) {
@@ -47,7 +48,7 @@ public class CreateTest {
     }
 
     @Test
-    public void testCreateProcessWrongParamsAmount() {
+    public void createProcessWrongParamsAmount() {
         try {
             command.process("create|tableName");
         } catch (NormalExitException e) {
@@ -57,7 +58,7 @@ public class CreateTest {
     }
 
     @Test
-    public void testCreateProcessSuccessful() {
+    public void createProcessSuccessful() {
         Set<String> columnsList = new LinkedHashSet<>();
         columnsList.add("id");
         columnsList.add("column1");

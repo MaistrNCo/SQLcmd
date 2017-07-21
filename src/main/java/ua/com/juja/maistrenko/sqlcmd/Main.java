@@ -1,9 +1,9 @@
 package ua.com.juja.maistrenko.sqlcmd;
 
 import ua.com.juja.maistrenko.sqlcmd.controller.MainController;
-import ua.com.juja.maistrenko.sqlcmd.model.MySQLdbManager;
-import ua.com.juja.maistrenko.sqlcmd.model.PostgresDBManager;
-import ua.com.juja.maistrenko.sqlcmd.view.Console;
+import ua.com.juja.maistrenko.sqlcmd.model.impl.MySQLdbManager;
+import ua.com.juja.maistrenko.sqlcmd.model.impl.PostgresDBManager;
+import ua.com.juja.maistrenko.sqlcmd.view.impl.Console;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
 public class Main {

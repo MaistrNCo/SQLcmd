@@ -1,5 +1,6 @@
-package ua.com.juja.maistrenko.sqlcmd.controller.command;
+package ua.com.juja.maistrenko.sqlcmd.controller.command.impl;
 
+import ua.com.juja.maistrenko.sqlcmd.controller.command.Command;
 import ua.com.juja.maistrenko.sqlcmd.model.ConnectionSettings;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;

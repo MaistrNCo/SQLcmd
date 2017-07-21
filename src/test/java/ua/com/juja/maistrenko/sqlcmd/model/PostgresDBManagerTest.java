@@ -3,6 +3,7 @@ package ua.com.juja.maistrenko.sqlcmd.model;
 import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.BeforeClass;
+import ua.com.juja.maistrenko.sqlcmd.model.impl.PostgresDBManager;
 
 import static ua.com.juja.maistrenko.sqlcmd.TestingCommon.*;
 

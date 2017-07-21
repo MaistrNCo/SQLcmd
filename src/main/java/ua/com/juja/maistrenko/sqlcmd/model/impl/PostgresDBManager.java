@@ -1,6 +1,9 @@
-package ua.com.juja.maistrenko.sqlcmd.model;
+package ua.com.juja.maistrenko.sqlcmd.model.impl;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import org.postgresql.util.PSQLException;
+import ua.com.juja.maistrenko.sqlcmd.model.ConnectionSettings;
+import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
+import ua.com.juja.maistrenko.sqlcmd.model.RowData;
 
 import java.sql.*;
 import java.util.LinkedHashSet;
@@ -8,29 +11,27 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public class MySQLdbManager implements DBManager {
+public class PostgresDBManager implements DBManager {
 
     private static final int LAST_AND_LENGTH = 4;
-    private final String PROPERTIES_PATH = "config/mysql.properties";
-
+    private static final String PROPERTIES_PATH = "config/postgres.properties";
     private Connection connection;
 
     @Override
-    public void connect(ConnectionSettings conSettings) {
-
+    public void connect(ConnectionSettings connSettings) {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Where is your PostgreSQL JDBC Driver? ", e);
         }
 
         try {
             this.connection = DriverManager.getConnection(
-                    "jdbc:mysql://" + conSettings.getAddress() + "?useSSL=false",
-                    conSettings.getUsername(), conSettings.getPassword());
+                    "jdbc:postgresql://" + connSettings.getAddress(),
+                    connSettings.getUsername(), connSettings.getPassword());
         } catch (SQLException e) {
             throw new RuntimeException(String.format("Connection to database %s for user %s failed!",
-                    conSettings.getDataBase(), conSettings.getUsername()), e);
+                    connSettings.getDataBase(), connSettings.getUsername()), e);
         }
     }
 
@@ -52,10 +53,11 @@ public class MySQLdbManager implements DBManager {
     @Override
     public Set<String> getTablesList() {
         Set<String> result = new LinkedHashSet<>();
+        String[] types = {"TABLE"};
         try {
             DatabaseMetaData md = connection.getMetaData();
             ResultSet rs = md.getTables(null,
-                    null, "%", null);
+                    null, "%", types);
             while (rs.next()) {
                 result.add(rs.getString(3));
             }
@@ -65,10 +67,11 @@ public class MySQLdbManager implements DBManager {
         return result;
     }
 
+
     @Override
     public List<RowData> selectAllFromTable(String tableName) {
         List<RowData> dataTable = new LinkedList<>();
-        String selectTableSQL = "select * from " + tableName;
+        String selectTableSQL = "SELECT * from " + tableName;
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(selectTableSQL)) {
             int columnCount = resultSet.getMetaData().getColumnCount();
@@ -91,17 +94,22 @@ public class MySQLdbManager implements DBManager {
         Set<String> result = new LinkedHashSet<>();
         try {
             DatabaseMetaData metadata = connection.getMetaData();
-            ResultSet resultSet = metadata.getColumns(null,
-                    null, tableName, null);
+            ResultSet resultSet = metadata.getColumns(null, null, tableName, null);
+
             while (resultSet.next()) {
                 result.add(resultSet.getString("COLUMN_NAME"));
             }
-
         } catch (SQLException e) {
-            //nothing
+            //
         }
         return result;
     }
+
+    @Override
+    public String getPropertiesPath() {
+        return PROPERTIES_PATH;
+    }
+
 
     @Override
     public void clear(String tableName) {
@@ -112,7 +120,6 @@ public class MySQLdbManager implements DBManager {
             throw new RuntimeException("Couldn't clear table " + tableName, e);
         }
     }
-
 
     @Override
     public void drop(String tableName) {
@@ -143,8 +150,8 @@ public class MySQLdbManager implements DBManager {
     @Override
     public void delete(String tableName, RowData conditionData) {
         String conditionString = buildCondition(conditionData);
-        String deleteRowsSQL = "delete from " + tableName + " where "
-                + conditionString;
+
+        String deleteRowsSQL = "delete from " + tableName + " where " + conditionString;
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(deleteRowsSQL);
         } catch (SQLException e) {
@@ -157,16 +164,19 @@ public class MySQLdbManager implements DBManager {
         try (Statement statement = connection.createStatement()) {
             String columnNames = "";
             String values = "";
-            for (String colName : rowData.getNames()) {
-                columnNames = columnNames.concat(((columnNames.length() > 0) ? "," : "") + colName);
-                values = values.concat(((values.length() > 0) ? "," : "") + "'" + rowData.get(colName).toString() + "'");
+            for (String columnName : rowData.getNames()) {
+                columnNames = columnNames.concat(((columnNames.length() > 0) ? "," : "") + columnName);
+                values = values.concat(((values.length() > 0) ? "," : "") + "'" + rowData.get(columnName) + "'");
             }
+
             String insertRowSQL = "insert into " + tableName
                     + " (" + columnNames + ")   values ("
                     + values + ")";
             statement.executeUpdate(insertRowSQL);
-        } catch (MySQLIntegrityConstraintViolationException e) {
-            throw new RuntimeException("Couldn't make insert to table " + tableName + " row with defined primary key already exist", e);
+        } catch (PSQLException e) {
+            if (e.getMessage().contains("duplicate key")) {
+                throw new RuntimeException("Couldn't make insert to table " + tableName + " row with defined primary key already exist", e);
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't make insert to table " + tableName, e);
         }
@@ -176,28 +186,30 @@ public class MySQLdbManager implements DBManager {
     public void update(String tableName, RowData conditionData, RowData newValue) {
         try (Statement statement = connection.createStatement()) {
             String conditionString = buildCondition(conditionData);
-            StringBuilder values = new StringBuilder();
+            StringBuilder values = new StringBuilder("");
             Set<String> colNames = newValue.getNames();
             List<Object> colValues = newValue.getValues();
             int ind = 0;
             for (String column : colNames) {
-                values.append((ind != 0) ? "," : "");
-                values.append(column).append(" = '").append(colValues.get(ind)).append("'");
+                values.append((ind != 0) ? "," : "").append(column).append(" = '").append(colValues.get(ind)).append("'");
                 ind++;
             }
-            String updateSQL = "update " + tableName +
-                    " set " + values + " where " + conditionString;
+            String updateSQL = "update " + tableName + " set " + values + " where " + conditionString;
             statement.executeUpdate(updateSQL);
         } catch (SQLException e) {
-            throw new RuntimeException("Can't updateTableByCondition table " + tableName, e);
+            throw new RuntimeException("Couldn't update table " + tableName, e);
         }
     }
 
     @Override
     public void createDB(String name) {
-        try (Statement st = connection.createStatement()) {
-            String sql = "create database if not exists " + name;
-            st.executeUpdate(sql);
+        String getDBlist = "select * from pg_catalog.pg_database where datname = '" + name + "'";
+        try (Statement statement = connection.createStatement();
+             ResultSet resCount = statement.executeQuery(getDBlist)) {
+            if (!resCount.next()) {
+                String sql = "create database " + name;
+                statement.executeUpdate(sql);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(" Couldn't create new database", e);
         }
@@ -213,11 +225,6 @@ public class MySQLdbManager implements DBManager {
         }
     }
 
-    @Override
-    public String getPropertiesPath() {
-        return PROPERTIES_PATH;
-    }
-
     private String buildCondition(RowData conditionData) {
         if (conditionData.isEmpty()) {
             return "";
@@ -229,4 +236,6 @@ public class MySQLdbManager implements DBManager {
         }
         return conditionStr.substring(0, conditionStr.length() - LAST_AND_LENGTH);
     }
+
+
 }

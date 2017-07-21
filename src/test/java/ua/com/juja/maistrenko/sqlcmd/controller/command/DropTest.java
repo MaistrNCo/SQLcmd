@@ -3,6 +3,7 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command;
 
 import org.junit.Before;
 import org.junit.Test;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.impl.Drop;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
@@ -23,17 +24,17 @@ public class DropTest {
     }
 
     @Test
-    public void testDropCanProcessTrue() {
+    public void dropCanProcessTrue() {
         assertTrue(command.canProcess("drop|werwert"));
     }
 
     @Test
-    public void testDropCanProcessFalse() {
+    public void dropCanProcessFalse() {
         assertFalse(command.canProcess("drop"));
     }
 
     @Test
-    public void testDropProcessHelp() {
+    public void dropProcessHelp() {
         try {
             command.process("drop|help");
         } catch (NormalExitException e) {
@@ -43,7 +44,7 @@ public class DropTest {
     }
 
     @Test
-    public void testDropProcessWrongParamsAmount() {
+    public void dropProcessWrongParamsAmount() {
         try {
             command.process("drop|tableName|sdfg");
         } catch (NormalExitException e) {
@@ -53,7 +54,7 @@ public class DropTest {
     }
 
     @Test
-    public void testDropProcessSuccessful() {
+    public void dropProcessSuccessful() {
         try {
             command.process("drop|tableName");
         } catch (NormalExitException e) {

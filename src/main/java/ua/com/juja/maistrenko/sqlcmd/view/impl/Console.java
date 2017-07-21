@@ -1,6 +1,7 @@
-package ua.com.juja.maistrenko.sqlcmd.view;
+package ua.com.juja.maistrenko.sqlcmd.view.impl;
 
 import ua.com.juja.maistrenko.sqlcmd.model.RowData;
+import ua.com.juja.maistrenko.sqlcmd.view.View;
 
 import java.util.List;
 import java.util.Scanner;

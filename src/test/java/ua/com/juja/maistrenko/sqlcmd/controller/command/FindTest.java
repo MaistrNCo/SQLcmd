@@ -6,6 +6,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.impl.Find;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.model.RowData;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
@@ -37,19 +38,19 @@ public class FindTest {
     }
 
     @Test
-    public void testFindCanProcessTrue() {
+    public void findCanProcessTrue() {
         assertTrue(command.canProcess("find|users"));
     }
 
     @Test
-    public void testFindCanProcessFalse() {
+    public void findCanProcessFalse() {
 
         assertFalse(command.canProcess("find"));
         assertFalse(command.canProcess("fin"));
     }
 
     @Test
-    public void testFindProcessHelp() {
+    public void findProcessHelp() {
         try {
             command.process("find|help");
         } catch (NormalExitException e) {
@@ -59,7 +60,7 @@ public class FindTest {
     }
 
     @Test
-    public void testSelectFromTable() {
+    public void findFromTable() {
         //given
         RowData user1 = new RowData();
         user1.put("id", "2");
@@ -95,7 +96,7 @@ public class FindTest {
     }
 
     @Test
-    public void testSelectFromEmptyTable() {
+    public void findFromEmptyTable() {
 
         List<RowData> data = new LinkedList<>();
 
@@ -115,7 +116,7 @@ public class FindTest {
     }
 
     @Test
-    public void testFindProcessWrongParamsAmount() {
+    public void findProcessWrongParamsAmount() {
         try {
             command.process("find|tableName|sdfg");
         } catch (NormalExitException e) {

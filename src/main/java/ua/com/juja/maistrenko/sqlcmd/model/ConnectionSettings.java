@@ -1,5 +1,7 @@
 package ua.com.juja.maistrenko.sqlcmd.model;
 
+import ua.com.juja.maistrenko.sqlcmd.model.impl.MySQLdbManager;
+
 import java.io.*;
 import java.util.List;
 import java.util.Properties;

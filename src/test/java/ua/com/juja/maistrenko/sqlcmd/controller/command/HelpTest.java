@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import ua.com.juja.maistrenko.sqlcmd.controller.MainController;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.impl.Help;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
@@ -28,18 +29,18 @@ public class HelpTest {
         command = new Help(view, new MainController(dbManager,view));
     }
     @Test
-    public void testHelpCanProcessTrue() {
+    public void helpCanProcessTrue() {
         assertTrue(command.canProcess("help"));
     }
 
     @Test
-    public void testHelpCanProcessFalse() {
+    public void helpCanProcessFalse() {
         assertFalse(command.canProcess("Help"));
         assertFalse(command.canProcess("help|we"));
     }
 
     @Test
-    public void testHelpProcess() {
+    public void helpProcess() {
         command.process("help");
         Mockito.verify(view).write("Commands full list :");
 

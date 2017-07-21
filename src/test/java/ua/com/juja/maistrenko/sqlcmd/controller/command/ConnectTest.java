@@ -2,6 +2,7 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command;
 
 import org.junit.Before;
 import org.junit.Test;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.impl.Connect;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
@@ -22,16 +23,16 @@ public class ConnectTest {
     }
 
     @Test
-    public void testConnectCanProcessTrue() {
+    public void connectCanProcessTrue() {
         assertTrue(command.canProcess("connect|dataBase|userName|password"));
     }
 
     @Test
-    public void testConnectCanProcessFalse() {
+    public void connectCanProcessFalse() {
         assertFalse(command.canProcess("connect"));
     }
     @Test
-    public void testConnectHelp() {
+    public void connectHelp() {
         try {
             command.process("connect|help");
         } catch (NormalExitException e) {
@@ -42,7 +43,7 @@ public class ConnectTest {
     }
 
     @Test
-    public void testConnectProcessWrongParamsAmount() {
+    public void connectProcessWrongParamsAmount() {
         try {
             command.process("connect|postgres|postgres");
         } catch (NormalExitException e) {

@@ -1,6 +1,7 @@
-package ua.com.juja.maistrenko.sqlcmd.controller.command;
+package ua.com.juja.maistrenko.sqlcmd.controller.command.impl;
 
 import ua.com.juja.maistrenko.sqlcmd.controller.MainController;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.Command;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
 import java.util.Set;

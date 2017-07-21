@@ -16,12 +16,12 @@ public abstract class DBManagerTest {
     }
 
     @Test
-    public void testAllTablesList() {
+    public void allTablesList() {
         assertEquals("[test, test2, test3]", dbManager.getTablesList().toString());
     }
 
     @Test
-    public void testSelect() {
+    public void select() {
         RowData rowData = new RowData();
         rowData.put("id", "48");
         rowData.put("name", "Jimmi");
@@ -38,7 +38,7 @@ public abstract class DBManagerTest {
     }
 
     @Test
-    public void testUpdate() {
+    public void update() {
         RowData rd = new RowData();
         rd.put("name", "Jimmi");
         rd.put("password", "111111");
@@ -64,7 +64,7 @@ public abstract class DBManagerTest {
     }
 
     @Test
-    public void testDelete() {
+    public void delete() {
         RowData rowData = new RowData();
         rowData.put("name", "Simone");
         rowData.put("password", "123456");
@@ -109,19 +109,19 @@ public abstract class DBManagerTest {
     }
 
     @Test
-    public void testGetColumnsNames() {
+    public void getColumnsNames() {
         assertEquals("[id, name, password]", dbManager.getColumnsNames("test").toString());
     }
 
     @Test
-    public void testClearTable() {
+    public void clearTable() {
         dbManager.clear("test3");
         List<RowData>data = dbManager.selectAllFromTable("test3");
         assertEquals(0,data.size());
     }
 
    @Test
-    public void testCreateDropTable() {
+    public void createDropTable() {
         dbManager.create("test4", Arrays.asList("name", "age"));
         Assert.assertEquals("[test, test2, test3, test4]", dbManager.getTablesList().toString());
         dbManager.drop("test4");
@@ -129,7 +129,7 @@ public abstract class DBManagerTest {
     }
 
     @Test (expected = RuntimeException.class)
-    public void testInsertAlreadyExist() {
+    public void insertAlreadyExist() {
         RowData rd = new RowData();
         rd.put("name", "Jimmi");
         rd.put("password", "111111");

@@ -3,6 +3,7 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.impl.TablesList;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
@@ -27,17 +28,17 @@ public class TablesListTest {
     }
 
     @Test
-    public void testTablesListCanProcessTrue() {
+    public void tablesListCanProcessTrue() {
         assertTrue(command.canProcess("list"));
     }
 
     @Test
-    public void testTablesListCanProcessFalse() {
+    public void tablesListCanProcessFalse() {
         assertFalse(command.canProcess("list|postgre"));
     }
 
     @Test
-    public void testTablesListProcessHelp() {
+    public void tablesListProcessHelp() {
         try {
             command.process("list|help");
         } catch (NormalExitException e) {
@@ -47,7 +48,7 @@ public class TablesListTest {
     }
 
     @Test
-    public void testTablesListProcessSuccessful() {
+    public void tablesListProcessSuccessful() {
         Set<String> testSet = new LinkedHashSet<>();
         testSet.add("table1");
         testSet.add("table2");

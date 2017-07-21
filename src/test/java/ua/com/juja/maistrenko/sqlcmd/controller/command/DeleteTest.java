@@ -2,6 +2,7 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command;
 
 import org.junit.Before;
 import org.junit.Test;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.impl.Delete;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
@@ -22,17 +23,17 @@ public class DeleteTest {
     }
 
     @Test
-    public void testDeleteCanProcessTrue() {
+    public void deleteCanProcessTrue() {
         assertTrue(command.canProcess("delete|werwert"));
     }
 
     @Test
-    public void testDeleteCanProcessFalse() {
+    public void deleteCanProcessFalse() {
         assertFalse(command.canProcess("delete"));
     }
 
     @Test
-    public void testDeleteProcessHelp() {
+    public void deleteProcessHelp() {
         try {
             command.process("delete|help");
         } catch (NormalExitException e) {
@@ -43,7 +44,7 @@ public class DeleteTest {
     }
 
     @Test
-    public void testDeleteProcessWrongParamsAmount() {
+    public void deleteProcessWrongParamsAmount() {
         try {
             command.process("delete|tableName");
         } catch (NormalExitException e) {
@@ -53,7 +54,7 @@ public class DeleteTest {
     }
 
     @Test
-    public void testDeleteProcessSuccessful() {
+    public void deleteProcessSuccessful() {
         try {
             command.process("delete|tableName|column1|value");
         } catch (NormalExitException e) {

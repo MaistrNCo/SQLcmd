@@ -1,6 +1,8 @@
 package ua.com.juja.maistrenko.sqlcmd;
 
 import ua.com.juja.maistrenko.sqlcmd.model.*;
+import ua.com.juja.maistrenko.sqlcmd.model.impl.MySQLdbManager;
+import ua.com.juja.maistrenko.sqlcmd.model.impl.PostgresDBManager;
 
 import java.util.Arrays;
 

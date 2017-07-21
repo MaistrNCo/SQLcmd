@@ -2,6 +2,7 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command;
 
 import org.junit.Before;
 import org.junit.Test;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.impl.Insert;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
@@ -22,17 +23,17 @@ public class InsertTest {
     }
 
     @Test
-    public void testInsertCanProcessTrue() {
+    public void insertCanProcessTrue() {
         assertTrue(command.canProcess("insert|werwert"));
     }
 
     @Test
-    public void testInsertCanProcessFalse() {
+    public void insertCanProcessFalse() {
         assertFalse(command.canProcess("insert"));
     }
 
     @Test
-    public void testInsertProcessHelp() {
+    public void insertProcessHelp() {
         try {
             command.process("insert|help");
         } catch (NormalExitException e) {
@@ -43,7 +44,7 @@ public class InsertTest {
     }
 
     @Test
-    public void testInsertProcessWrongParamsAmount() {
+    public void insertProcessWrongParamsAmount() {
         try {
             command.process("insert|tableName");
         } catch (NormalExitException e) {
@@ -53,7 +54,7 @@ public class InsertTest {
     }
 
     @Test
-    public void testInsertProcessSuccessful() {
+    public void insertProcessSuccessful() {
         try {
             command.process("insert|tableName|column1|value1");
         } catch (NormalExitException e) {
