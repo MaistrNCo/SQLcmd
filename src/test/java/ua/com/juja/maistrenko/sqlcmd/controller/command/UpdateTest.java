@@ -2,8 +2,11 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import ua.com.juja.maistrenko.sqlcmd.controller.command.impl.Update;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
+import ua.com.juja.maistrenko.sqlcmd.model.RowData;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
 import static org.junit.Assert.assertFalse;
@@ -14,11 +17,12 @@ import static org.mockito.Mockito.verify;
 public class UpdateTest {
     private View view;
     private Command command;
+    private DBManager dbManager;
 
     @Before
     public void init() {
         view = mock(View.class);
-        DBManager dbManager = mock(DBManager.class);
+        dbManager = mock(DBManager.class);
         command = new Update(dbManager, view);
     }
 
@@ -50,7 +54,8 @@ public class UpdateTest {
         } catch (NormalExitException e) {
             //
         }
-        verify(view).writeWrongParamsMsg("update|tableName|column1|value1column2|value2","update|tableName");
+        verify(view).writeWrongParamsMsg("update|tableName|conditionalColumn|conditionalValue|column1|value1|" +
+                "...|columnN|valueN ","update|tableName");
     }
     @Test
     public void updateProcessWrongParamsAmountMore() {
@@ -59,11 +64,20 @@ public class UpdateTest {
         } catch (NormalExitException e) {
             //
         }
-        verify(view).write("parameters amount must be paired");
+        verify(view).writeWrongParamsMsg(
+                "update|tableName|conditionalColumn|conditionalValue|column1|value1|...|columnN|valueN ",
+                "update|tableName|column1|value1|column2|value2|value3"
+        );
     }
 
     @Test
     public void updateProcessSuccessful() {
+        RowData conditionData = new RowData();
+        conditionData.put("column1","value1");
+        RowData rowData = new RowData();
+        rowData.put("column2","value2");
+
+        Mockito.when(dbManager.update("tableName",conditionData,rowData)).thenReturn(1);
         try {
             command.process("update|tableName|column1|value1|column2|value2");
         } catch (NormalExitException e) {

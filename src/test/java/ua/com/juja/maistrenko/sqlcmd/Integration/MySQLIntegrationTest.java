@@ -342,7 +342,7 @@ public class MySQLIntegrationTest {
     public void insert() {
         in.add("2");
         in.add(getConnectionInput());
-        in.add("insert|test|id|10|name|Aria|password|Rome");
+        in.add("insert|test2|id|10|name|Aria|password|Rome");
         in.add("exit");
 
         Main.main(new String[0]);
@@ -355,7 +355,7 @@ public class MySQLIntegrationTest {
                 "Hi, program started !" + lineBreaker +
                 "Input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
-                "added new row to table test  which has values: [10, Aria, Rome]" + lineBreaker +
+                "added new row to table test2  which has values: [10, Aria, Rome]" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }
 

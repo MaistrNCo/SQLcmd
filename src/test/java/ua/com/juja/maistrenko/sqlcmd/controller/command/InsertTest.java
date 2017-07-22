@@ -50,7 +50,7 @@ public class InsertTest {
         } catch (NormalExitException e) {
             //
         }
-        verify(view).writeWrongParamsMsg("insert|tableName|column1|value1","insert|tableName");
+        verify(view).writeWrongParamsMsg("insert|tableName|column1|value1|column2|value2|...|columnN|valueN ","insert|tableName");
     }
 
     @Test
