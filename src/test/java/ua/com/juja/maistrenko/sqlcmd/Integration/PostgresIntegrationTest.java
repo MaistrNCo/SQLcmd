@@ -400,6 +400,134 @@ public class PostgresIntegrationTest {
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }
 
+    @Test
+    public void insert() {
+        in.add("1");
+        in.add(getConnectionInput());
+        in.add("insert|test|id|10|name|Aria|password|Rome");
+        in.add("exit");
+
+        Main.main(new String[0]);
+
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
+                "Hi, program started !" + lineBreaker +
+                "Input command please or 'help' to see commands list" + lineBreaker +
+                "Successful connection!!" + lineBreaker +
+                "added new row to table test  which has values: [10, Aria, Rome]" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
+    }
+
+    @Test
+    public void insertWrongColumn() {
+        in.add("1");
+        in.add(getConnectionInput());
+        in.add("insert|test|id|10|name|Aria|address|Rome");
+        in.add("exit");
+
+        Main.main(new String[0]);
+
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
+                "Hi, program started !" + lineBreaker +
+                "Input command please or 'help' to see commands list" + lineBreaker +
+                "Successful connection!!" + lineBreaker +
+                "data in table test wan`t added, check input data please" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
+    }
+
+    @Test
+    public void insertWrongParamsCount() {
+        in.add("1");
+        in.add(getConnectionInput());
+        in.add("insert|test|id|10|name|Aria|address");
+        in.add("exit");
+
+        Main.main(new String[0]);
+
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
+                "Hi, program started !" + lineBreaker +
+                "Input command please or 'help' to see commands list" + lineBreaker +
+                "Successful connection!!" + lineBreaker +
+                "Wrong parameters amount. Must be 'insert|tableName|column1|value1|column2|value2|...|columnN|valueN ' But was: 'insert|test|id|10|name|Aria|address'" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
+    }
+
+    @Test
+    public void update() {
+        in.add("1");
+        in.add(getConnectionInput());
+        in.add("update|test3|id|3|name|Aria|password|Rome");
+        in.add("exit");
+
+        Main.main(new String[0]);
+
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
+                "Hi, program started !" + lineBreaker +
+                "Input command please or 'help' to see commands list" + lineBreaker +
+                "Successful connection!!" + lineBreaker +
+                "data in table test3 updated" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
+    }
+
+    @Test
+    public void updatetWrongColumn() {
+        in.add("1");
+        in.add(getConnectionInput());
+        in.add("update|test3|id|3|name|Aria|address|Rome");
+        in.add("exit");
+
+        Main.main(new String[0]);
+
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
+                "Hi, program started !" + lineBreaker +
+                "Input command please or 'help' to see commands list" + lineBreaker +
+                "Successful connection!!" + lineBreaker +
+                "Unsuccessful operation by reason: Couldn't update table test3  ERROR: column \"address\" of relation \"test3\" does not exist\n" +
+                "  Position: 32" + lineBreaker +
+                "try again please or use 'commandName|help' to see command description" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
+    }
+
+    @Test
+    public void updateWrongParamsCount() {
+        in.add("1");
+        in.add(getConnectionInput());
+        in.add("update|test|id|10|name|Aria|address");
+        in.add("exit");
+
+        Main.main(new String[0]);
+
+        assertEquals("Hello, SQLcmd program started." + lineBreaker +
+                "Please choose type of SQL connection : " + lineBreaker +
+                "\t 1 - for PostgreSQL" + lineBreaker +
+                "\t 2 - for MySQL" + lineBreaker +
+                "or q - to close program" + lineBreaker +
+                "Hi, program started !" + lineBreaker +
+                "Input command please or 'help' to see commands list" + lineBreaker +
+                "Successful connection!!" + lineBreaker +
+                "Wrong parameters amount. Must be 'update|tableName|conditionalColumn|conditionalValue|column1|value1|...|columnN|valueN ' But was: 'update|test|id|10|name|Aria|address'" + lineBreaker +
+                "Goodbye, to see soon. " + lineBreaker, getData());
+    }
+
     private String getConnectionInput() {
         return "connect|" +
                 connSet.getServer() + ":" +

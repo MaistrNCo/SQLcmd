@@ -27,9 +27,9 @@ public interface DBManager {
 
     void delete(String tableName, RowData rowData);
 
-    void insert(String tableName, RowData rowData);
+    int insert(String tableName, RowData rowData);
 
-    void update(String tableName, RowData condition, RowData newValue);
+    int update(String tableName, RowData condition, RowData newValue);
 
     void createDB(String name);
 

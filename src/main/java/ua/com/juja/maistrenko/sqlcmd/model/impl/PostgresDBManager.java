@@ -160,7 +160,8 @@ public class PostgresDBManager implements DBManager {
     }
 
     @Override
-    public void insert(String tableName, RowData rowData) {
+    public int insert(String tableName, RowData rowData) {
+        int result =0;
         try (Statement statement = connection.createStatement()) {
             String columnNames = "";
             String values = "";
@@ -172,7 +173,7 @@ public class PostgresDBManager implements DBManager {
             String insertRowSQL = "insert into " + tableName
                     + " (" + columnNames + ")   values ("
                     + values + ")";
-            statement.executeUpdate(insertRowSQL);
+            result = statement.executeUpdate(insertRowSQL);
         } catch (PSQLException e) {
             if (e.getMessage().contains("duplicate key")) {
                 throw new RuntimeException("Couldn't make insert to table " + tableName + " row with defined primary key already exist", e);
@@ -180,10 +181,12 @@ public class PostgresDBManager implements DBManager {
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't make insert to table " + tableName, e);
         }
+        return result;
     }
 
     @Override
-    public void update(String tableName, RowData conditionData, RowData newValue) {
+    public int update(String tableName, RowData conditionData, RowData newValue) {
+        int result =0;
         try (Statement statement = connection.createStatement()) {
             String conditionString = buildCondition(conditionData);
             StringBuilder values = new StringBuilder("");
@@ -195,10 +198,11 @@ public class PostgresDBManager implements DBManager {
                 ind++;
             }
             String updateSQL = "update " + tableName + " set " + values + " where " + conditionString;
-            statement.executeUpdate(updateSQL);
+            result = statement.executeUpdate(updateSQL);
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't update table " + tableName, e);
         }
+        return  result;
     }
 
     @Override
