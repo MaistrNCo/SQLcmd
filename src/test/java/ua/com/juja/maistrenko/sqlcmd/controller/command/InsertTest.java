@@ -2,23 +2,27 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import ua.com.juja.maistrenko.sqlcmd.controller.command.impl.Insert;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
+import ua.com.juja.maistrenko.sqlcmd.model.RowData;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class InsertTest {
     private View view;
     private Command command;
+    private DBManager dbManager;
 
     @Before
     public void init() {
         view = mock(View.class);
-        DBManager dbManager = mock(DBManager.class);
+        dbManager = mock(DBManager.class);
         command = new Insert(dbManager, view);
     }
 
@@ -55,6 +59,7 @@ public class InsertTest {
 
     @Test
     public void insertProcessSuccessful() {
+        Mockito.when(dbManager.insert(isA(String.class), isA(RowData.class))).thenReturn(1);
         try {
             command.process("insert|tableName|column1|value1");
         } catch (NormalExitException e) {

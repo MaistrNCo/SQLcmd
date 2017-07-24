@@ -2,7 +2,6 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import ua.com.juja.maistrenko.sqlcmd.controller.command.impl.Update;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
@@ -11,6 +10,7 @@ import ua.com.juja.maistrenko.sqlcmd.view.View;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -55,8 +55,9 @@ public class UpdateTest {
             //
         }
         verify(view).writeWrongParamsMsg("update|tableName|conditionalColumn|conditionalValue|column1|value1|" +
-                "...|columnN|valueN ","update|tableName");
+                "...|columnN|valueN ", "update|tableName");
     }
+
     @Test
     public void updateProcessWrongParamsAmountMore() {
         try {
@@ -72,18 +73,13 @@ public class UpdateTest {
 
     @Test
     public void updateProcessSuccessful() {
-        RowData conditionData = new RowData();
-        conditionData.put("column1","value1");
-        RowData rowData = new RowData();
-        rowData.put("column2","value2");
-
-        Mockito.when(dbManager.update("tableName",conditionData,rowData)).thenReturn(1);
+        Mockito.when(dbManager.update(isA(String.class), isA(RowData.class), isA(RowData.class))).thenReturn(1);
         try {
             command.process("update|tableName|column1|value1|column2|value2");
         } catch (NormalExitException e) {
             //
         }
-        verify(view).write(" data in table tableName updated");
+        verify(view).write("data in table tableName updated");
     }
 
 }
