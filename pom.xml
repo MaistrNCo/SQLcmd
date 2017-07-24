@@ -18,7 +18,7 @@
                 </excludes>
             </resource>
             <resource>
-                <directory>config</directory>
+                <directory>src/config</directory>
                 <excludes>
                     <exclude>*.properties</exclude>
                 </excludes>

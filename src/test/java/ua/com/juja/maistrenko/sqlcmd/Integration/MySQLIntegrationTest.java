@@ -206,29 +206,6 @@ public class MySQLIntegrationTest {
     }
 
     @Test
-    public void wrongConnect() {
-        in.add("2");
-        in.add("connect|" +
-                connSet.getServer() + ":" +
-                connSet.getPort() + "|" +
-                connSet.getDataBase() + "|" +
-                "unknown|xxxx");
-        in.add("exit");
-        Main.main(new String[0]);
-
-        assertEquals("Hello, SQLcmd program started." + lineBreaker +
-                "Please choose type of SQL connection : " + lineBreaker +
-                "\t 1 - for PostgreSQL" + lineBreaker +
-                "\t 2 - for MySQL" + lineBreaker +
-                "or q - to close program" + lineBreaker +
-                "Hi, program started !" + lineBreaker +
-                "Input command please or 'help' to see commands list" + lineBreaker +
-                "Unsuccessful operation by reason: Connection to database testdb for user unknown failed!  Access denied for user 'unknown'@'192.168.1.104' (using password: YES)" + lineBreaker +
-                "try again please or use 'commandName|help' to see command description" + lineBreaker +
-                "Goodbye, to see soon. " + lineBreaker, getData());
-    }
-
-    @Test
     public void notConnected() {
         in.add("2");
         in.add("list");

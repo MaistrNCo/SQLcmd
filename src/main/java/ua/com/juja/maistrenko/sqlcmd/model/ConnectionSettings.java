@@ -79,10 +79,9 @@ public class ConnectionSettings {
 
         FileInputStream fileInput = null;
         Properties properties = new Properties();
-        ClassLoader classLoader = getClass().getClassLoader();
         File file = null;
         try {
-            file = new File(classLoader.getResource(settingsFileName).getFile());
+            file = new File(settingsFileName);
             fileInput = new FileInputStream(file);
             properties.load(fileInput);
             server = properties.getProperty("server.name");
