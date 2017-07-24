@@ -79,11 +79,12 @@ public class ConnectionSettings {
 
         FileInputStream fileInput = null;
         Properties properties = new Properties();
-        File file = null;
+        File file;
         try {
             file = new File(settingsFileName);
             fileInput = new FileInputStream(file);
             properties.load(fileInput);
+            fileInput.close();
             server = properties.getProperty("server.name");
             port = properties.getProperty("server.port");
             dataBase = properties.getProperty("server.dataBase");
@@ -91,7 +92,7 @@ public class ConnectionSettings {
             password = properties.getProperty("server.user.password");
 
         } catch (Exception e) {
-            System.out.println("Error loading config " + file.getAbsolutePath());
+            System.out.println("Error loading config " + settingsFileName);
             e.printStackTrace();
         } finally {
             if (fileInput != null) {
