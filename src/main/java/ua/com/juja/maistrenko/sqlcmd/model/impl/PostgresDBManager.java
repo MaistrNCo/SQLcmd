@@ -112,13 +112,15 @@ public class PostgresDBManager implements DBManager {
 
 
     @Override
-    public void clear(String tableName) {
+    public int clear(String tableName) {
+        int result;
         String deleteRowsSQL = "delete from " + tableName;
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate(deleteRowsSQL);
+            result = statement.executeUpdate(deleteRowsSQL);
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't clear table " + tableName, e);
         }
+        return result;
     }
 
     @Override
@@ -148,20 +150,22 @@ public class PostgresDBManager implements DBManager {
     }
 
     @Override
-    public void delete(String tableName, RowData conditionData) {
+    public int delete(String tableName, RowData conditionData) {
+        int result;
         String conditionString = buildCondition(conditionData);
 
         String deleteRowsSQL = "delete from " + tableName + " where " + conditionString;
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate(deleteRowsSQL);
+            result = statement.executeUpdate(deleteRowsSQL);
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't delete records from  table " + tableName, e);
         }
+        return result;
     }
 
     @Override
     public int insert(String tableName, RowData rowData) {
-        int result =0;
+        int result = 0;
         try (Statement statement = connection.createStatement()) {
             String columnNames = "";
             String values = "";
@@ -186,7 +190,7 @@ public class PostgresDBManager implements DBManager {
 
     @Override
     public int update(String tableName, RowData conditionData, RowData newValue) {
-        int result =0;
+        int result;
         try (Statement statement = connection.createStatement()) {
             String conditionString = buildCondition(conditionData);
             StringBuilder values = new StringBuilder("");
@@ -202,7 +206,7 @@ public class PostgresDBManager implements DBManager {
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't update table " + tableName, e);
         }
-        return  result;
+        return result;
     }
 
     @Override

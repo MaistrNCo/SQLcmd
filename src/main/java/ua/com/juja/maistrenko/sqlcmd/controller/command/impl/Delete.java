@@ -1,7 +1,7 @@
 package ua.com.juja.maistrenko.sqlcmd.controller.command.impl;
 
 import ua.com.juja.maistrenko.sqlcmd.controller.command.Command;
-import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.ExactAmountParamsParser;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.impl.ExactAmountParamsParser;
 import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.Parser;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.model.RowData;
@@ -43,10 +43,12 @@ public class Delete implements Command {
         }
 
         RowData conditionData = parser.convertToRowData(params, TABLE_NAME_INDEX + 1, params.size());
-
-        dbManager.delete(params.get(TABLE_NAME_INDEX), conditionData);
-        view.write("deleted data from table " + params.get(TABLE_NAME_INDEX));
-
+        int result = dbManager.delete(params.get(TABLE_NAME_INDEX), conditionData);
+        if (result > 0) {
+            view.write("Deleted " + result + " data rows from table " + params.get(TABLE_NAME_INDEX));
+        } else {
+            view.write("Nothing deleted from table " + params.get(TABLE_NAME_INDEX));
+        }
     }
 
     @Override

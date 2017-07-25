@@ -1,5 +1,6 @@
-package ua.com.juja.maistrenko.sqlcmd.controller.command.parse;
+package ua.com.juja.maistrenko.sqlcmd.controller.command.parse.impl;
 
+import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.Parser;
 import ua.com.juja.maistrenko.sqlcmd.model.RowData;
 
 import java.util.ArrayList;

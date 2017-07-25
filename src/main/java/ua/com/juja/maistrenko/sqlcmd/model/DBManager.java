@@ -19,13 +19,13 @@ public interface DBManager {
 
     boolean isConnected();
 
-    void clear(String tableName);
+    int clear(String tableName);
 
     void drop(String tableName);
 
     void create(String tableName, List<String> columnNames);
 
-    void delete(String tableName, RowData rowData);
+    int delete(String tableName, RowData rowData);
 
     int insert(String tableName, RowData rowData);
 

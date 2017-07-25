@@ -1,7 +1,7 @@
 package ua.com.juja.maistrenko.sqlcmd.controller.command.impl;
 
 import ua.com.juja.maistrenko.sqlcmd.controller.command.Command;
-import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.ExactAmountParamsParser;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.impl.ExactAmountParamsParser;
 import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.Parser;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
@@ -41,8 +41,12 @@ public class ClearTable implements Command {
             return;
         }
 
-        dbManager.clear(params.get(TABLE_NAME_INDEX));
-        view.write("table " + params.get(TABLE_NAME_INDEX) + " cleared successfully");
+        int result = dbManager.clear(params.get(TABLE_NAME_INDEX));
+        if (result > 0) {
+            view.write(result + " data rows deleted from table " + params.get(TABLE_NAME_INDEX));
+        } else {
+            view.write("Nothing deleted from table " + params.get(TABLE_NAME_INDEX));
+        }
     }
 
     @Override

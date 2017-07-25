@@ -1,6 +1,6 @@
-package ua.com.juja.maistrenko.sqlcmd.controller.command.parse;
+package ua.com.juja.maistrenko.sqlcmd.controller.command.parse.impl;
 
-        import java.util.List;
+import java.util.List;
 
 public class MinAmountParamsParserWithParity extends ExactAmountParamsParser {
     @Override

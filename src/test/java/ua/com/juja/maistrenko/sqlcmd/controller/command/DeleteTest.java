@@ -2,23 +2,26 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import ua.com.juja.maistrenko.sqlcmd.controller.command.impl.Delete;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
+import ua.com.juja.maistrenko.sqlcmd.model.RowData;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class DeleteTest {
     private View view;
     private Command command;
-
+    private DBManager dbManager;
     @Before
     public void init() {
         view = mock(View.class);
-        DBManager dbManager = mock(DBManager.class);
+        dbManager = mock(DBManager.class);
         command = new Delete(dbManager, view);
     }
 
@@ -55,12 +58,23 @@ public class DeleteTest {
 
     @Test
     public void deleteProcessSuccessful() {
+        Mockito.when(dbManager.delete(isA(String.class),isA(RowData.class))).thenReturn(5);
         try {
             command.process("delete|tableName|column1|value");
         } catch (NormalExitException e) {
             //
         }
-        verify(view).write("deleted data from table tableName");
+        verify(view).write("Deleted 5 data rows from table tableName");
+    }
+    @Test
+    public void deleteProcessEmptyTable() {
+        Mockito.when(dbManager.delete(isA(String.class),isA(RowData.class))).thenReturn(0);
+        try {
+            command.process("delete|tableName|column1|value");
+        } catch (NormalExitException e) {
+            //
+        }
+        verify(view).write("Nothing deleted from table tableName");
     }
 
 }

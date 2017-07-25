@@ -1,10 +1,10 @@
 package ua.com.juja.maistrenko.sqlcmd.controller.command.parser;
 
 import org.junit.Test;
-import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.ExactAmountParamsParser;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.impl.ExactAmountParamsParser;
 import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.Parser;
-import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.ConnectParamsParser;
-import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.MinAmountParamsParser;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.impl.ConnectParamsParser;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.impl.MinAmountParamsParser;
 import ua.com.juja.maistrenko.sqlcmd.model.RowData;
 
 import java.util.List;

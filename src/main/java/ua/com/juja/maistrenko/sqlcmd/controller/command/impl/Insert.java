@@ -1,7 +1,7 @@
 package ua.com.juja.maistrenko.sqlcmd.controller.command.impl;
 
 import ua.com.juja.maistrenko.sqlcmd.controller.command.Command;
-import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.MinAmountParamsParserWithParity;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.impl.MinAmountParamsParserWithParity;
 import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.Parser;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.model.RowData;
@@ -37,7 +37,7 @@ public class Insert implements Command {
         }
 
         if (!parser.checkParamsAmount(params, COMMAND_PATTERN)) {
-            String patternFromDescription = DESCRIPTION.substring(0,DESCRIPTION.indexOf('-'));
+            String patternFromDescription = DESCRIPTION.substring(0, DESCRIPTION.indexOf('-'));
             view.writeWrongParamsMsg(patternFromDescription, userInput);
             return;
         }

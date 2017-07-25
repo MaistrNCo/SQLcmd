@@ -1,7 +1,7 @@
 package ua.com.juja.maistrenko.sqlcmd.controller.command.impl;
 
 import ua.com.juja.maistrenko.sqlcmd.controller.command.Command;
-import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.MinAmountParamsParserWithParity;
+import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.impl.MinAmountParamsParserWithParity;
 import ua.com.juja.maistrenko.sqlcmd.controller.command.parse.Parser;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.model.RowData;
@@ -38,7 +38,7 @@ public class Update implements Command {
         }
 
         if (!parser.checkParamsAmount(params, COMMAND_PATTERN)) {
-            String patternFromDescription = DESCRIPTION.substring(0,DESCRIPTION.indexOf('-'));
+            String patternFromDescription = DESCRIPTION.substring(0, DESCRIPTION.indexOf('-'));
             view.writeWrongParamsMsg(patternFromDescription, userInput);
             return;
         }
@@ -46,7 +46,7 @@ public class Update implements Command {
         RowData conditionData = parser.convertToRowData(params, TABLE_NAME_INDEX + 1, TABLE_NAME_INDEX + 3);
         RowData rowData = parser.convertToRowData(params, TABLE_NAME_INDEX + 3, params.size());
 
-        if (dbManager.update(params.get(TABLE_NAME_INDEX), conditionData, rowData) > 0 ) {
+        if (dbManager.update(params.get(TABLE_NAME_INDEX), conditionData, rowData) > 0) {
             view.write("data in table " + params.get(TABLE_NAME_INDEX) + " updated");
         } else {
             view.write("data in table " + params.get(TABLE_NAME_INDEX) + " wan`t updated, check input data please");
