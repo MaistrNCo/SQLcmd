@@ -17,7 +17,7 @@ public class WrongInput implements Command {
 
     @Override
     public void process(String userInput) {
-        view.write("unknown instruction, try more");
+        view.write("unknown command, try again please or use 'help' to see available commands");
     }
 
     @Override

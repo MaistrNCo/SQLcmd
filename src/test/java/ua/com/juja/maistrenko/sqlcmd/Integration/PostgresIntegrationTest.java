@@ -270,7 +270,7 @@ public class PostgresIntegrationTest {
                 "Hi, program started !" + lineBreaker +
                 "Input command please or 'help' to see commands list" + lineBreaker +
                 "Successful connection!!" + lineBreaker +
-                "unknown instruction, try more" + lineBreaker +
+                "unknown command, try again please or use 'help' to see available commands" + lineBreaker +
                 "Goodbye, to see soon. " + lineBreaker, getData());
     }
 
