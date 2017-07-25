@@ -7,6 +7,7 @@ import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
 
 import java.util.List;
+import java.util.Set;
 
 public class Drop implements Command {
     private static final String DESCRIPTION = "drop|tableName - to delete table 'tableName' with all contained data";
@@ -38,8 +39,15 @@ public class Drop implements Command {
             view.writeWrongParamsMsg(COMMAND_PATTERN, userInput);
             return;
         }
+
+        Set<String> tablesListBefore = dbManager.getTablesList();
         dbManager.drop(params.get(TABLE_NAME_INDEX));
-        view.write("Table " + params.get(TABLE_NAME_INDEX) + " deleted from database successfully");
+        Set<String> tablesListAfter = dbManager.getTablesList();
+        if (tablesListAfter.size() < tablesListBefore.size()) {
+            view.write("Table " + params.get(TABLE_NAME_INDEX) + " deleted from database successfully");
+        } else {
+            view.write("Nothing is deleted");
+        }
     }
 
     @Override

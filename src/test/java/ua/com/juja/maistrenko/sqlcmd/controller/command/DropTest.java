@@ -3,9 +3,15 @@ package ua.com.juja.maistrenko.sqlcmd.controller.command;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.stubbing.Answer;
 import ua.com.juja.maistrenko.sqlcmd.controller.command.impl.Drop;
 import ua.com.juja.maistrenko.sqlcmd.model.DBManager;
 import ua.com.juja.maistrenko.sqlcmd.view.View;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -15,11 +21,12 @@ import static org.mockito.Mockito.verify;
 public class DropTest {
     private View view;
     private Command command;
+    private DBManager dbManager;
 
     @Before
     public void init() {
         view = mock(View.class);
-        DBManager dbManager = mock(DBManager.class);
+        dbManager = mock(DBManager.class);
         command = new Drop(dbManager, view);
     }
 
@@ -55,12 +62,34 @@ public class DropTest {
 
     @Test
     public void dropProcessSuccessful() {
+        Set<String> listBefore = new HashSet<>();
+        listBefore.add("test1");
+        listBefore.add("tableName");
+        Set<String> listAfter = new HashSet<>();
+        listAfter.add("test1");
+        Mockito.when(dbManager.getTablesList()).thenReturn(listBefore).thenReturn(listAfter);
         try {
             command.process("drop|tableName");
         } catch (NormalExitException e) {
             //
         }
         verify(view).write("Table tableName deleted from database successfully");
+    }
+    @Test
+    public void dropProcessWrongName() {
+        Set<String> listBefore = new HashSet<>();
+        listBefore.add("test1");
+        listBefore.add("test2");
+        Set<String> listAfter = new HashSet<>();
+        listAfter.add("test1");
+        listAfter.add("test2");
+        Mockito.when(dbManager.getTablesList()).thenReturn(listBefore).thenReturn(listAfter);
+        try {
+            command.process("drop|tableName");
+        } catch (NormalExitException e) {
+            //
+        }
+        verify(view).write("Nothing is deleted");
     }
 
 }
